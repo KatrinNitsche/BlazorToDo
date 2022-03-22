@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CollaborateSoftware.ToDo.Components
 {
-    public partial class AddToDoEntryDialog
+    public partial class EditToDoEntryDialog
     {
         public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false };
 
@@ -21,9 +21,9 @@ namespace CollaborateSoftware.ToDo.Components
         public EventCallback<bool> CloseEventCallback { get; set; }
         public bool ShowDialog { get; set; }
 
-        public void Show()
+        public async void Show(int id)
         {
-            ResetDialog();
+            ToDoListEntry = await service.GetById(id);
             ShowDialog = true;
             StateHasChanged();
         }
@@ -41,18 +41,17 @@ namespace CollaborateSoftware.ToDo.Components
 
         protected async Task HandleValidSubmit()
         {
-            var result = await service.Add(ToDoListEntry);
+            var result = await service.Update(ToDoListEntry);
             if (result != null)
             {
                 ShowDialog = false;
-                toastService.ShowSuccess("Entry was added successfully");
-
+                toastService.ShowSuccess("Entry was saved successfully");
                 await CloseEventCallback.InvokeAsync(true);
                 StateHasChanged();
             }
             else
             {
-                toastService.ShowError("Unable to add entry.");
+                toastService.ShowError("Unable to save entry.");
             }
         }
     }

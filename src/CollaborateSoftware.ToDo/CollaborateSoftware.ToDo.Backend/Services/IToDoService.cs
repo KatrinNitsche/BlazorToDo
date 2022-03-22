@@ -9,5 +9,8 @@ namespace CollaborateSoftware.ToDo.Backend.Services
         Task<IEnumerable<ToDoListEntry>> GetAll();
         Task<ToDoListEntry> Add(ToDoListEntry newTask);
         void ToggleDone(int id);
+        Task<ToDoListEntry> GetById(int idNumber);
+        Task<ToDoListEntry> Update(ToDoListEntry toDoListEntry);
+        Task<bool> Remove(int id);
     }
 }

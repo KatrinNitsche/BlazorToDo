@@ -37,6 +37,7 @@ namespace CollaborateSoftware.ToDo.Backend.Repositories
         public TEntity Update(TEntity entry)
         {
             Context.Entry(entry).State = EntityState.Modified;
+            Context.SaveChanges();
             return entry;
         }
 

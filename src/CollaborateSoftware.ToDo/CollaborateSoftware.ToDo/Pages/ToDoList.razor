@@ -45,13 +45,13 @@ else
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="entry-actions">
-                            <button type="button" class="btn btn-primary btn-sm" title="Edit this entry">
+                            <button type="button" class="btn btn-primary btn-sm" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(task.Id); }">
                                 <span class="material-icons">
                                     edit_calendar
                                 </span>
                             </button>
 
-                            <button type="button" class="btn btn-danger btn-sm" title="Delete this entry">
+                            <button type="button" class="btn btn-danger btn-sm" title="Delete this entry" @onclick="eventArgs => { DeleteToDoEntry(task.Id); }">
                                 <span class="material-icons">
                                     delete
                                 </span>
@@ -69,4 +69,5 @@ else
         </span>
     </button>
     <CollaborateSoftware.ToDo.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.AddToDoEntryDialog>
+    <CollaborateSoftware.ToDo.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.EditToDoEntryDialog>
 }

@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using CollaborateSoftware.ToDo.Backend.Data;
 using CollaborateSoftware.ToDo.Backend.Services;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,7 @@ namespace CollaborateSoftware.ToDo
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredToast();
 
             services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
