@@ -1,2 +1,2 @@
-# RazorToDo
-toto list application with Razor
+# BlazorToDo
+toto list application with Blazor and enityframework backend
