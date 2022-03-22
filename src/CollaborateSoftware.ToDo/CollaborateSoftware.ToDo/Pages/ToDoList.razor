@@ -1,0 +1,72 @@
+﻿@page "/todolist"
+
+<h1>Task List</h1>
+
+<p>This component demonstrates managing of a task list using a backend service.</p>
+
+@if (Tasks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+        <span class="material-icons">
+            note_add
+        </span>
+    </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Done</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in Tasks)
+            {
+                <tr>
+                    <td>@task.Date.ToShortDateString()</td>
+                    <td>@task.Title</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            @if (task.Done)
+                            {
+                                <input class="form-check-input" type="checkbox" id="doneCheckChecked" checked @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="checkbox" id="doneCheckChecked" @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="entry-actions">
+                            <button type="button" class="btn btn-primary btn-sm" title="Edit this entry">
+                                <span class="material-icons">
+                                    edit_calendar
+                                </span>
+                            </button>
+
+                            <button type="button" class="btn btn-danger btn-sm" title="Delete this entry">
+                                <span class="material-icons">
+                                    delete
+                                </span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+        <span class="material-icons">
+            note_add
+        </span>
+    </button>
+    <CollaborateSoftware.ToDo.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.AddToDoEntryDialog>
+}
