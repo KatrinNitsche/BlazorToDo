@@ -4,6 +4,7 @@ using CollaborateSoftware.ToDo.Backend.Services;
 using CollaborateSoftware.ToDo.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.ToDo.Pages
@@ -11,7 +12,8 @@ namespace CollaborateSoftware.ToDo.Pages
     public partial class ToDoList
     {
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
-        
+        public string SearchTerm { get; set; }
+
         [Inject]
         public IToDoService service { get; set; }
 
@@ -59,6 +61,20 @@ namespace CollaborateSoftware.ToDo.Pages
         public void ToggleToDoDone(int id, object checkedValue)
         {
             service.ToggleDone(id);
+        }
+
+        public async void FilterList(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                Tasks = (await service.GetAll());
+            }
+            else
+            {
+                Tasks = Tasks.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            StateHasChanged();                
         }
     }
 }

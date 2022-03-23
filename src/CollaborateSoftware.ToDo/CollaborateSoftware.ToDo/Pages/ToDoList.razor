@@ -1,6 +1,13 @@
 ﻿@page "/todolist"
 
-<h1>Task List</h1>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">ToDo List</li>
+    </ol>
+</nav>
+
+<h1>ToDo List</h1>
 
 <p>This component demonstrates managing of a task list using a backend service.</p>
 
@@ -10,11 +17,14 @@
 }
 else
 {
-    <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-        <span class="material-icons">
-            note_add
-        </span>
-    </button>
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+        <input id="search-term" class="form-control w-25" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }"/>
+    </div>
 
     <table class="table">
         <thead>
@@ -63,11 +73,14 @@ else
         </tbody>
     </table>
 
-    <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-        <span class="material-icons">
-            note_add
-        </span>
-    </button>
+    <div class="border border-dark p-2 bg-light">
+        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+    </div>
+
     <CollaborateSoftware.ToDo.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.AddToDoEntryDialog>
     <CollaborateSoftware.ToDo.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.EditToDoEntryDialog>
 }
