@@ -9,7 +9,7 @@ namespace CollaborateSoftware.ToDo.Components
 {
     public partial class AddToDoEntryDialog
     {
-        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false };
+        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, Priority = Priority.Middle };
 
         [Inject]
         public IToDoService service { get; set; }
@@ -36,7 +36,7 @@ namespace CollaborateSoftware.ToDo.Components
 
         private void ResetDialog()
         {
-            ToDoListEntry = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false };
+            ToDoListEntry = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, Priority = Priority.Middle };
         }
 
         protected async Task HandleValidSubmit()

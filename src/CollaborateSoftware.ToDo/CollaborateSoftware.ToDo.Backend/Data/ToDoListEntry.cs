@@ -15,5 +15,9 @@ namespace CollaborateSoftware.ToDo.Backend.Data
         public string Title { get; set; }
         
         public bool Done { get; set; }
+
+        public Priority Priority { get; set; }
     }
+
+    public enum Priority { Low, Middle, High }
 }

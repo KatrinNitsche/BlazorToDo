@@ -13,6 +13,7 @@ namespace CollaborateSoftware.ToDo.Pages
     {
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
         public string SearchTerm { get; set; }
+        public string SortingColumn { get; set; }
 
         [Inject]
         public IToDoService service { get; set; }
@@ -75,6 +76,28 @@ namespace CollaborateSoftware.ToDo.Pages
             }
 
             StateHasChanged();                
+        }
+
+        public async void SortByColum(string columnName)
+        {
+            switch(columnName)
+            {
+                case "Date":
+                    Tasks = Tasks.OrderBy(t => t.Date);
+                    break;
+                case "Priority":
+                    Tasks = Tasks.OrderBy(t => t.Priority);
+                    break;
+                case "Title":
+                    Tasks = Tasks.OrderBy(t => t.Title);
+                    break;
+                case "Done":
+                    Tasks = Tasks.OrderBy(t => t.Done);
+                    break;
+            }
+
+            SortingColumn = columnName;
+            StateHasChanged();
         }
     }
 }
