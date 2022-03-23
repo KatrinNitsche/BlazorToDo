@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace CollaborateSoftware.ToDo.Backend.Data
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 {
     public class DataContext : DbContext
     {

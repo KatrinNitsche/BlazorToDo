@@ -2,21 +2,21 @@
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Migrations
 {
-    public partial class AddedPriority : Migration
+    public partial class AddedDescription : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Priority",
+            migrationBuilder.AddColumn<string>(
+                name: "Description",
                 table: "ToDoList",
-                nullable: false,
-                defaultValue: 0);
+                maxLength: 1000,
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Priority",
+                name: "Description",
                 table: "ToDoList");
         }
     }

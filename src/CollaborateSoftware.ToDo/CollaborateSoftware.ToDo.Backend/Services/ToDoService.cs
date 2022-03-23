@@ -1,9 +1,9 @@
-﻿using CollaborateSoftware.ToDo.Backend.Data;
-using CollaborateSoftware.ToDo.Backend.Repositories;
+﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using CollaborateSoftware.MyLittleHelpers.Backend.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CollaborateSoftware.ToDo.Backend.Services
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public class ToDoService : IToDoService
     {

@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CollaborateSoftware.ToDo
+namespace CollaborateSoftware.MyLittleHelpers
 {
     public class Program
     {

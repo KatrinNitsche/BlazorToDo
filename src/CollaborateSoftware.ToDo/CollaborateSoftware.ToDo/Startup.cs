@@ -1,6 +1,6 @@
 using Blazored.Toast;
-using CollaborateSoftware.ToDo.Backend.Data;
-using CollaborateSoftware.ToDo.Backend.Services;
+using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CollaborateSoftware.ToDo
+namespace CollaborateSoftware.MyLittleHelpers
 {
     public class Startup
     {

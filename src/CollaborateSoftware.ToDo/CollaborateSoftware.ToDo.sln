@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollaborateSoftware.ToDo", "CollaborateSoftware.ToDo\CollaborateSoftware.ToDo.csproj", "{8AF5AC99-B71A-4E06-80E1-CC2A8455541C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollaborateSoftware.MyLittleHelpers", "CollaborateSoftware.ToDo\CollaborateSoftware.MyLittleHelpers.csproj", "{8AF5AC99-B71A-4E06-80E1-CC2A8455541C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollaborateSoftware.ToDo.Backend", "CollaborateSoftware.ToDo.Backend\CollaborateSoftware.ToDo.Backend.csproj", "{A331274B-94A7-4A83-88CB-068745D7616F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollaborateSoftware.MyLittleHelpers.Backend", "CollaborateSoftware.ToDo.Backend\CollaborateSoftware.MyLittleHelpers.Backend.csproj", "{A331274B-94A7-4A83-88CB-068745D7616F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

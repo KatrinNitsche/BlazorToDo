@@ -1,9 +1,9 @@
-﻿using CollaborateSoftware.ToDo.Backend.Data;
+﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CollaborateSoftware.ToDo.Backend.Repositories
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
 {
     public abstract class BaseRepository<TEntity>
          where TEntity : class

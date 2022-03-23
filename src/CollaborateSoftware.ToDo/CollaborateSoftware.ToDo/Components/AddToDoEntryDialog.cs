@@ -1,11 +1,11 @@
 ﻿using Blazored.Toast.Services;
-using CollaborateSoftware.ToDo.Backend.Data;
-using CollaborateSoftware.ToDo.Backend.Services;
+using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 
-namespace CollaborateSoftware.ToDo.Components
+namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class AddToDoEntryDialog
     {

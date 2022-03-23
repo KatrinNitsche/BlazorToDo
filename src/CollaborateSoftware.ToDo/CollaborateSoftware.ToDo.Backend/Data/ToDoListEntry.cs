@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CollaborateSoftware.ToDo.Backend.Data
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 {
     public class ToDoListEntry
     {
@@ -17,6 +17,9 @@ namespace CollaborateSoftware.ToDo.Backend.Data
         public bool Done { get; set; }
 
         public Priority Priority { get; set; }
+
+        [MaxLength(1000)]
+        public string Description { get; set; }
     }
 
     public enum Priority { Low, Middle, High }

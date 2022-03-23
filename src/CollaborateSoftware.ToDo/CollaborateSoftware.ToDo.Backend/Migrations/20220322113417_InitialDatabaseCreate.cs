@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CollaborateSoftware.ToDo.Backend.Migrations
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Migrations
 {
     public partial class InitialDatabaseCreate : Migration
     {

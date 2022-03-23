@@ -1,10 +1,10 @@
-﻿using CollaborateSoftware.ToDo.Backend.Data;
+﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CollaborateSoftware.ToDo.Backend.Repositories
+namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
 {
     public class ToDoListEntryRepository : BaseRepository<ToDoListEntry>
     {

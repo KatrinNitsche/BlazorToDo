@@ -18,12 +18,34 @@
 else
 {
     <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
         <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
             <span class="material-icons">
                 note_add
             </span>
         </button>
-        <input id="search-term" class="form-control w-25" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+
+        <div class="d-flex w-25">
+
+            @if (DisplayOnlyTodaysTasks)
+            {
+                <button type="button" class="btn btn-danger" title="Show all tasks" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                    <span class="material-icons">
+                        list
+                    </span>
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-danger" title="Show tasks due do today" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                    <span class="material-icons">
+                        calendar_today
+                    </span>
+                </button>
+            }
+
+            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+        </div>
     </div>
 
     <table class="table">
@@ -36,7 +58,7 @@ else
                             sort
                         </span>
                     }
-                   <span>Date</span>
+                    <span>Date</span>
                 </th>
                 <th @onclick="@(() => SortByColum("Priority"))">
                     @if (SortingColumn == "Priority")
@@ -135,6 +157,6 @@ else
         </button>
     </div>
 
-    <CollaborateSoftware.ToDo.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.AddToDoEntryDialog>
-    <CollaborateSoftware.ToDo.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.ToDo.Components.EditToDoEntryDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog>
 }

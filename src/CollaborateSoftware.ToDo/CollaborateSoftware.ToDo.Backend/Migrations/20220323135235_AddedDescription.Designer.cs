@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220323111657_AddedPriority")]
-    partial class AddedPriority
+    [Migration("20220323135235_AddedDescription")]
+    partial class AddedDescription
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
                     b.Property<bool>("Done")
                         .HasColumnType("bit");

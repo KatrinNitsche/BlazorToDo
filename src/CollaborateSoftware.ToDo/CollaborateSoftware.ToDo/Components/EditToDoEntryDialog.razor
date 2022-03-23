@@ -39,6 +39,12 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="description">Description: </label>
+                            <InputTextArea id="description" class="form-control" @bind-Value="@ToDoListEntry.Description" rows="5"></InputTextArea>
+                            <ValidationMessage For="@(() => ToDoListEntry.Description)" />
+                        </div>
+
+                        <div class="form-group">
                             <label for="done">Done: </label>
                             <InputCheckbox id="done" class="form-control" @bind-Value="@ToDoListEntry.Done"></InputCheckbox>
                             <ValidationMessage For="@(() => ToDoListEntry.Done)" />

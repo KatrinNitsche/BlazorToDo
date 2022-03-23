@@ -1,19 +1,20 @@
 ﻿using Blazored.Toast.Services;
-using CollaborateSoftware.ToDo.Backend.Data;
-using CollaborateSoftware.ToDo.Backend.Services;
-using CollaborateSoftware.ToDo.Components;
+using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using CollaborateSoftware.MyLittleHelpers.Backend.Services;
+using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CollaborateSoftware.ToDo.Pages
+namespace CollaborateSoftware.MyLittleHelpers.Pages
 {
     public partial class ToDoList
     {
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
+        public bool DisplayOnlyTodaysTasks { get; set; }
 
         [Inject]
         public IToDoService service { get; set; }
@@ -97,6 +98,22 @@ namespace CollaborateSoftware.ToDo.Pages
             }
 
             SortingColumn = columnName;
+            StateHasChanged();
+        }
+
+        public async void ShowTasksFromToday()
+        {
+            DisplayOnlyTodaysTasks = !DisplayOnlyTodaysTasks;
+
+            if (DisplayOnlyTodaysTasks)
+            {
+                Tasks = Tasks.Where(t => t.Date.Date == System.DateTime.Now.Date);
+            }
+            else
+            {
+                Tasks = (await service.GetAll());
+            }
+
             StateHasChanged();
         }
     }
