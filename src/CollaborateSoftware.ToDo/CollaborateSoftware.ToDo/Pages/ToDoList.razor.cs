@@ -14,6 +14,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
+        public string SortingDirection { get; set; } = "Asc";
         public bool DisplayOnlyTodaysTasks { get; set; }
 
         [Inject]
@@ -84,20 +85,21 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             switch(columnName)
             {
                 case "Date":
-                    Tasks = Tasks.OrderBy(t => t.Date);
+                    Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Date) : Tasks.OrderByDescending(t => t.Date);
                     break;
                 case "Priority":
-                    Tasks = Tasks.OrderBy(t => t.Priority);
+                    Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Priority) : Tasks.OrderByDescending(t => t.Priority);
                     break;
                 case "Title":
-                    Tasks = Tasks.OrderBy(t => t.Title);
+                    Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Title) : Tasks.OrderByDescending(t => t.Title);
                     break;
                 case "Done":
-                    Tasks = Tasks.OrderBy(t => t.Done);
+                    Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Done) : Tasks.OrderByDescending(t => t.Done);
                     break;
             }
 
             SortingColumn = columnName;
+            SortingDirection = SortingDirection == "Asc" ? "Desc" : "Asc";
             StateHasChanged();
         }
 
