@@ -1,0 +1,48 @@
+﻿@page "/calendar"
+
+<div class="border border-dark bg-light p-2 mb-5 d-flex">
+
+    <div class="form-group d-flex p-2">
+        <label for="from-date">From: </label>
+        <input id="from-date" class="form-control" type="date" @bind-value="FromDate" />
+    </div>
+
+    <div class="form-group d-flex p-2">
+        <label for="to-date">To: </label>
+        <input id="to-date" class="form-control" type="date" @bind-value="ToDate" />
+    </div>
+
+    <button type="button" class="btn btn-primary" title="Show tasks due do today" @onclick="eventArgs => { CreateCalendar(); }">
+        <span class="material-icons">
+            calendar_today
+        </span>
+        <span>Create</span>
+    </button>
+
+</div>
+
+@if (CalendarData == null)
+{
+    <p><em>Enter a valid from and to date and click on Create to generate your calendar ...</em></p>
+}
+else
+{
+    <div class="d-flex flex-wrap" style="max-width: 180rem">
+
+        @foreach (var day in CalendarData)
+        {
+            <div class="@day.CssClass" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">@day.Date.ToShortDateString()</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@day.Date.DayOfWeek</h6>
+
+                    @if (day.HolidayName != null)
+                    {
+                        <p class="card-text">@day.HolidayName</p>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+}
