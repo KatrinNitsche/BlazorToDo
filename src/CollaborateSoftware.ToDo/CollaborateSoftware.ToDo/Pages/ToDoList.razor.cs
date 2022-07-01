@@ -16,6 +16,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public string SortingColumn { get; set; }
         public string SortingDirection { get; set; } = "Asc";
         public bool DisplayOnlyTodaysTasks { get; set; }
+        public bool DisplayDoneTasks { get; set; }
 
         [Inject]
         public IToDoService service { get; set; }
@@ -29,6 +30,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         protected async override Task OnInitializedAsync()
         {
             Tasks = (await service.GetAll());
+            Tasks = Tasks.Where(t => t.Done == false);
         }
 
         protected void AddToDoEntry()
@@ -116,7 +118,31 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 Tasks = (await service.GetAll());
             }
 
+            if (DisplayDoneTasks)
+            {
+                Tasks = Tasks.Where(t => t.Done == true);
+            }
+            else
+            {
+                Tasks = Tasks.Where(t => t.Done == false);
+            }
+
             StateHasChanged();
+        }
+
+        public async void ShowTasksDone()
+        {
+            DisplayDoneTasks = !DisplayDoneTasks;
+            Tasks = (await service.GetAll());
+
+            if (DisplayDoneTasks)
+            {
+                Tasks = Tasks.Where(t => t.Done == true);
+            }
+            else
+            {
+                Tasks = Tasks.Where(t => t.Done == false);
+            }
         }
     }
 }
