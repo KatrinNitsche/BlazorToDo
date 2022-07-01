@@ -1,8 +1,6 @@
 ﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
 {
@@ -24,10 +22,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
 
         public override ToDoListEntry ToggleActive(int id)
         {
-            var entry = GetById(id);
-           // if (entry != null)
-               // entry.IsActive = !entry.IsActive;
-
+            var entry = GetById(id);          
             return entry;
         }
     }

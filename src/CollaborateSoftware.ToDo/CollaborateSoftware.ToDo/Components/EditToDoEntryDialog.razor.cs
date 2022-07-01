@@ -9,7 +9,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class EditToDoEntryDialog
     {
-        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false };
+        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, RepetitionType = RepetitionType.None };
 
         [Inject]
         public IToDoService service { get; set; }
@@ -19,6 +19,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         [Parameter]
         public EventCallback<bool> CloseEventCallback { get; set; }
+
         public bool ShowDialog { get; set; }
 
         public async void Show(int id)
@@ -36,7 +37,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            ToDoListEntry = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false };
+            ToDoListEntry = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, RepetitionType = RepetitionType.None };
         }
 
         protected async Task HandleValidSubmit()

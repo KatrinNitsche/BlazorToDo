@@ -18,9 +18,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 
         public Priority Priority { get; set; }
 
+        public RepetitionType RepetitionType { get; set; }
+
         [MaxLength(1000)]
         public string Description { get; set; }
     }
 
     public enum Priority { Low, Middle, High }
+    public enum RepetitionType { None, Daily, Weekly, TwoWeekly, Monthly, Quarterly, Halfyearly, Yearly }
 }
