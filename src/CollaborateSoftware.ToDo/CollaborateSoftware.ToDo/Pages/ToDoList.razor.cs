@@ -82,7 +82,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             StateHasChanged();                
         }
 
-        public async void SortByColum(string columnName)
+        public async void SortByColumn(string columnName)
         {
             switch(columnName)
             {

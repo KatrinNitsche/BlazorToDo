@@ -9,8 +9,6 @@
 
 <h1>ToDo List</h1>
 
-<p>This component demonstrates managing of a task list using a backend service.</p>
-
 @if (Tasks == null)
 {
     <p><em>Loading...</em></p>
@@ -30,17 +28,17 @@ else
             <span class="mr-1">
                 @if (DisplayDoneTasks)
                 {
-                    <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
+                    <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
                         <span class="material-icons">
-                            remove_done
+                            done
                         </span>
                     </button>
                 }
                 else
                 {
-                    <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
+                    <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
                         <span class="material-icons">
-                            done
+                            remove_done
                         </span>
                     </button>
                 }
@@ -71,7 +69,7 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th @onclick="@(() => SortByColum("Date"))">
+                <th @onclick="@(() => SortByColumn("Date"))">
                     @if (SortingColumn == "Date")
                     {
                         <span class="material-icons">
@@ -80,7 +78,7 @@ else
                     }
                     <span>Date</span>
                 </th>
-                <th @onclick="@(() => SortByColum("Priority"))">
+                <th @onclick="@(() => SortByColumn("Priority"))">
                     @if (SortingColumn == "Priority")
                     {
                         <span class="material-icons">
@@ -89,7 +87,7 @@ else
                     }
                     <span>Priority</span>
                 </th>
-                <th @onclick="@(() => SortByColum("Title"))">
+                <th @onclick="@(() => SortByColumn("Title"))">
                     @if (SortingColumn == "Title")
                     {
                         <span class="material-icons">
@@ -98,7 +96,7 @@ else
                     }
                     <span>Title</span>
                 </th>
-                <th @onclick="@(() => SortByColum("Done"))">
+                <th @onclick="@(() => SortByColumn("Done"))">
                     @if (SortingColumn == "Done")
                     {
                         <span class="material-icons">

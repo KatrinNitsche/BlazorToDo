@@ -20,6 +20,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 
         public RepetitionType RepetitionType { get; set; }
 
+        public Category? Category { get; set; }
+
         [MaxLength(1000)]
         public string Description { get; set; }
     }

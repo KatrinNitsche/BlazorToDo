@@ -12,10 +12,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
         }
 
         public DbSet<ToDoListEntry> ToDoList { get; set; }
-
-        internal ToDoListEntry FirstOrDefault(Func<object, bool> p)
-        {
-            throw new NotImplementedException();
-        }
+        public DbSet<Category> Categories { get; set; }
     }
 }
