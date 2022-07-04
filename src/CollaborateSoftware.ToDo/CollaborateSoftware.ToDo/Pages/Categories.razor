@@ -23,10 +23,6 @@ else
             </span>
         </button>
 
-        <div class="d-flex w-25">
-            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-        </div>
-
     </div>
 
     <table class="table">
@@ -41,6 +37,8 @@ else
                     }
                     <span>Name</span>
                 </th>
+                <th>Colour</th>
+                <th>Icon</th>
                 <th></th>
             </tr>
         </thead>
@@ -49,6 +47,12 @@ else
             {
                 <tr>
                     <td>@category.Name</td>
+                    <td><div style="background-color: @category.Color; height: 35px; width: 35px; border: 1px solid black"></div></td>
+                    <td>
+                        <span class="material-icons">
+                            @category.Icon  
+                        </span>
+                    </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="entry-actions">
                             <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditCategory(category.Id); }">
@@ -77,3 +81,7 @@ else
         </button>
     </div>
 }
+
+
+<CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog @ref="@AddCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog>
+<CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog @ref="@EditCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog>

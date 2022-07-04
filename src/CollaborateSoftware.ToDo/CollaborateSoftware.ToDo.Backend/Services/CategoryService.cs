@@ -29,7 +29,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             try
             {
                 // Category is still used for at least one todo
-                if (toDoListentryRepository.GetAll().Any(t => t.Category.Id == id))
+                if (toDoListentryRepository.GetAll().Any(t => t.Category?.Id == id))
                 {
                     return false;
                 }

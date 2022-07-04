@@ -9,11 +9,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
     {
         public CategoryRepository(DataContext context) : base(context) { }
 
-        public override IEnumerable<Category> GetAll() => Context.Categories;
+        public override IEnumerable<Category> GetAll() => Context.Category;
 
-        public override IQueryable<Category> GetAll(bool asyn = true) => Context.Categories;
+        public override IQueryable<Category> GetAll(bool asyn = true) => Context.Category;
 
-        public override Category GetById(int id) => Context.Categories.First(c => c.Id == id);
+        public override Category GetById(int id) => Context.Category.First(c => c.Id == id);
 
         public override Category ToggleActive(int id)
         {
