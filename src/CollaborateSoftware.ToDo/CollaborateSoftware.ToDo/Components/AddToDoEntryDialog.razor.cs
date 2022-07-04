@@ -3,6 +3,8 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Components
@@ -10,20 +12,27 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
     public partial class AddToDoEntryDialog
     {
         public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, Priority = Priority.Middle, RepetitionType = RepetitionType.None };
+        public IEnumerable<Category> CategoryList { get; set; }
 
         [Inject]
         public IToDoService service { get; set; }
 
         [Inject]
         public IToastService toastService { get; set; }
+        [Inject]
+        public ICategoryService categoryService { get; set; }
 
         [Parameter]
         public EventCallback<bool> CloseEventCallback { get; set; }
 
         public bool ShowDialog { get; set; }
+        
+        public string CurrentCategoryId { get; set; }
 
-        public void Show()
+        public async void Show()
         {
+            CategoryList = await categoryService.GetAll();
+            CurrentCategoryId = CategoryList.FirstOrDefault(c => c.Name == "None")?.Id.ToString();
             ResetDialog();
             ShowDialog = true;
             StateHasChanged();
@@ -42,6 +51,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         protected async Task HandleValidSubmit()
         {
+            ToDoListEntry.Category = CategoryList.FirstOrDefault(c => c.Id == int.Parse(CurrentCategoryId));
             var result = await service.Add(ToDoListEntry);
             if (result != null)
             {

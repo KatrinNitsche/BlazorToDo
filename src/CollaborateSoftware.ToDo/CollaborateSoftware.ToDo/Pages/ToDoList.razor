@@ -69,6 +69,15 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th @onclick="@(() => SortByColumn("Category"))">
+                    @if (SortingColumn == "Category")
+                    {
+                        <span class="material-icons">
+                            sort
+                        </span>
+                    }
+                    <span>Category</span>
+                </th>
                 <th @onclick="@(() => SortByColumn("Date"))">
                     @if (SortingColumn == "Date")
                     {
@@ -112,6 +121,16 @@ else
             @foreach (var task in Tasks)
             {
                 <tr>
+                    <td>
+                        <div class="d-flex" style="background-color: @task.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                            <span class="material-icons">
+                                @task.Category?.Icon
+                            </span>
+                            <span class="ml-3">
+                                @task.Category?.Name
+                            </span>
+                        </div>
+                    </td>
                     <td>@task.Date.ToShortDateString()</td>
                     <td>
                         @switch (task.Priority)

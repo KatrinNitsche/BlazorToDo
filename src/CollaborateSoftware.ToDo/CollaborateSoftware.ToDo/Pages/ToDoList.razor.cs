@@ -98,6 +98,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 case "Done":
                     Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Done) : Tasks.OrderByDescending(t => t.Done);
                     break;
+                case "Category":
+                    Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Category?.Name) : Tasks.OrderByDescending(t => t.Category?.Name);
+                    break;
             }
 
             SortingColumn = columnName;

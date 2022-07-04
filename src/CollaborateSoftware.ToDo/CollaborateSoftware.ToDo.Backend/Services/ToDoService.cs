@@ -41,7 +41,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                         Title = entry.Title,
                         Priority = entry.Priority,
                         RepetitionType = entry.RepetitionType,
-                        Date = GetNextDateFor(entry.Date, entry.RepetitionType)
+                        Date = GetNextDateFor(entry.Date, entry.RepetitionType),
+                        Category = entry.Category
                     };
 
                     await Add(nextEntry);
