@@ -1,0 +1,50 @@
+﻿@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">ToDo List Add</h5>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
+
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label for="title">Title: </label>
+                            <InputText id="title" class="form-control" @bind-Value="@Note.Title" placeholder="Enter a title for the note"></InputText>
+                            <ValidationMessage For="@(() => Note.Title)" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Category: </label>
+                            <InputSelect id="date" class="form-control" @bind-Value="@CurrentCategoryId">
+                                @foreach (var category in CategoryList)
+                                    {
+                                    <option value="@category.Id">@category.Name</option>
+                                    }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => Note.Category)" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description: </label>
+                            <InputTextArea id="description" class="form-control" @bind-Value="@Note.Text" rows="5"></InputTextArea>
+                            <ValidationMessage For="@(() => Note.Text)" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save Task</button>
+                        <a class="btn btn-outline-primary" @onclick="@Close">Close</a>
+                    </EditForm>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
