@@ -23,7 +23,22 @@ else
             </span>
         </button>
 
-        <div class="d-flex w-25">
+        <div class="d-flex w-auto pr-1">
+            @if (CurrentParentNote != null)
+            {
+                <nav aria-label="breadcrumb" class="w-100">
+                    <ol class="breadcrumb bg-transparent">
+                        <li class="breadcrumb-item pointer"><span @onclick="EventArgs => { SetParentNote(null); }">Root</span></li>
+                        @if (NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId != null)
+                        {
+                            <li class="breadcrumb-item active pointer" aria-current="page" @onclick="EventArgs => { SetParentNote(NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId); }">
+                                <span>@NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.Title</span>
+                            </li>
+                        }
+                    </ol>
+                </nav>
+            }
+
             <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
         </div>
     </div>
@@ -31,6 +46,8 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th>                   
+                </th>
                 <th @onclick="@(() => SortByColumn("Category"))">
                     @if (SortingColumn == "Category")
                     {
@@ -54,9 +71,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var note in NotesList)
+
+            @foreach (var note in NotesList.Where(n => n.ParentNoteId == CurrentParentNote))
             {
                 <tr>
+                    <td>
+                        @if (NotesList.Any(n => n.ParentNoteId == note.Id))
+                        {
+                            <span class="material-icons pointer" @onclick="EventArgs => { SetParentNote(note.Id); }">
+                                arrow_drop_down
+                            </span>
+                        }
+                    </td>
                     <td>
                         <div class="d-flex" style="background-color: @note.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
                             <span class="material-icons">
@@ -67,7 +93,7 @@ else
                             </span>
                         </div>
                     </td>
-                    <td>@note.Title</td>                  
+                    <td>@note.Title</td>
                     <td>
                         <div class="btn-group" role="group" aria-label="entry-actions">
                             <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(note.Id); }">

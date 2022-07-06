@@ -10,6 +10,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class AddNoteDialog
     {
+        public IEnumerable<NotesEntry> NotesList { get; set; }
+
         public NotesEntry Note { get; set; } = new NotesEntry { Title = "New Note"};
 
         public IEnumerable<Category> CategoryList { get; set; }
@@ -30,10 +32,14 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         public string CurrentCategoryId { get; set; }
 
+        public string CurrentParentId { get; set; }
+
         public async void Show()
         {
             CategoryList = await categoryService.GetAll();
+            NotesList = (await service.GetAll());
             CurrentCategoryId = CategoryList.FirstOrDefault(c => c.Name == "None")?.Id.ToString();
+            CurrentParentId = "";
             ResetDialog();
             ShowDialog = true;
             StateHasChanged();
@@ -53,6 +59,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         protected async Task HandleValidSubmit()
         {
             Note.Category = CategoryList.FirstOrDefault(c => c.Id == int.Parse(CurrentCategoryId));
+            if (string.IsNullOrEmpty(CurrentParentId))
+            {
+                Note.ParentNoteId = null;
+            }
+            else
+            {
+                Note.ParentNoteId = NotesList.FirstOrDefault(n => n.Id == int.Parse(CurrentParentId)).Id;
+            }
+
             var result = await service.Add(Note);
             if (result != null)
             {

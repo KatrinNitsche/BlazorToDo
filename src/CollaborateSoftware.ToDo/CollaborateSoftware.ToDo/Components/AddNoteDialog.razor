@@ -34,6 +34,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="date">Parent Note: </label>
+                            <InputSelect id="date" class="form-control" @bind-Value="@CurrentParentId">
+                                <option value="">None</option>
+                                @foreach (var noteEntry in NotesList)
+                                    {
+                                    <option value="@noteEntry.Id">@noteEntry.Title</option>
+                                    }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => Note.ParentNoteId)" />
+                        </div>
+
+                        <div class="form-group">
                             <label for="description">Description: </label>
                             <InputTextArea id="description" class="form-control" @bind-Value="@Note.Text" rows="5"></InputTextArea>
                             <ValidationMessage For="@(() => Note.Text)" />

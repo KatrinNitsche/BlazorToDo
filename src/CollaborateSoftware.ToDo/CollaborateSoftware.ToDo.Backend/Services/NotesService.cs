@@ -2,6 +2,7 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
@@ -30,6 +31,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         {
             try
             {
+                var childNotes = notesRepository.GetAll().Where(n => n.ParentNoteId == id);
+                if (childNotes != null && childNotes.Count() > 0) return false;
+
                 notesRepository.Remove(id);
                 notesRepository.Commit();
                 return true;

@@ -16,6 +16,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
         public string SortingDirection { get; set; } = "Asc";
+        public int? CurrentParentNote { get; set; } = null;
 
         [Inject]
         public INotesService service { get; set; }
@@ -68,7 +69,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 case "Title":
                     NotesList = SortingDirection == "Asc" ? NotesList.OrderBy(t => t.Title) : NotesList.OrderByDescending(t => t.Title);
                     break;
-              
+
             }
 
             SortingColumn = columnName;
@@ -84,11 +85,16 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             }
             else
             {
-                NotesList = NotesList.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()) || 
+                NotesList = NotesList.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()) ||
                                                  t.Text.ToLower().Contains(searchTerm.ToLower()));
             }
 
             StateHasChanged();
+        }
+
+        public async void SetParentNote(int? newParentNote)
+        {
+            CurrentParentNote = newParentNote;
         }
     }
 }
