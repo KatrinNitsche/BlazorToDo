@@ -1,4 +1,5 @@
-﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+﻿using Blazored.Toast.Services;
+using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Data;
 using Microsoft.AspNetCore.Components;
@@ -10,7 +11,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
     public partial class ExportToDosDialog
     {
         public ToDoExportSettings ExportSettings { get; set; } = new ToDoExportSettings { };
-        
+
         public IEnumerable<Category> CategoryList { get; set; }
 
         public bool ShowDialog { get; set; }
@@ -20,6 +21,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         [Inject]
         public IToDoService service { get; set; }
+
+        [Inject]
+        public IToastService toastService { get; set; }
 
 
         public async void Show()
@@ -43,7 +47,17 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         protected async Task HandleValidSubmit()
         {
-            service.Export(ExportSettings);
+            var result = service.Export(ExportSettings);
+            if (result != null)
+            {
+                ShowDialog = false;
+                toastService.ShowSuccess("To Dos where exported");
+                StateHasChanged();
+            }
+            else
+            {
+                toastService.ShowError("Unable to export.");
+            }
         }
     }
 }

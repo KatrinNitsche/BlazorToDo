@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
@@ -112,10 +111,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                 using (var writer = new StreamWriter(filePath))
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
-                    foreach (var item in dataToExport)
-                    {
-                        csv.WriteRecord(item);
-                    }
+                    csv.WriteHeader(typeof(ToDoListEntry));
+                    csv.WriteRecords(dataToExport);
                 }
             }
             catch (Exception)
