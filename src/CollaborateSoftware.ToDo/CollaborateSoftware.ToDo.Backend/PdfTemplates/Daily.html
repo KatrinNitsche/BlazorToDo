@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Daily Overview</title>
+    <style>
+
+        .page {
+            width: 1000px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: medium;
+        }
+
+        .priority {
+            height: 55px;
+            width: 100%;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #ebcead;
+        }
+
+        #scedule-table tr td:first-child {
+            max-width: 20%;
+            border-right: 1px solid gray;
+        }
+
+        table {
+            width: 100%;
+        }
+            table tr td {
+                width: 50%;
+            }
+
+            table tr {
+                height: 40px;
+            }
+
+            table tr td {
+                border-top: 1px solid gray;
+            }
+
+            table tr:last-child td {
+                border-bottom: 1px solid gray;
+            }
+
+        .date {
+            border-radius: 5px;
+            background-color: #ede8da;
+            height: 50px;
+            padding: 5px;
+        }
+
+        .todo-list {
+            border-radius: 10px;
+            background-color: #ebe4df;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        .todo {
+            margin: 20px;
+        }
+
+        .todo-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background-color: #bab8b3;           
+        }
+
+        .tomorrow-notes {
+            border-radius: 2px;
+            background-color: #e8d7a2;
+            padding: 5px;
+            height: 200px;
+        }
+
+        .notes {
+            padding: 5px;
+            height: 200px;
+            border: 1px dashed black;
+            padding: 5px;
+        }
+
+        .page-table {
+            border: 0 solid white;
+        }
+
+        #plan-date {
+            padding: 10px 100px;
+        }
+
+        .todo-text {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <table class="page-table">
+        <tr>
+            <td>
+                <div class="headline">
+                    <h1>Daily Plan</h1>
+                </div>
+            </td>
+            <td>
+                <div class="date">
+                    <span>Date</span>
+                    <div id="plan-date">{plan-date}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="scedule">                  
+                    <table id="scedule-table">
+                        <tr>
+                            <td>
+                                <span class="time">6-7 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">7-8 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">8-9 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">9-10 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">10-11 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">12-1 PM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">1-2 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">2-3 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">3-4 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">4-5 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">5-6 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">6-7 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">7-8 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="time">8-9 AM</span>
+                            </td>
+                            <td>
+                                <span class="appointment"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="priorities">
+                    <h2>Top Priorities</h2>
+                    <div class="priority"></div>
+                    <div class="priority"></div>
+                    <div class="priority"></div>
+                    <div class="priority"></div>
+                </div>
+                <div class="todo-list">
+                    <h2>To Do List..</h2>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-1}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-2}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-3}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-4}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-5}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-6}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-7}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-8}</span></div>
+                </div>                     
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="tomorrow-notes">
+                    <h2>For Tomorrow..</h2>
+                </div>
+            </td>
+            <td>
+                <div class="notes">
+                    <h2>Note..</h2>
+                </div>
+            </td>
+        </tr>
+    </table>   
+
+</body>
+</html>

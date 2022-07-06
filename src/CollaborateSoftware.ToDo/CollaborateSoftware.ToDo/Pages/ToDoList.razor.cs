@@ -44,7 +44,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public void PdfExport()
         {
-            var result = pdfCreator.CreateDailySheet();
+            var result = pdfCreator.CreateDailySheet(Tasks.ToList());
             if (result != null)
             {              
                 toastService.ShowSuccess("Pdf document was created");
