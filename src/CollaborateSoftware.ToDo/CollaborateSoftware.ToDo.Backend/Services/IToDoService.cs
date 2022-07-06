@@ -12,5 +12,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         Task<ToDoListEntry> GetById(int idNumber);
         Task<ToDoListEntry> Update(ToDoListEntry toDoListEntry);
         Task<bool> Remove(int id);
+        Task<bool> Export(ToDoExportSettings exportSettings);
     }
 }

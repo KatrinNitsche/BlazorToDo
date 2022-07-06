@@ -1,7 +1,12 @@
 ﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Repositories;
+using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
@@ -9,10 +14,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
     public class ToDoService : IToDoService
     {
         private ToDoListEntryRepository toDoListentryRepository;
+        private CategoryRepository categoryRepository;
 
         public ToDoService(DataContext context)
         {
             toDoListentryRepository = new ToDoListEntryRepository(context);
+            categoryRepository = new CategoryRepository(context);
         }
 
         public async Task<IEnumerable<ToDoListEntry>> GetAll() => toDoListentryRepository.GetAll();
@@ -47,7 +54,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                     await Add(nextEntry);
                 }
-                
+
                 toDoListentryRepository.Commit();
             }
         }
@@ -90,6 +97,60 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                 return false;
             }
 
+        }
+
+        public async Task<bool> Export(ToDoExportSettings exportSettings)
+        {
+            try
+            {
+                var dataToExport = FilterToDos(exportSettings).ToList();
+                var filePath = @"C:\tmp\todos.csv";
+
+                // export
+                if (dataToExport.Count == 0) return false;
+
+                using (var writer = new StreamWriter(filePath))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    foreach (var item in dataToExport)
+                    {
+                        csv.WriteRecord(item);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private IEnumerable<ToDoListEntry> FilterToDos(ToDoExportSettings exportSettings)
+        {
+            var allTasks = toDoListentryRepository.GetAll();
+            if (exportSettings.Today)
+            {
+                allTasks = allTasks.Where(t => t.Date.Date == DateTime.Now.Date);
+            }
+            else if (exportSettings.FromDate != DateTime.MinValue && exportSettings.ToDate != DateTime.MinValue)
+            {
+                allTasks = allTasks.Where(t => t.Date.Date <= exportSettings.ToDate && t.Date.Date >= exportSettings.ToDate);
+            }
+
+            if (exportSettings.Open)
+            {
+                allTasks = allTasks.Where(t => t.Done == exportSettings.Open);
+            }
+
+            if (!string.IsNullOrEmpty(exportSettings.CategoryId))
+            {
+                allTasks = allTasks.Where(t => t.Category == categoryRepository.GetById(int.Parse(exportSettings.CategoryId)));
+            }
+
+            allTasks = allTasks.OrderBy(t => t.Date).ThenBy(t => t.Title);
+
+            return allTasks;
         }
     }
 }

@@ -26,6 +26,14 @@ else
         <div class="d-flex w-25">
 
             <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
+                    <span class="material-icons">
+                        sim_card_download
+                    </span>
+                </button>
+            </span>
+
+            <span class="mr-1">
                 @if (DisplayDoneTasks)
                 {
                     <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
@@ -196,4 +204,5 @@ else
 
     <CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog>
     <CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog @ref="ExportToDosDialog"></CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog>
 }

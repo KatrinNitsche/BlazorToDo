@@ -26,11 +26,17 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         protected AddToDoEntryDialog AddToDoEntryDialog { get; set; }
         protected EditToDoEntryDialog EditToDoEntryDialog { get; set; }
+        protected ExportToDosDialog ExportToDosDialog { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             Tasks = (await service.GetAll());
             Tasks = Tasks.Where(t => t.Done == false);
+        }
+
+        protected void ShowExportDialog()
+        {
+            ExportToDosDialog.Show();
         }
 
         protected void AddToDoEntry()

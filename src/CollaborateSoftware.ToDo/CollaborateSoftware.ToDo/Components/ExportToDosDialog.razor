@@ -1,0 +1,60 @@
+﻿@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">Export To Dos</h5>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <EditForm Model="@ExportSettings" OnValidSubmit="@HandleValidSubmit">
+
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label for="today" class="fw-bold">Todays Tasks</label>
+                            <InputCheckbox id="today" class="form-control" @bind-Value="@ExportSettings.Today"></InputCheckbox>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="open" class="fw-bold">Open Tasks</label>
+                            <InputCheckbox id="open" class="form-control" @bind-Value="@ExportSettings.Open"></InputCheckbox>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date" class="fw-bold">Category: </label>
+                            <InputSelect id="date" class="form-control" @bind-Value="@ExportSettings.CategoryId">
+                                <option value="">All</option>
+                                @foreach (var category in CategoryList)
+                                    {
+                                    <option value="@category.Id">@category.Name</option>
+                                    }
+                            </InputSelect>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fromDate" class="fw-bold">From Date: </label>
+                            <InputDate id="fromDate" class="form-control" @bind-Value="@ExportSettings.FromDate"></InputDate>
+                            <ValidationMessage For="@(() => ExportSettings.FromDate)" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ToDate" class="fw-bold">To Date: </label>
+                            <InputDate id="ToDate" class="form-control" @bind-Value="@ExportSettings.ToDate"></InputDate>
+                            <ValidationMessage For="@(() => ExportSettings.ToDate)" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Export</button>
+                        <a class="btn btn-outline-primary" @onclick="@Close">Close</a>
+                    </EditForm>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
