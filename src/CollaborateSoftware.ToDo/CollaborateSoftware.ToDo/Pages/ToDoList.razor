@@ -26,6 +26,14 @@ else
         <div class="d-flex w-25">
 
             <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                    <span class="material-icons">
+                        description
+                    </span>
+                </button>
+            </span>
+
+            <span class="mr-1">
                 <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
                     <span class="material-icons">
                         sim_card_download

@@ -22,6 +22,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public IToDoService service { get; set; }
 
         [Inject]
+        public IPdfCreator pdfCreator { get; set; }
+
+        [Inject]
         public IToastService toastService { get; set; }
 
         protected AddToDoEntryDialog AddToDoEntryDialog { get; set; }
@@ -37,6 +40,19 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         protected void ShowExportDialog()
         {
             ExportToDosDialog.Show();
+        }
+
+        public void PdfExport()
+        {
+            var result = pdfCreator.CreateDailySheet();
+            if (result != null)
+            {              
+                toastService.ShowSuccess("Pdf document was created");
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
         }
 
         protected void AddToDoEntry()
