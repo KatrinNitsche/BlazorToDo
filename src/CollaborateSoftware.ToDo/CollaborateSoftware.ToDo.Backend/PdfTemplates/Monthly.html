@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Daily Overview</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: xx-large;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: medium;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            table tr td {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+        .todo {
+            margin: 5px;
+        }
+
+        .todo-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background-color: #bab8b3;
+        }
+
+        .todo-text {
+            padding-left: 20px;
+        }
+
+        .action-steps {
+            background-color: #ebe4df;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .notes {
+            background-color: #bab8b3;
+            border-radius: 5px;
+            height: 200px;
+            padding: 5px;            
+        }
+
+        .focus {
+            background-color: #ebcead;
+            border-radius: 5px;
+            height: 285px;
+            padding: 5px;
+        }
+
+        .month-name {
+            border-radius: 5px;
+            background-color: #e8d7a2;
+            padding: 10px;
+            text-align: center;
+            font-size: large;
+        }
+
+        .month-table {
+            margin: 5px;
+        }
+
+        .month-table td {
+            border: 1px solid black;
+            height: 50px;
+        }
+
+            .month-table td:last-child,
+            .month-table td:first-child {
+                background-color: #ebe4df;
+            }
+    </style>
+</head>
+<body>
+    <div class="headline">
+        <h1>Monthly Overview</h1>
+    </div>
+    <div class="month-name">{Month}</div>
+    <table class="page-table">
+        <tr>
+            <td>
+                <div class="focus">
+                    <h2>This Month's Focus</h2>
+                    <p>{notes}</p>
+                </div>
+            </td>
+            <td>
+                <div class="action-steps">
+                    <h2>Important Action Speps</h2>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-1}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-2}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-3}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-4}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-5}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-6}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-7}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-8}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-9}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-10}</span></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="month-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Su</th>
+                    <th>Mo</th>
+                    <th>Tu</th>
+                    <th>We</th>
+                    <th>Th</th>
+                    <th>Fr</th>
+                    <th>Sa</th>
+                </tr>
+            </thead>
+            <tr>
+                <td>{day-1}</td>
+                <td>{day-2}</td>
+                <td>{day-3}</td>
+                <td>{day-4}</td>
+                <td>{day-5}</td>
+                <td>{day-6}</td>
+                <td>{day-7}</td>
+            </tr>
+            <tr>
+                <td>{day-8}</td>
+                <td>{day-9}</td>
+                <td>{day-10}</td>
+                <td>{day-11}</td>
+                <td>{day-12}</td>
+                <td>{day-13}</td>
+                <td>{day-14}</td>
+            </tr>
+            <tr>
+                <td>{day-15}</td>
+                <td>{day-16}</td>
+                <td>{day-17}</td>
+                <td>{day-18}</td>
+                <td>{day-19}</td>
+                <td>{day-20}</td>
+                <td>{day-21}</td>
+            </tr>
+            <tr>
+                <td>{day-22}</td>
+                <td>{day-23}</td>
+                <td>{day-24}</td>
+                <td>{day-25}</td>
+                <td>{day-26}</td>
+                <td>{day-27}</td>
+                <td>{day-28}</td>
+            </tr>
+            <tr>
+                <td>{day-29}</td>
+                <td>{day-30}</td>
+                <td>{day-31}</td>
+                <td>{day-32}</td>
+                <td>{day-33}</td>
+                <td>{day-34}</td>
+                <td>{day-35}</td>
+            </tr>
+            <tr>
+                <td>{day-36}</td>
+                <td>{day-37}</td>
+                <td>{day-38}</td>
+                <td>{day-39}</td>
+                <td>{day-40}</td>
+                <td>{day-41}</td>
+                <td>{day-42}</td>
+            </tr>         
+        </table>
+    </div>
+
+    <div class="notes">
+        <h2>Notes</h2>
+
+    </div>
+</body>
+</html>

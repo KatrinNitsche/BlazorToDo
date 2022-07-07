@@ -1,0 +1,975 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Daily Overview</title>
+    <style>
+        h1 {
+            text-align: center;
+            font-size: xx-large;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: medium;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            table tr td {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+        .todo {
+            margin: 5px;
+        }
+
+        .todo-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background-color: #bab8b3;
+        }
+
+        .todo-text {
+            padding-left: 20px;
+        }
+
+        .action-steps {
+            background-color: #ebe4df;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .notes {
+            background-color: #bab8b3;
+            border-radius: 5px;
+            height: 200px;
+            padding: 5px;
+        }
+
+        .focus {
+            background-color: #ebcead;
+            border-radius: 5px;
+            height: 285px;
+            padding: 5px;
+        }
+
+        .year-number {
+            border-radius: 5px;
+            background-color: #e8d7a2;
+            padding: 10px;
+            text-align: center;
+            font-size: large;
+        }
+
+        .month-table {
+            margin: 5px;
+        }
+
+            .month-table td {
+                border: 1px solid black;
+                height: 30px;
+            }
+
+                .month-table td:last-child,
+                .month-table td:first-child {
+                    background-color: #ebe4df;
+                }
+
+        .month-name {
+            text-align: center;
+            font-size: large;
+        }
+    </style>
+</head>
+<body>
+    <div class="headline">
+        <h1>Calendar</h1>
+    </div>
+    <div class="year-number">{year}</div>
+
+    <table>
+        <tr>
+            <td>
+                <div class="month-table" id="month-1">
+                    <div class="month-name">Junuary</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-1-1}</td>
+                            <td>{day-1-2}</td>
+                            <td>{day-1-3}</td>
+                            <td>{day-1-4}</td>
+                            <td>{day-1-5}</td>
+                            <td>{day-1-6}</td>
+                            <td>{day-1-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-1-8}</td>
+                            <td>{day-1-9}</td>
+                            <td>{day-1-10}</td>
+                            <td>{day-1-11}</td>
+                            <td>{day-1-12}</td>
+                            <td>{day-1-13}</td>
+                            <td>{day-1-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-1-15}</td>
+                            <td>{day-1-16}</td>
+                            <td>{day-1-17}</td>
+                            <td>{day-1-18}</td>
+                            <td>{day-1-19}</td>
+                            <td>{day-1-20}</td>
+                            <td>{day-1-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-1-22}</td>
+                            <td>{day-1-23}</td>
+                            <td>{day-1-24}</td>
+                            <td>{day-1-25}</td>
+                            <td>{day-1-26}</td>
+                            <td>{day-1-27}</td>
+                            <td>{day-1-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-1-29}</td>
+                            <td>{day-1-30}</td>
+                            <td>{day-1-31}</td>
+                            <td>{day-1-32}</td>
+                            <td>{day-1-33}</td>
+                            <td>{day-1-34}</td>
+                            <td>{day-1-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-1-36}</td>
+                            <td>{day-1-37}</td>
+                            <td>{day-1-38}</td>
+                            <td>{day-1-39}</td>
+                            <td>{day-1-40}</td>
+                            <td>{day-1-41}</td>
+                            <td>{day-1-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-2">
+                    <div class="month-name">February</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-2-1}</td>
+                            <td>{day-2-2}</td>
+                            <td>{day-2-3}</td>
+                            <td>{day-2-4}</td>
+                            <td>{day-2-5}</td>
+                            <td>{day-2-6}</td>
+                            <td>{day-2-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-8}</td>
+                            <td>{day-2-9}</td>
+                            <td>{day-2-10}</td>
+                            <td>{day-2-11}</td>
+                            <td>{day-2-12}</td>
+                            <td>{day-2-13}</td>
+                            <td>{day-2-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-15}</td>
+                            <td>{day-2-16}</td>
+                            <td>{day-2-17}</td>
+                            <td>{day-2-18}</td>
+                            <td>{day-2-19}</td>
+                            <td>{day-2-20}</td>
+                            <td>{day-2-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-22}</td>
+                            <td>{day-2-23}</td>
+                            <td>{day-2-24}</td>
+                            <td>{day-2-25}</td>
+                            <td>{day-2-26}</td>
+                            <td>{day-2-27}</td>
+                            <td>{day-2-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-29}</td>
+                            <td>{day-2-30}</td>
+                            <td>{day-2-31}</td>
+                            <td>{day-2-32}</td>
+                            <td>{day-2-33}</td>
+                            <td>{day-2-34}</td>
+                            <td>{day-2-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-36}</td>
+                            <td>{day-2-37}</td>
+                            <td>{day-2-38}</td>
+                            <td>{day-2-39}</td>
+                            <td>{day-2-40}</td>
+                            <td>{day-2-41}</td>
+                            <td>{day-2-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-3">
+                    <div class="month-name">March</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-2-1}</td>
+                            <td>{day-2-2}</td>
+                            <td>{day-2-3}</td>
+                            <td>{day-2-4}</td>
+                            <td>{day-2-5}</td>
+                            <td>{day-2-6}</td>
+                            <td>{day-2-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-8}</td>
+                            <td>{day-2-9}</td>
+                            <td>{day-2-10}</td>
+                            <td>{day-2-11}</td>
+                            <td>{day-2-12}</td>
+                            <td>{day-2-13}</td>
+                            <td>{day-2-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-15}</td>
+                            <td>{day-2-16}</td>
+                            <td>{day-2-17}</td>
+                            <td>{day-2-18}</td>
+                            <td>{day-2-19}</td>
+                            <td>{day-2-20}</td>
+                            <td>{day-2-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-22}</td>
+                            <td>{day-2-23}</td>
+                            <td>{day-2-24}</td>
+                            <td>{day-2-25}</td>
+                            <td>{day-2-26}</td>
+                            <td>{day-2-27}</td>
+                            <td>{day-2-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-29}</td>
+                            <td>{day-2-30}</td>
+                            <td>{day-2-31}</td>
+                            <td>{day-2-32}</td>
+                            <td>{day-2-33}</td>
+                            <td>{day-2-34}</td>
+                            <td>{day-2-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-2-36}</td>
+                            <td>{day-2-37}</td>
+                            <td>{day-2-38}</td>
+                            <td>{day-2-39}</td>
+                            <td>{day-2-40}</td>
+                            <td>{day-2-41}</td>
+                            <td>{day-2-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="month-table" id="month-4">
+                    <div class="month-name">April</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-4-1}</td>
+                            <td>{day-4-2}</td>
+                            <td>{day-4-3}</td>
+                            <td>{day-4-4}</td>
+                            <td>{day-4-5}</td>
+                            <td>{day-4-6}</td>
+                            <td>{day-4-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-4-8}</td>
+                            <td>{day-4-9}</td>
+                            <td>{day-4-10}</td>
+                            <td>{day-4-11}</td>
+                            <td>{day-4-12}</td>
+                            <td>{day-4-13}</td>
+                            <td>{day-4-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-4-15}</td>
+                            <td>{day-4-16}</td>
+                            <td>{day-4-17}</td>
+                            <td>{day-4-18}</td>
+                            <td>{day-4-19}</td>
+                            <td>{day-4-20}</td>
+                            <td>{day-4-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-4-22}</td>
+                            <td>{day-4-23}</td>
+                            <td>{day-4-24}</td>
+                            <td>{day-4-25}</td>
+                            <td>{day-4-26}</td>
+                            <td>{day-4-27}</td>
+                            <td>{day-4-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-4-29}</td>
+                            <td>{day-4-30}</td>
+                            <td>{day-4-31}</td>
+                            <td>{day-4-32}</td>
+                            <td>{day-4-33}</td>
+                            <td>{day-4-34}</td>
+                            <td>{day-4-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-4-36}</td>
+                            <td>{day-4-37}</td>
+                            <td>{day-4-38}</td>
+                            <td>{day-4-39}</td>
+                            <td>{day-4-40}</td>
+                            <td>{day-4-41}</td>
+                            <td>{day-4-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-5">
+                    <div class="month-name">May</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-5-1}</td>
+                            <td>{day-5-2}</td>
+                            <td>{day-5-3}</td>
+                            <td>{day-5-4}</td>
+                            <td>{day-5-5}</td>
+                            <td>{day-5-6}</td>
+                            <td>{day-5-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-5-8}</td>
+                            <td>{day-5-9}</td>
+                            <td>{day-5-10}</td>
+                            <td>{day-5-11}</td>
+                            <td>{day-5-12}</td>
+                            <td>{day-5-13}</td>
+                            <td>{day-5-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-5-15}</td>
+                            <td>{day-5-16}</td>
+                            <td>{day-5-17}</td>
+                            <td>{day-5-18}</td>
+                            <td>{day-5-19}</td>
+                            <td>{day-5-20}</td>
+                            <td>{day-5-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-5-22}</td>
+                            <td>{day-5-23}</td>
+                            <td>{day-5-24}</td>
+                            <td>{day-5-25}</td>
+                            <td>{day-5-26}</td>
+                            <td>{day-5-27}</td>
+                            <td>{day-5-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-5-29}</td>
+                            <td>{day-5-30}</td>
+                            <td>{day-5-31}</td>
+                            <td>{day-5-32}</td>
+                            <td>{day-5-33}</td>
+                            <td>{day-5-34}</td>
+                            <td>{day-5-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-5-36}</td>
+                            <td>{day-5-37}</td>
+                            <td>{day-5-38}</td>
+                            <td>{day-5-39}</td>
+                            <td>{day-5-40}</td>
+                            <td>{day-5-41}</td>
+                            <td>{day-5-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-6">
+                    <div class="month-name">June</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-6-1}</td>
+                            <td>{day-6-2}</td>
+                            <td>{day-6-3}</td>
+                            <td>{day-6-4}</td>
+                            <td>{day-6-5}</td>
+                            <td>{day-6-6}</td>
+                            <td>{day-6-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-6-8}</td>
+                            <td>{day-6-9}</td>
+                            <td>{day-6-10}</td>
+                            <td>{day-6-11}</td>
+                            <td>{day-6-12}</td>
+                            <td>{day-6-13}</td>
+                            <td>{day-6-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-6-15}</td>
+                            <td>{day-6-16}</td>
+                            <td>{day-6-17}</td>
+                            <td>{day-6-18}</td>
+                            <td>{day-6-19}</td>
+                            <td>{day-6-20}</td>
+                            <td>{day-6-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-6-22}</td>
+                            <td>{day-6-23}</td>
+                            <td>{day-6-24}</td>
+                            <td>{day-6-25}</td>
+                            <td>{day-6-26}</td>
+                            <td>{day-6-27}</td>
+                            <td>{day-6-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-6-29}</td>
+                            <td>{day-6-30}</td>
+                            <td>{day-6-31}</td>
+                            <td>{day-6-32}</td>
+                            <td>{day-6-33}</td>
+                            <td>{day-6-34}</td>
+                            <td>{day-6-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-6-36}</td>
+                            <td>{day-6-37}</td>
+                            <td>{day-6-38}</td>
+                            <td>{day-6-39}</td>
+                            <td>{day-6-40}</td>
+                            <td>{day-6-41}</td>
+                            <td>{day-6-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="month-table" id="month-7">
+                    <div class="month-name">July</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-7-1}</td>
+                            <td>{day-7-2}</td>
+                            <td>{day-7-3}</td>
+                            <td>{day-7-4}</td>
+                            <td>{day-7-5}</td>
+                            <td>{day-7-6}</td>
+                            <td>{day-7-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-7-8}</td>
+                            <td>{day-7-9}</td>
+                            <td>{day-7-10}</td>
+                            <td>{day-7-11}</td>
+                            <td>{day-7-12}</td>
+                            <td>{day-7-13}</td>
+                            <td>{day-7-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-7-15}</td>
+                            <td>{day-7-16}</td>
+                            <td>{day-7-17}</td>
+                            <td>{day-7-18}</td>
+                            <td>{day-7-19}</td>
+                            <td>{day-7-20}</td>
+                            <td>{day-7-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-7-22}</td>
+                            <td>{day-7-23}</td>
+                            <td>{day-7-24}</td>
+                            <td>{day-7-25}</td>
+                            <td>{day-7-26}</td>
+                            <td>{day-7-27}</td>
+                            <td>{day-7-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-7-29}</td>
+                            <td>{day-7-30}</td>
+                            <td>{day-7-31}</td>
+                            <td>{day-7-32}</td>
+                            <td>{day-7-33}</td>
+                            <td>{day-7-34}</td>
+                            <td>{day-7-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-7-36}</td>
+                            <td>{day-7-37}</td>
+                            <td>{day-7-38}</td>
+                            <td>{day-7-39}</td>
+                            <td>{day-7-40}</td>
+                            <td>{day-7-41}</td>
+                            <td>{day-7-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-8">
+                    <div class="month-name">August</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-8-1}</td>
+                            <td>{day-8-2}</td>
+                            <td>{day-8-3}</td>
+                            <td>{day-8-4}</td>
+                            <td>{day-8-5}</td>
+                            <td>{day-8-6}</td>
+                            <td>{day-8-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-8-8}</td>
+                            <td>{day-8-9}</td>
+                            <td>{day-8-10}</td>
+                            <td>{day-8-11}</td>
+                            <td>{day-8-12}</td>
+                            <td>{day-8-13}</td>
+                            <td>{day-8-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-8-15}</td>
+                            <td>{day-8-16}</td>
+                            <td>{day-8-17}</td>
+                            <td>{day-8-18}</td>
+                            <td>{day-8-19}</td>
+                            <td>{day-8-20}</td>
+                            <td>{day-8-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-8-22}</td>
+                            <td>{day-8-23}</td>
+                            <td>{day-8-24}</td>
+                            <td>{day-8-25}</td>
+                            <td>{day-8-26}</td>
+                            <td>{day-8-27}</td>
+                            <td>{day-8-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-8-29}</td>
+                            <td>{day-8-30}</td>
+                            <td>{day-8-31}</td>
+                            <td>{day-8-32}</td>
+                            <td>{day-8-33}</td>
+                            <td>{day-8-34}</td>
+                            <td>{day-8-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-8-36}</td>
+                            <td>{day-8-37}</td>
+                            <td>{day-8-38}</td>
+                            <td>{day-8-39}</td>
+                            <td>{day-8-40}</td>
+                            <td>{day-8-41}</td>
+                            <td>{day-8-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-9">
+                    <div class="month-name">September</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-9-1}</td>
+                            <td>{day-9-2}</td>
+                            <td>{day-9-3}</td>
+                            <td>{day-9-4}</td>
+                            <td>{day-9-5}</td>
+                            <td>{day-9-6}</td>
+                            <td>{day-9-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-9-8}</td>
+                            <td>{day-9-9}</td>
+                            <td>{day-9-10}</td>
+                            <td>{day-9-11}</td>
+                            <td>{day-9-12}</td>
+                            <td>{day-9-13}</td>
+                            <td>{day-9-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-9-15}</td>
+                            <td>{day-9-16}</td>
+                            <td>{day-9-17}</td>
+                            <td>{day-9-18}</td>
+                            <td>{day-9-19}</td>
+                            <td>{day-9-20}</td>
+                            <td>{day-9-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-9-22}</td>
+                            <td>{day-9-23}</td>
+                            <td>{day-9-24}</td>
+                            <td>{day-9-25}</td>
+                            <td>{day-9-26}</td>
+                            <td>{day-9-27}</td>
+                            <td>{day-9-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-9-29}</td>
+                            <td>{day-9-30}</td>
+                            <td>{day-9-31}</td>
+                            <td>{day-9-32}</td>
+                            <td>{day-9-33}</td>
+                            <td>{day-9-34}</td>
+                            <td>{day-9-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-9-36}</td>
+                            <td>{day-9-37}</td>
+                            <td>{day-9-38}</td>
+                            <td>{day-9-39}</td>
+                            <td>{day-9-40}</td>
+                            <td>{day-9-41}</td>
+                            <td>{day-9-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="month-table" id="month-10">
+                    <div class="month-name">October</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-10-1}</td>
+                            <td>{day-10-2}</td>
+                            <td>{day-10-3}</td>
+                            <td>{day-10-4}</td>
+                            <td>{day-10-5}</td>
+                            <td>{day-10-6}</td>
+                            <td>{day-10-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-10-8}</td>
+                            <td>{day-10-9}</td>
+                            <td>{day-10-10}</td>
+                            <td>{day-10-11}</td>
+                            <td>{day-10-12}</td>
+                            <td>{day-10-13}</td>
+                            <td>{day-10-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-10-15}</td>
+                            <td>{day-10-16}</td>
+                            <td>{day-10-17}</td>
+                            <td>{day-10-18}</td>
+                            <td>{day-10-19}</td>
+                            <td>{day-10-20}</td>
+                            <td>{day-10-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-10-22}</td>
+                            <td>{day-10-23}</td>
+                            <td>{day-10-24}</td>
+                            <td>{day-10-25}</td>
+                            <td>{day-10-26}</td>
+                            <td>{day-10-27}</td>
+                            <td>{day-10-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-10-29}</td>
+                            <td>{day-10-30}</td>
+                            <td>{day-10-31}</td>
+                            <td>{day-10-32}</td>
+                            <td>{day-10-33}</td>
+                            <td>{day-10-34}</td>
+                            <td>{day-10-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-10-36}</td>
+                            <td>{day-10-37}</td>
+                            <td>{day-10-38}</td>
+                            <td>{day-10-39}</td>
+                            <td>{day-10-40}</td>
+                            <td>{day-10-41}</td>
+                            <td>{day-10-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-11">
+                    <div class="month-name">November</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-11-1}</td>
+                            <td>{day-11-2}</td>
+                            <td>{day-11-3}</td>
+                            <td>{day-11-4}</td>
+                            <td>{day-11-5}</td>
+                            <td>{day-11-6}</td>
+                            <td>{day-11-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-11-8}</td>
+                            <td>{day-11-9}</td>
+                            <td>{day-11-10}</td>
+                            <td>{day-11-11}</td>
+                            <td>{day-11-12}</td>
+                            <td>{day-11-13}</td>
+                            <td>{day-11-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-11-15}</td>
+                            <td>{day-11-16}</td>
+                            <td>{day-11-17}</td>
+                            <td>{day-11-18}</td>
+                            <td>{day-11-19}</td>
+                            <td>{day-11-20}</td>
+                            <td>{day-11-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-11-22}</td>
+                            <td>{day-11-23}</td>
+                            <td>{day-11-24}</td>
+                            <td>{day-11-25}</td>
+                            <td>{day-11-26}</td>
+                            <td>{day-11-27}</td>
+                            <td>{day-11-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-11-29}</td>
+                            <td>{day-11-30}</td>
+                            <td>{day-11-31}</td>
+                            <td>{day-11-32}</td>
+                            <td>{day-11-33}</td>
+                            <td>{day-11-34}</td>
+                            <td>{day-11-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-11-36}</td>
+                            <td>{day-11-37}</td>
+                            <td>{day-11-38}</td>
+                            <td>{day-11-39}</td>
+                            <td>{day-11-40}</td>
+                            <td>{day-11-41}</td>
+                            <td>{day-11-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td>
+                <div class="month-table" id="month-12">
+                    <div class="month-name">December</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>{day-12-1}</td>
+                            <td>{day-12-2}</td>
+                            <td>{day-12-3}</td>
+                            <td>{day-12-4}</td>
+                            <td>{day-12-5}</td>
+                            <td>{day-12-6}</td>
+                            <td>{day-12-7}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-12-8}</td>
+                            <td>{day-12-9}</td>
+                            <td>{day-12-10}</td>
+                            <td>{day-12-11}</td>
+                            <td>{day-12-12}</td>
+                            <td>{day-12-13}</td>
+                            <td>{day-12-14}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-12-15}</td>
+                            <td>{day-12-16}</td>
+                            <td>{day-12-17}</td>
+                            <td>{day-12-18}</td>
+                            <td>{day-12-19}</td>
+                            <td>{day-12-20}</td>
+                            <td>{day-12-21}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-12-22}</td>
+                            <td>{day-12-23}</td>
+                            <td>{day-12-24}</td>
+                            <td>{day-12-25}</td>
+                            <td>{day-12-26}</td>
+                            <td>{day-12-27}</td>
+                            <td>{day-12-28}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-12-29}</td>
+                            <td>{day-12-30}</td>
+                            <td>{day-12-31}</td>
+                            <td>{day-12-32}</td>
+                            <td>{day-12-33}</td>
+                            <td>{day-12-34}</td>
+                            <td>{day-12-35}</td>
+                        </tr>
+                        <tr>
+                            <td>{day-12-36}</td>
+                            <td>{day-12-37}</td>
+                            <td>{day-12-38}</td>
+                            <td>{day-12-39}</td>
+                            <td>{day-12-40}</td>
+                            <td>{day-12-41}</td>
+                            <td>{day-12-42}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

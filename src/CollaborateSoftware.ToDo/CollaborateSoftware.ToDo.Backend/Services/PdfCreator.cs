@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
@@ -63,6 +64,92 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             }
         }
 
+        public async Task<bool> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
+        {
+            try
+            {
+                var filePath = @"C:\tmp\monthly.pdf";
+                var html = GetHtmlCodeForMonthPlan(focusText, actionSteps, firstDayOfMonth);
+
+                var pdf = Pdf
+                    .From(html)
+                    .OfSize(PaperSize.A4)
+                    .WithTitle("Title")
+                    .WithoutOutline()
+                    .WithMargins(1.25.Centimeters())
+                    .Portrait()
+                    .Comressed()
+                    .Content();
+
+                await File.WriteAllBytesAsync(filePath, pdf);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> CreateYearPlan(DateTime firstDayofYear)
+        {
+            try
+            {
+                var filePath = @"C:\tmp\yearly.pdf";
+                var html = GetHtmlCodeForYearPlan(firstDayofYear);
+
+                var pdf = Pdf
+                    .From(html)
+                    .OfSize(PaperSize.A4)
+                    .WithTitle("Title")
+                    .WithoutOutline()
+                    .WithMargins(1.25.Centimeters())
+                    .Portrait()
+                    .Comressed()
+                    .Content();
+
+                await File.WriteAllBytesAsync(filePath, pdf);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        private string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
+        {
+            var htmlCode = string.Empty;
+            htmlCode = Properties.Resources.Monthly;
+
+            htmlCode = htmlCode.Replace("{Month}", $"{firstDayOfMonth.ToMonthName()} {firstDayOfMonth.Year}");
+            htmlCode = htmlCode.Replace("{notes}", focusText);
+            htmlCode = ReplaceActionSteps(actionSteps, htmlCode, 10);
+
+            var firstDayIndex = GetFirstDayIndex(firstDayOfMonth);
+            var numberOfDays = firstDayOfMonth.AddMonths(1).AddDays(-1).Day;
+            for (int i = 0; i < 42; i++)
+            {
+                if (i < firstDayIndex || i >= numberOfDays)
+                {
+                    htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", string.Empty);
+                }
+                else
+                {
+                    htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", (i + 1).ToString());
+                }
+            }
+
+            return htmlCode;
+        }
+
+        private int GetFirstDayIndex(DateTime firstDayOfMonth)
+        {
+            var weekDay = firstDayOfMonth.Date.DayOfWeek;
+            return (int)weekDay;
+        }
+
         private string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<string> priorities, DateTime firstDayOfWeek)
         {
             var htmlCode = string.Empty;
@@ -74,7 +161,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             // Day names
             for (int i = 0; i < 7; i++)
             {
-                htmlCode = htmlCode.Replace("{day-" + (i+1) + "}", firstDayOfWeek.AddDays(i).ToString("dddd, MMMM dd yyyy"));
+                htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", firstDayOfWeek.AddDays(i).ToString("dddd, MMMM dd yyyy"));
             }
 
             // ToDo's 
@@ -112,6 +199,33 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return htmlCode;
         }
 
+        private string GetHtmlCodeForYearPlan(DateTime firstDayOfYear)
+        {
+            var htmlCode = string.Empty;
+            htmlCode = Properties.Resources.Year;
+
+            htmlCode = htmlCode.Replace("{year}", $"{firstDayOfYear.Year}");
+
+            for (int i = 0; i < 12; i++)
+            {
+                var firstDayIndex = GetFirstDayIndex(firstDayOfYear.AddMonths(i));
+                var numberOfDays = firstDayOfYear.AddMonths(i).AddDays(-1).Day;
+                for (int y = 0; y < 42; y++)
+                {
+                    if (y < firstDayIndex || y >= numberOfDays)
+                    {
+                        htmlCode = htmlCode.Replace("{day-" + (i + 1) + "-" + (y + 1) + "}", string.Empty);
+                    }
+                    else
+                    {
+                        htmlCode = htmlCode.Replace("{day-" + (i + 1) + "-" + (y + 1) + "}", (y + 1 - firstDayIndex).ToString());
+                    }
+                }
+            }
+
+            return htmlCode;
+        }
+
         private static string ReplaceToDos(List<ToDoListEntry> todos, string htmlCode, int numberOfEntries)
         {
             for (int i = 0; i < numberOfEntries; i++)
@@ -123,6 +237,23 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                     title += todos[i].Title;
 
                     htmlCode = htmlCode.Replace("{todo-text-" + (i + 1) + "}", title);
+                }
+                else
+                {
+                    htmlCode = htmlCode.Replace("{todo-text-" + (i + 1) + "}", string.Empty);
+                }
+            }
+
+            return htmlCode;
+        }
+
+        private static string ReplaceActionSteps(List<string> steps, string htmlCode, int numberOfEntries)
+        {
+            for (int i = 0; i < numberOfEntries; i++)
+            {
+                if (i < steps.Count)
+                {
+                    htmlCode = htmlCode.Replace("{todo-text-" + (i + 1) + "}", steps[i]);
                 }
                 else
                 {

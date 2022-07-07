@@ -3,6 +3,7 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class PdfCreationDialog
     {
-        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day" };
+        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day", Date = DateTime.Now };
 
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
 
@@ -30,6 +31,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private string WeekVal { get; set; }
 
+        private DateTime MonthVal { get; set; }
+
         public async void Show()
         {
             ResetDialog();
@@ -39,7 +42,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            PdfSettings = new PdfSettings() { Type = "Day" };
+            PdfSettings = new PdfSettings() { Type = "Day", Date = DateTime.Now };
         }
 
         public void Close()
@@ -59,6 +62,14 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             else if (PdfSettings.Type == "Week")
             {
                 WeekPlan();
+            }
+            else if (PdfSettings.Type == "Month")
+            {
+                MonthPlan();
+            }
+            else if (PdfSettings.Type == "Year")
+            {
+                YearPlan();
             }
         }
 
@@ -111,6 +122,50 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             {
                 toastService.ShowError("Unable to create pdf document.");
             }
+        }
+
+        private void MonthPlan()
+        {
+            var importantSteps = new List<string>();
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep1)) importantSteps.Add(PdfSettings.ActionStep1);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep2)) importantSteps.Add(PdfSettings.ActionStep2);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep3)) importantSteps.Add(PdfSettings.ActionStep3);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep4)) importantSteps.Add(PdfSettings.ActionStep4);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep5)) importantSteps.Add(PdfSettings.ActionStep5);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep6)) importantSteps.Add(PdfSettings.ActionStep6);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep7)) importantSteps.Add(PdfSettings.ActionStep7);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep8)) importantSteps.Add(PdfSettings.ActionStep8);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep9)) importantSteps.Add(PdfSettings.ActionStep8);
+            if (!string.IsNullOrEmpty(PdfSettings.ActionStep10)) importantSteps.Add(PdfSettings.ActionStep10);
+
+            var result = pdfCreator.CreateMonthPlan(PdfSettings.Note, importantSteps, MonthVal);
+            if (result != null)
+            {
+                toastService.ShowSuccess("Pdf document was created");
+                ShowDialog = false;
+                StateHasChanged();
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
+        }
+
+        private void YearPlan()
+        {
+            var firstDayofYear = new DateTime(int.Parse(PdfSettings.Year), 1, 1);
+            var result = pdfCreator.CreateYearPlan(firstDayofYear);
+            if (result != null)
+            {
+                toastService.ShowSuccess("Pdf document was created");
+                ShowDialog = false;
+                StateHasChanged();
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
+
         }
     }
 }
