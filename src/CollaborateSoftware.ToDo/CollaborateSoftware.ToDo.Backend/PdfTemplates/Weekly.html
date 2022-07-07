@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Daily Overview</title>
+    <style>
+
+        .page {
+            width: 1000px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: xx-large;
+        }
+
+        h1, h2 {
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: medium;
+        }
+
+        table {
+            border-collapse: collapse
+        }
+
+            table tr td {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+        .priority {
+            height: 55px;
+            width: 100%;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background-color: #ebcead;
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+            table tr td {
+                width: 50%;
+            }
+
+        .date {
+            border-radius: 5px;
+            background-color: #ede8da;
+            height: 50px;
+            padding: 5px;
+        }
+
+        .todo-list {
+            border-radius: 10px;
+            background-color: #ebe4df;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+
+        .todo {
+            margin: 20px;
+        }
+
+        .todo-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            background-color: #bab8b3;
+        }
+
+        .todo-text {
+            padding-left: 20px;
+        }
+
+        .day {
+            border-top: 1px solid gray;
+            height: 170px;
+        }
+
+            .day:nth-last-child(-n + 2) {
+                background-color: #bab8b3;
+            }
+
+        .dates {
+            border-radius: 2px;
+            background-color: #e8d7a2;
+            padding: 5px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="headline">
+        <h1>Weekly Plan</h1>
+    </div>
+    <table class="page-table">
+        <tr>
+            <td>
+                <div class="week-overview">
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-1}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-2}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-3}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-4}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-5}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+
+                        <div class="day-content">{day-6}</div>
+                    </div>
+                    <div class="day">
+                        <div class="day-label"></div>
+                        <div class="day-content">{day-7}</div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="dates">
+                    <h2>Dates</h2>
+                    <p>{dates}</p>
+                </div>
+                <div class="priorities">
+                    <h2>Top Priorities</h2>
+                    <div class="priority">{priority-1}</div>
+                    <div class="priority">{priority-2}</div>
+                    <div class="priority">{priority-3}</div>
+                    <div class="priority">{priority-4}</div>
+                </div>
+                <div class="todo-list">
+                    <h2>To Do List..</h2>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-1}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-2}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-3}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-4}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-5}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-6}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-7}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-8}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-9}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-10}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-11}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-12}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-13}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-14}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-15}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-16}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-17}</span></div>
+                    <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-18}</span></div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

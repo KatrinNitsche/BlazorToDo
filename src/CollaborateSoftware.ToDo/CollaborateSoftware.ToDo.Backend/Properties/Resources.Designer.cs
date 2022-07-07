@@ -96,5 +96,42 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
                 return ResourceManager.GetString("Daily", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///
+        ///&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;title&gt;Daily Overview&lt;/title&gt;
+        ///    &lt;style&gt;
+        ///
+        ///        .page {
+        ///            width: 1000px;
+        ///        }
+        ///
+        ///        h1 {
+        ///            text-align: center;
+        ///            font-size: xx-large;
+        ///        }
+        ///
+        ///        h1, h2 {
+        ///            text-transform: uppercase;
+        ///        }
+        ///
+        ///        h2 {
+        ///            font-size: medium;
+        ///        }
+        ///
+        ///        table {
+        ///            border-collapse: collapse
+        ///        }
+        ///        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Weekly {
+            get {
+                return ResourceManager.GetString("Weekly", resourceCulture);
+            }
+        }
     }
 }
