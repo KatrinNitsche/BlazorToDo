@@ -12,6 +12,7 @@
 
         h1 {
             text-align: center;
+            font-size: xx-large;
         }
 
         h1, h2 {
@@ -22,12 +23,21 @@
             font-size: medium;
         }
 
+        table {
+            border-collapse: collapse
+        }
+
+        table tr td {
+            padding: 5px;
+        }
+
         .priority {
             height: 55px;
             width: 100%;
             margin-bottom: 5px;
             border-radius: 5px;
             background-color: #ebcead;
+            padding: 5px;
         }
 
         #scedule-table tr td:first-child {
@@ -38,19 +48,20 @@
         table {
             width: 100%;
         }
+
             table tr td {
                 width: 50%;
             }
 
-            table tr {
-                height: 40px;
-            }
+        #scedule-table tr {
+            height: 40px;
+        }
 
-            table tr td {
+            #scedule-table tr td {
                 border-top: 1px solid gray;
             }
 
-            table tr:last-child td {
+            #scedule-table tr:last-child td {
                 border-bottom: 1px solid gray;
             }
 
@@ -76,7 +87,7 @@
             display: inline-block;
             width: 15px;
             height: 15px;
-            background-color: #bab8b3;           
+            background-color: #bab8b3;
         }
 
         .tomorrow-notes {
@@ -123,14 +134,14 @@
         </tr>
         <tr>
             <td>
-                <div class="scedule">                  
+                <div class="scedule">
                     <table id="scedule-table">
                         <tr>
                             <td>
                                 <span class="time">6-7 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-1}</span>
                             </td>
                         </tr>
                         <tr>
@@ -138,7 +149,7 @@
                                 <span class="time">7-8 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-2}</span>
                             </td>
                         </tr>
                         <tr>
@@ -146,7 +157,7 @@
                                 <span class="time">8-9 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-3}</span>
                             </td>
                         </tr>
                         <tr>
@@ -154,7 +165,7 @@
                                 <span class="time">9-10 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-4}</span>
                             </td>
                         </tr>
                         <tr>
@@ -162,7 +173,7 @@
                                 <span class="time">10-11 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-5}</span>
                             </td>
                         </tr>
                         <tr>
@@ -170,7 +181,7 @@
                                 <span class="time">12-1 PM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-6}</span>
                             </td>
                         </tr>
                         <tr>
@@ -178,7 +189,7 @@
                                 <span class="time">1-2 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-7}</span>
                             </td>
                         </tr>
                         <tr>
@@ -186,7 +197,7 @@
                                 <span class="time">2-3 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-8}</span>
                             </td>
                         </tr>
                         <tr>
@@ -194,7 +205,7 @@
                                 <span class="time">3-4 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-9}</span>
                             </td>
                         </tr>
                         <tr>
@@ -202,7 +213,7 @@
                                 <span class="time">4-5 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-10}</span>
                             </td>
                         </tr>
                         <tr>
@@ -210,7 +221,7 @@
                                 <span class="time">5-6 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-11}</span>
                             </td>
                         </tr>
                         <tr>
@@ -218,7 +229,7 @@
                                 <span class="time">6-7 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-12}</span>
                             </td>
                         </tr>
                         <tr>
@@ -226,7 +237,7 @@
                                 <span class="time">7-8 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-13}</span>
                             </td>
                         </tr>
                         <tr>
@@ -234,7 +245,7 @@
                                 <span class="time">8-9 AM</span>
                             </td>
                             <td>
-                                <span class="appointment"></span>
+                                <span class="appointment">{appointment-14}</span>
                             </td>
                         </tr>
                     </table>
@@ -243,10 +254,10 @@
             <td>
                 <div class="priorities">
                     <h2>Top Priorities</h2>
-                    <div class="priority"></div>
-                    <div class="priority"></div>
-                    <div class="priority"></div>
-                    <div class="priority"></div>
+                    <div class="priority">{priority-1}</div>
+                    <div class="priority">{priority-2}</div>
+                    <div class="priority">{priority-3}</div>
+                    <div class="priority">{priority-4}</div>
                 </div>
                 <div class="todo-list">
                     <h2>To Do List..</h2>
@@ -258,22 +269,24 @@
                     <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-6}</span></div>
                     <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-7}</span></div>
                     <div class="todo"><div class="todo-box"></div><span class="todo-text">{todo-text-8}</span></div>
-                </div>                     
+                </div>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="tomorrow-notes">
                     <h2>For Tomorrow..</h2>
+                    <p>{for-tomorrow}</p>
                 </div>
             </td>
             <td>
                 <div class="notes">
                     <h2>Note..</h2>
+                    <p>{note}</p>
                 </div>
             </td>
         </tr>
-    </table>   
+    </table>
 
 </body>
 </html>

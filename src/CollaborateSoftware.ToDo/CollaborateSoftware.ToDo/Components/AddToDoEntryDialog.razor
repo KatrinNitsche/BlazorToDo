@@ -29,8 +29,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Priority: </label>
-                            <InputSelect id="date" class="form-control" @bind-Value="@ToDoListEntry.Priority">
+                            <label for="Priority">Priority: </label>
+                            <InputSelect id="Priority" class="form-control" @bind-Value="@ToDoListEntry.Priority">
                                 <option value="Low">Low</option>
                                 <option value="Middle">Middle</option>
                                 <option value="High">High</option>
@@ -39,8 +39,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Repeating: </label>
-                            <InputSelect id="date" class="form-control" @bind-Value="@ToDoListEntry.RepetitionType">
+                            <label for="Repeating">Repeating: </label>
+                            <InputSelect id="Repeating" class="form-control" @bind-Value="@ToDoListEntry.RepetitionType">
                                 <option value="None">None</option>
                                 <option value="Daily">Daily</option>
                                 <option value="Weekly">Weekly</option>
@@ -54,8 +54,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Category: </label>
-                            <InputSelect id="date" class="form-control" @bind-Value="@CurrentCategoryId">
+                            <label for="Category">Category: </label>
+                            <InputSelect id="Category" class="form-control" @bind-Value="@CurrentCategoryId">
                                 @foreach (var category in CategoryList)
                                     {
                                     <option value="@category.Id">@category.Name</option>

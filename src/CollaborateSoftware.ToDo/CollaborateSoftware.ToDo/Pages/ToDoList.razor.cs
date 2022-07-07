@@ -20,16 +20,14 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         [Inject]
         public IToDoService service { get; set; }
-
-        [Inject]
-        public IPdfCreator pdfCreator { get; set; }
-
+        
         [Inject]
         public IToastService toastService { get; set; }
 
         protected AddToDoEntryDialog AddToDoEntryDialog { get; set; }
         protected EditToDoEntryDialog EditToDoEntryDialog { get; set; }
         protected ExportToDosDialog ExportToDosDialog { get; set; }
+        protected PdfCreationDialog PdfCreationDialog { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -44,15 +42,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public void PdfExport()
         {
-            var result = pdfCreator.CreateDailySheet(Tasks.ToList());
-            if (result != null)
-            {              
-                toastService.ShowSuccess("Pdf document was created");
-            }
-            else
-            {
-                toastService.ShowError("Unable to create pdf document.");
-            }
+            PdfCreationDialog.Show();
         }
 
         protected void AddToDoEntry()

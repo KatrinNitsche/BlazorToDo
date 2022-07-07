@@ -75,6 +75,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
         ///
         ///        h1 {
         ///            text-align: center;
+        ///            font-size: xx-large;
         ///        }
         ///
         ///        h1, h2 {
@@ -85,10 +86,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
         ///            font-size: medium;
         ///        }
         ///
-        ///        .priority {
-        ///            height: 55px;
-        ///            width: 100%;
-        ///            margin-bottom: 5 [rest of string was truncated]&quot;;.
+        ///        table {
+        ///            border-collapse: collapse
+        ///        }
+        ///        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Daily {
             get {

@@ -1,0 +1,78 @@
+﻿@if (ShowDialog)
+{
+    <div class="modal fade show d-block" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleLabel">Export To Dos</h5>
+                    <button type="button" class="close" @onclick="@Close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <EditForm Model="@PdfSettings" OnValidSubmit="@HandleValidSubmit">
+
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label for="date" class="fw-bold">Type: </label>
+                            <InputSelect id="date" class="form-control" @bind-Value="@PdfSettings.Type">
+                                <option value="Day">Day</option>
+                                <option value="Week">Week</option>
+                                <option value="Month">Month</option>
+                                <option value="Year">Year</option>
+                            </InputSelect>
+                        </div>
+
+                        @if (PdfSettings.Type == "Day")
+                        {
+                            <div class="form-group">
+                                <label for="date">Date: </label>
+                                <InputDate id="date" class="form-control" @bind-Value="@PdfSettings.Date"></InputDate>
+                                <ValidationMessage For="@(() => PdfSettings.Date)" />
+                            </div>
+                        }
+
+                        <div class="form-group">
+                            <label for="description">Note: </label>
+                            <InputTextArea id="description" class="form-control" @bind-Value="@PdfSettings.Note" rows="5"></InputTextArea>
+                            <ValidationMessage For="@(() => PdfSettings.Note)" />
+                        </div>
+
+                        @if (PdfSettings.Type == "Day")
+                        {
+                            <div class="form-group">
+                                <label for="description">For Tomorrow: </label>
+                                <InputTextArea id="description" class="form-control" @bind-Value="@PdfSettings.ForTomorrow" rows="5"></InputTextArea>
+                                <ValidationMessage For="@(() => PdfSettings.ForTomorrow)" />
+                            </div>
+                        }
+
+
+                        @if (PdfSettings.Type == "Day")
+                        {
+                            <div class="form-group">
+                                <label for="Priorities">Priorities: </label>
+                                <InputText id="Priorities" class="form-control" @bind-Value="@PdfSettings.Priority1" placeholder="Enter a title for the task"></InputText>
+                                <ValidationMessage For="@(() => PdfSettings.Priority1)" />
+                                <InputText class="form-control" @bind-Value="@PdfSettings.Priority2" placeholder="Enter a priority for the day"></InputText>
+                                <ValidationMessage For="@(() => PdfSettings.Priority2)" />
+                                <InputText class="form-control" @bind-Value="@PdfSettings.Priority3" placeholder="Enter a priority for the day"></InputText>
+                                <ValidationMessage For="@(() => PdfSettings.Priority3)" />
+                                <InputText class="form-control" @bind-Value="@PdfSettings.Priority4" placeholder="Enter a priority for the day"></InputText>
+                                <ValidationMessage For="@(() => PdfSettings.Priority4)" />
+                            </div>
+                        }
+
+                        <button type="submit" class="btn btn-primary">Export</button>
+                        <a class="btn btn-outline-primary" @onclick="@Close">Close</a>
+                    </EditForm>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

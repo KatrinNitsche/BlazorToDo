@@ -23,8 +23,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Category: </label>
-                            <InputSelect id="date" class="form-control" @bind-Value="@CurrentCategoryId">
+                            <label for="Category">Category: </label>
+                            <InputSelect id="Category" class="form-control" @bind-Value="@CurrentCategoryId">
                                 @foreach (var category in CategoryList)
                                     {
                                     <option value="@category.Id">@category.Name</option>
@@ -34,8 +34,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="date">Parent Note: </label>
-                            <InputSelect id="date" class="form-control" @bind-Value="@CurrentParentId">
+                            <label for="ParentNote">Parent Note: </label>
+                            <InputSelect id="ParentNote" class="form-control" @bind-Value="@CurrentParentId">
                                 <option value="">None</option>
                                 @foreach (var noteEntry in NotesList)
                                     {

@@ -6,6 +6,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface IPdfCreator
     {
-        Task<bool> CreateDailySheet(List<ToDoListEntry> todos);
+        Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<string> priorities, string forTomorrow, string note);
     }
 }
