@@ -27,6 +27,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
         public async Task<ToDoListEntry> Add(ToDoListEntry toDoListEntry)
         {
+            if (toDoListentryRepository.GetAll().Any(t => t.Title == toDoListEntry.Title)) return null;
+
             toDoListentryRepository.Add(toDoListEntry);
             toDoListentryRepository.Commit();
             return toDoListEntry;
@@ -111,8 +113,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                 using (var writer = new StreamWriter(filePath))
                 using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                 {
-                    csv.WriteHeader(typeof(ToDoListEntry));
+                    csv.WriteHeader(typeof(ToDoListEntry));                   
+                    csv.NextRecord();
                     csv.WriteRecords(dataToExport);
+                    csv.Flush();
                 }
             }
             catch (Exception)

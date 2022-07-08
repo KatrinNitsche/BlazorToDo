@@ -8,7 +8,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class AddCategoryDialog
     {
-        public Category Category { get; set; } = new Category { Name = "New Category" };
+        public Category Category { get; set; } = new Category();
 
         [Inject]
         public ICategoryService service { get; set; }
@@ -36,7 +36,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            Category = new Category { Name = "New Category" };
+            Category = new Category();
         }
 
         protected async Task HandleValidSubmit()

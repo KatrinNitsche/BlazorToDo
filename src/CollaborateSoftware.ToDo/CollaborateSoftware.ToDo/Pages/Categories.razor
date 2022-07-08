@@ -15,63 +15,72 @@
 }
 else
 {
-    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+    @if (CategoryList.Count() > 0)
+    {
+        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
 
-        <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
+            <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
+                <span class="material-icons">
+                    note_add
+                </span>
+            </button>
 
-    </div>
+        </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th @onclick="@(() => SortByColumn("Name"))">
-                    @if (SortingColumn == "Name")
-                    {
-                        <span class="material-icons">
-                            sort
-                        </span>
-                    }
-                    <span>Name</span>
-                </th>
-                <th>Colour</th>
-                <th>Icon</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var category in CategoryList)
-            {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@category.Name</td>
-                    <td><div style="background-color: @category.Color; height: 35px; width: 35px; border: 1px solid black"></div></td>
-                    <td>
-                        <span class="material-icons">
-                            @category.Icon  
-                        </span>
-                    </td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="entry-actions">
-                            <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditCategory(category.Id); }">
-                                <span class="material-icons">
-                                    edit_calendar
-                                </span>
-                            </button>
-
-                            <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteCategory(category.Id); }">
-                                <span class="material-icons">
-                                    delete
-                                </span>
-                            </button>
-                        </div>
-                    </td>
+                    <th @onclick="@(() => SortByColumn("Name"))">
+                        @if (SortingColumn == "Name")
+                        {
+                            <span class="material-icons">
+                                sort
+                            </span>
+                        }
+                        <span>Name</span>
+                    </th>
+                    <th>Colour</th>
+                    <th>Icon</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var category in CategoryList)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td><div style="background-color: @category.Color; height: 35px; width: 35px; border: 1px solid black"></div></td>
+                        <td>
+                            <span class="material-icons">
+                                @category.Icon
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="entry-actions">
+                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditCategory(category.Id); }">
+                                    <span class="material-icons">
+                                        edit_calendar
+                                    </span>
+                                </button>
+
+                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteCategory(category.Id); }">
+                                    <span class="material-icons">
+                                        delete
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No entries to display.
+        </div>
+    }
 
     <div class="border border-dark p-2 bg-light">
         <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">

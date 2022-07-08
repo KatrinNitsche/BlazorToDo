@@ -12,7 +12,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
     {
         public IEnumerable<NotesEntry> NotesList { get; set; }
 
-        public NotesEntry Note { get; set; } = new NotesEntry { Title = "New Note"};
+        public NotesEntry Note { get; set; } = new NotesEntry();
 
         public IEnumerable<Category> CategoryList { get; set; }
 
@@ -53,7 +53,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            Note = new NotesEntry { Title = "New Note" };
+            Note = new NotesEntry();
         }
 
         protected async Task HandleValidSubmit()

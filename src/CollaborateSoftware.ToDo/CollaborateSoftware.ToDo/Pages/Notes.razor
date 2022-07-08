@@ -15,104 +15,114 @@
 }
 else
 {
-    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+    @if (NotesList.Count() > 0)
+    {
+        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
 
-        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
+            <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+                <span class="material-icons">
+                    note_add
+                </span>
+            </button>
 
-        <div class="d-flex w-auto pr-1">
-            @if (CurrentParentNote != null)
-            {
-                <nav aria-label="breadcrumb" class="w-100">
-                    <ol class="breadcrumb bg-transparent">
-                        <li class="breadcrumb-item pointer"><span @onclick="EventArgs => { SetParentNote(null); }">Root</span></li>
-                        @if (NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId != null)
-                        {
+            <div class="d-flex w-auto pr-1">
+                @if (CurrentParentNote != null)
+                {
+                    <nav aria-label="breadcrumb" class="w-100">
+                        <ol class="breadcrumb bg-transparent">
+                            <li class="breadcrumb-item pointer"><span @onclick="EventArgs => { SetParentNote(null); }">Root</span></li>
+                            @if (NotesList.Any(n => n.Id == NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.ParentNoteId))
+                            {
+                                <li class="breadcrumb-item pointer">..</li>
+                            }
                             <li class="breadcrumb-item active pointer" aria-current="page" @onclick="EventArgs => { SetParentNote(NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId); }">
                                 <span>@NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.Title</span>
                             </li>
-                        }
-                    </ol>
-                </nav>
-            }
+                        </ol>
+                    </nav>
+                }
 
-            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+            </div>
         </div>
-    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>                   
-                </th>
-                <th @onclick="@(() => SortByColumn("Category"))">
-                    @if (SortingColumn == "Category")
-                    {
-                        <span class="material-icons">
-                            sort
-                        </span>
-                    }
-                    <span>Category</span>
-                </th>
-                <th @onclick="@(() => SortByColumn("Title"))">
-                    @if (SortingColumn == "Title")
-                    {
-                        <span class="material-icons">
-                            sort
-                        </span>
-                    }
-                    <span>Title</span>
-                </th>
-
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var note in NotesList.Where(n => n.ParentNoteId == CurrentParentNote))
-            {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @if (NotesList.Any(n => n.ParentNoteId == note.Id))
+                    <th>
+                    </th>
+                    <th @onclick="@(() => SortByColumn("Category"))">
+                        @if (SortingColumn == "Category")
                         {
-                            <span class="material-icons pointer" @onclick="EventArgs => { SetParentNote(note.Id); }">
-                                arrow_drop_down
+                            <span class="material-icons">
+                                sort
                             </span>
                         }
-                    </td>
-                    <td>
-                        <div class="d-flex" style="background-color: @note.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                        <span>Category</span>
+                    </th>
+                    <th @onclick="@(() => SortByColumn("Title"))">
+                        @if (SortingColumn == "Title")
+                        {
                             <span class="material-icons">
-                                @note.Category?.Icon
+                                sort
                             </span>
-                            <span class="ml-3">
-                                @note.Category?.Name
-                            </span>
-                        </div>
-                    </td>
-                    <td>@note.Title</td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="entry-actions">
-                            <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(note.Id); }">
-                                <span class="material-icons">
-                                    edit_calendar
-                                </span>
-                            </button>
+                        }
+                        <span>Title</span>
+                    </th>
 
-                            <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteToDoEntry(note.Id); }">
-                                <span class="material-icons">
-                                    delete
-                                </span>
-                            </button>
-                        </div>
-                    </td>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+
+                @foreach (var note in NotesList.Where(n => n.ParentNoteId == CurrentParentNote))
+                {
+                    <tr>
+                        <td>
+                            @if (NotesList.Any(n => n.ParentNoteId == note.Id))
+                            {
+                                <span class="material-icons pointer" @onclick="EventArgs => { SetParentNote(note.Id); }">
+                                    arrow_drop_down
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex" style="background-color: @note.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <span class="material-icons">
+                                    @note.Category?.Icon
+                                </span>
+                                <span class="ml-3">
+                                    @note.Category?.Name
+                                </span>
+                            </div>
+                        </td>
+                        <td>@note.Title</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="entry-actions">
+                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(note.Id); }">
+                                    <span class="material-icons">
+                                        edit_calendar
+                                    </span>
+                                </button>
+
+                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteToDoEntry(note.Id); }">
+                                    <span class="material-icons">
+                                        delete
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No entries to display.
+        </div>
+    }
 
     <div class="border border-dark p-2 bg-light">
         <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">

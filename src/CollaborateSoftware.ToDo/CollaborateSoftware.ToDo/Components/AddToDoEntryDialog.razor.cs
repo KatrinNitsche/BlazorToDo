@@ -11,7 +11,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class AddToDoEntryDialog
     {
-        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, Priority = Priority.Middle, RepetitionType = RepetitionType.None };
+        public ToDoListEntry ToDoListEntry { get; set; } = new ToDoListEntry { Title = string.Empty, Date = DateTime.Now, Done = false, Priority = Priority.Middle, RepetitionType = RepetitionType.None };
         public IEnumerable<Category> CategoryList { get; set; }
 
         [Inject]
@@ -47,7 +47,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            ToDoListEntry = new ToDoListEntry { Title = "New Task", Date = DateTime.Now, Done = false, Priority = Priority.Middle, RepetitionType = RepetitionType.None };
+            ToDoListEntry = new ToDoListEntry { Title = string.Empty, Date = DateTime.Now, Done = false, Priority = Priority.Middle, RepetitionType = RepetitionType.None };
         }
 
         protected async Task HandleValidSubmit()
