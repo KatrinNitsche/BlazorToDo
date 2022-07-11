@@ -44,6 +44,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             FilterFromDate = DateTime.Now;
             FilterToDate = DateTime.Now.AddDays(7);
+            StateHasChanged();
         }
 
         protected void AddEntry()

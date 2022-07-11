@@ -29,6 +29,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         public bool ShowDialog { get; set; }
         
         public string CurrentCategoryId { get; set; }
+        public string Time { get; set; }
 
         public async void Show()
         {
@@ -44,6 +45,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             CategoryList = (await categoryService.GetAll());
             AppointmentEntry = await service.GetById(id);          
             CurrentCategoryId = AppointmentEntry.Category.Id.ToString();
+
+            var hour = AppointmentEntry.Date.Hour < 10 ? $"0{AppointmentEntry.Date.Hour}" : AppointmentEntry.Date.Hour.ToString();
+            var minutes = AppointmentEntry.Date.Minute < 10 ? $"0{AppointmentEntry.Date.Minute}" : AppointmentEntry.Date.Minute.ToString();
+            Time = $"{hour}:{minutes}";
             ShowDialog = true;
             StateHasChanged();
         }
@@ -61,7 +66,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         protected async Task HandleValidSubmit()
         {
+            var hour = int.Parse(Time.Substring(0, 2));
+            var minute = int.Parse(Time.Substring(3, 2));
+
+            AppointmentEntry.Date = new DateTime(AppointmentEntry.Date.Year, AppointmentEntry.Date.Month, AppointmentEntry.Date.Day, hour, minute, 0);
             AppointmentEntry.Category = CategoryList.FirstOrDefault(c => c.Id == int.Parse(CurrentCategoryId));
+
             var result = await service.Update(AppointmentEntry);
             if (result != null)
             {

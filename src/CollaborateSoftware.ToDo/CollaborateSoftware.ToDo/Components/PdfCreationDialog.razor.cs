@@ -12,9 +12,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class PdfCreationDialog
     {
-        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString() };
+        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString(), IncludeAppointments = false };
 
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
+        public IEnumerable<Appointment> Appointments { get; set; }
 
         public bool ShowDialog { get; set; }
 
@@ -23,6 +24,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         [Inject]
         public IToastService toastService { get; set; }
+
+        [Inject]
+        public IAppointmentService appointmentService { get; set; }
 
         [Inject]
         public IToDoService toDoService { get; set; }
@@ -42,7 +46,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            PdfSettings = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString() };
+            PdfSettings = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString(), IncludeAppointments = false };
         }
 
         public void Close()
@@ -54,6 +58,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         protected async Task HandleValidSubmit()
         {
             Tasks = (await toDoService.GetAll());
+            Appointments = (await appointmentService.GetAll());
 
             if (PdfSettings.Type == "Day")
             {
@@ -76,6 +81,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         private void DayPlan()
         {
             Tasks = Tasks.Where(t => t.Date == PdfSettings.Date && t.Done == false);
+            Appointments = Appointments.Where(a => a.Date == PdfSettings.Date).OrderBy(a => a.Date);
 
             var priorities = new List<string>();
             if (!string.IsNullOrEmpty(PdfSettings.Priority1)) priorities.Add(PdfSettings.Priority1);
@@ -83,7 +89,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             if (!string.IsNullOrEmpty(PdfSettings.Priority3)) priorities.Add(PdfSettings.Priority3);
             if (!string.IsNullOrEmpty(PdfSettings.Priority4)) priorities.Add(PdfSettings.Priority4);
 
-            var result = pdfCreator.CreateDailySheet(Tasks.ToList(), priorities, PdfSettings.ForTomorrow, PdfSettings.Note);
+            var result = pdfCreator.CreateDailySheet(Tasks.ToList(), Appointments.ToList(), priorities, PdfSettings.ForTomorrow, PdfSettings.Note);
             if (result != null)
             {
                 toastService.ShowSuccess("Pdf document was created");

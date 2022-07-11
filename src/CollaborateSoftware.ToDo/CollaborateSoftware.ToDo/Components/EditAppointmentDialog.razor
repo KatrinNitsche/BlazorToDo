@@ -25,6 +25,7 @@
                         <div class="form-group">
                             <label for="date">Date: </label>
                             <InputDate id="date" class="form-control" @bind-Value="@AppointmentEntry.Date"></InputDate>
+                            <input type="text" class="form-control" @bind-value="@Time" placeholder="hh:mm" />
                             <ValidationMessage For="@(() => AppointmentEntry.Date)" />
                         </div>
 

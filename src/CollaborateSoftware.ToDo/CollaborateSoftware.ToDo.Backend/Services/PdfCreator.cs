@@ -5,17 +5,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
+using System.Linq;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public class PdfCreator : IPdfCreator
     {
-        public async Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<string> priorities, string forTomorrow, string note)
+        public async Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
         {
             try
             {
                 var filePath = @"C:\tmp\daily.pdf";
-                var html = GetHtmlCodeForDayPlan(todos, priorities, forTomorrow, note);
+                var html = GetHtmlCodeForDayPlan(todos, appointments, priorities, forTomorrow, note);
 
                 var pdf = Pdf
                     .From(html)
@@ -173,7 +174,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return htmlCode;
         }
 
-        private string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<string> priorities, string forTomorrow, string note)
+        private string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
         {
             var htmlCode = string.Empty;
 
@@ -187,7 +188,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             for (int i = 0; i < 14; i++)
             {
                 // ToDo: change code to display appointments
-                htmlCode = htmlCode.Replace("{appointment-" + (i + 1) + "}", string.Empty);
+                htmlCode = htmlCode.Replace("{appointment-" + (i + 1) + "}", GetAppointmentFor(i, appointments));
             }
 
             // Priorities
@@ -279,6 +280,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             }
 
             return htmlCode;
+        }
+
+        private static string GetAppointmentFor(int index, List<Appointment> appointments)
+        {
+            var result = string.Empty;
+
+            var appointmentsInSlot = new List<Appointment>();
+            DateTime fromTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 6 + index, 0, 0);
+            DateTime toTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7 + index, 0, 0);
+            appointmentsInSlot = appointments.Where(a => a.Date.TimeOfDay >= fromTime.TimeOfDay && a.Date.TimeOfDay < toTime.TimeOfDay).ToList();
+
+            return result;
         }
     }
 }
