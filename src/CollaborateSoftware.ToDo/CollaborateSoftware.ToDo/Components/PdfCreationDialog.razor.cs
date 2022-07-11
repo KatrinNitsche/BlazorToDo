@@ -12,7 +12,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class PdfCreationDialog
     {
-        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day", Date = DateTime.Now };
+        public PdfSettings PdfSettings { get; set; } = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString() };
 
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
 
@@ -42,7 +42,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            PdfSettings = new PdfSettings() { Type = "Day", Date = DateTime.Now };
+            PdfSettings = new PdfSettings() { Type = "Day", Date = DateTime.Now, Year = DateTime.Now.Year.ToString() };
         }
 
         public void Close()

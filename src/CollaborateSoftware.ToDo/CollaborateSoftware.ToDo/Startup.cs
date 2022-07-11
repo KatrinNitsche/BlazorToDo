@@ -34,6 +34,7 @@ namespace CollaborateSoftware.MyLittleHelpers
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<INotesService, NotesService>();
             services.AddTransient<IPdfCreator, PdfCreator>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

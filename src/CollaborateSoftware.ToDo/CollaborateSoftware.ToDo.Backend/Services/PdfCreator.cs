@@ -131,13 +131,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             var numberOfDays = firstDayOfMonth.AddMonths(1).AddDays(-1).Day;
             for (int i = 0; i < 42; i++)
             {
-                if (i < firstDayIndex || i >= numberOfDays)
+                if (i < firstDayIndex || i - firstDayIndex >= numberOfDays)
                 {
                     htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", string.Empty);
                 }
                 else
                 {
-                    htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", (i + 1).ToString());
+                    htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", (i + 1 - firstDayIndex).ToString());
                 }
             }
 

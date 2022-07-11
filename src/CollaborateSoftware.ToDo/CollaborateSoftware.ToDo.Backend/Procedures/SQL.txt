@@ -1,0 +1,29 @@
+﻿SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Katrin Nitsche
+-- Create date: 08/07/2022
+-- Description:	Reset the database
+-- =============================================
+CREATE PROCEDURE Reset_Database
+AS
+BEGIN
+	Delete From Notes
+	Delete From Category 
+	Delete From ToDoList
+
+	INSERT INTO [dbo].[Category]
+           ([Name]
+           ,[Description]
+           ,[Color]
+           ,[Icon])
+     VALUES
+           ('None'
+           ,'Task with no category'
+           ,''
+           ,'')
+
+END
+GO
