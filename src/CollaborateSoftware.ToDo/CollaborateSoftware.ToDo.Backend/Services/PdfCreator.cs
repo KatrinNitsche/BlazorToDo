@@ -286,10 +286,21 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         {
             var result = string.Empty;
 
-            var appointmentsInSlot = new List<Appointment>();
-            DateTime fromTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 6 + index, 0, 0);
-            DateTime toTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 7 + index, 0, 0);
-            appointmentsInSlot = appointments.Where(a => a.Date.TimeOfDay >= fromTime.TimeOfDay && a.Date.TimeOfDay < toTime.TimeOfDay).ToList();
+            var appointmentsInSlot = new List<Appointment>();           
+            int fromTime = index + 6;
+            int toTime = index + 7;
+
+            appointmentsInSlot = appointments.Where(a => a.Date.Hour >= fromTime && a.Date.Hour < toTime).ToList();
+
+            foreach (var entry in appointmentsInSlot)
+            {
+                result += entry.Title + ", ";
+            }
+
+            if (result.EndsWith(", "))
+            {
+               result = result.Substring(0, result.Length - 2);
+            }
 
             return result;
         }

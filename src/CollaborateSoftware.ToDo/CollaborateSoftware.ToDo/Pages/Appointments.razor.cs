@@ -26,7 +26,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public DateTime FilterToDate { get; set; } 
 
         public IEnumerable<Category> CategoryList { get; set; }
-
+        
+        protected PdfCreationDialog PdfCreationDialog { get; set; }
 
         [Inject]
         public IAppointmentService service { get; set; }
@@ -36,6 +37,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         [Inject]
         public ICategoryService categoryService { get; set; }
+
+        public void PdfExport()
+        {
+            PdfCreationDialog.Show();
+        }
 
         protected async override Task OnInitializedAsync()
         {

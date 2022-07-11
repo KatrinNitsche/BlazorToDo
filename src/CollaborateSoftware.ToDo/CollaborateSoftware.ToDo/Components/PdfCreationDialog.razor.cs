@@ -78,10 +78,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             }
         }
 
-        private void DayPlan()
+        private async void DayPlan()
         {
             Tasks = Tasks.Where(t => t.Date == PdfSettings.Date && t.Done == false);
-            Appointments = Appointments.Where(a => a.Date == PdfSettings.Date).OrderBy(a => a.Date);
+            var AppointmentList = (await appointmentService.GetAll());
+            Appointments = AppointmentList.Where(a => a.Date.Year == PdfSettings.Date.Year && 
+                                                      a.Date.Month == PdfSettings.Date.Month &&
+                                                      a.Date.Day == PdfSettings.Date.Day).OrderBy(a => a.Date).ToList();
 
             var priorities = new List<string>();
             if (!string.IsNullOrEmpty(PdfSettings.Priority1)) priorities.Add(PdfSettings.Priority1);

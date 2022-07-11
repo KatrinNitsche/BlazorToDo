@@ -25,6 +25,13 @@ else
         </button>
 
         <div class="d-flex w-75">
+            <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                    <span class="material-icons">
+                        description
+                    </span>
+                </button>
+            </span>
 
             <span class="mr-1">
                 @if (DisplayOnlyTodaysEntries)
@@ -122,7 +129,7 @@ else
                                 </span>
                             </div>
                         </td>
-                        <td>@task.Date.ToShortDateString()</td>
+                        <td>@task.Date</td>
                         <td>
                             @switch (task.Priority)
                             {
@@ -182,4 +189,5 @@ else
 
     <CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog @ref="AddAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog>
     <CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog @ref="EditAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog @ref="PdfCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog>
 }
