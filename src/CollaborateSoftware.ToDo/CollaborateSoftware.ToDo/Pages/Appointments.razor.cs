@@ -14,6 +14,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public IEnumerable<Appointment> AppointmentList { get; set; }
 
         protected AddAppointmentDialog AddAppointmentDialog { get; set; }
+        protected EditAppointmentDialog EditAppointmentDialog { get; set; }
 
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
@@ -67,7 +68,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         protected void EditEntry(int id)
         {
-           // EditToDoEntryDialog.Show(id);
+            EditAppointmentDialog.Show(id);
         }
 
         public async void DeleteEntry(int id)
