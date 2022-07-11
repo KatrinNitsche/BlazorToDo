@@ -15,21 +15,57 @@
 }
 else
 {
+
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+        <div class="d-flex w-75">
+
+            <span class="mr-1">
+                @if (DisplayOnlyTodaysEntries)
+                {
+                    <button type="button" class="btn btn-info" title="Show all" @onclick="eventArgs => { ShowEntriesFromToday(); }">
+                        <span class="material-icons">
+                            list
+                        </span>
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-info" title="Show today" @onclick="eventArgs => { ShowEntriesFromToday(); }">
+                        <span class="material-icons">
+                            calendar_today
+                        </span>
+                    </button>
+                }
+            </span>
+
+            @if (CategoryList != null && CategoryList.Count() > 1)
+            {
+                <span class="w-50 mr-1">
+                    <select id="Category" class="form-control" value="@CurrentCategoryId" @onchange="eventArgs => { FilterByCategory(eventArgs.Value.ToString()); }">
+                        <option value="">All</option>
+                        @foreach (var category in CategoryList)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </span>
+            }
+            <input type="date" id="from-date" class="form-control w-100 ml-2" value="@FilterFromDate" placeholder="Search..." @onchange="eventArgs => { FilterListByFromDate(eventArgs.Value.ToString()); }" />
+            <input type="date" id="to-date" class="form-control w-100 ml-2" value="@FilterToDate" placeholder="Search..." @onchange="eventArgs => { FilterListByTodate(eventArgs.Value.ToString()); }" />
+
+            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+        </div>
+    </div>
+
     if (AppointmentList.Count() > 0)
     {
-        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
-
-            <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
-                <span class="material-icons">
-                    note_add
-                </span>
-            </button>
-
-            <div class="d-flex w-25">  
-                <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-            </div>
-        </div>
-
         <table class="table">
             <thead>
                 <tr>
@@ -68,7 +104,7 @@ else
                             </span>
                         }
                         <span>Title</span>
-                    </th>                  
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -108,7 +144,7 @@ else
                             }
 
                         </td>
-                        <td>@task.Title</td>                     
+                        <td>@task.Title</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="entry-actions">
                                 <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(task.Id); }">

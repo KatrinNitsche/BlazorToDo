@@ -15,37 +15,38 @@
 }
 else
 {
+
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+        <div class="d-flex w-auto pr-1">
+            @if (CurrentParentNote != null)
+            {
+                <nav aria-label="breadcrumb" class="w-100">
+                    <ol class="breadcrumb bg-transparent">
+                        <li class="breadcrumb-item pointer"><span @onclick="EventArgs => { SetParentNote(null); }">Root</span></li>
+                        @if (NotesList.Any(n => n.Id == NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.ParentNoteId))
+                        {
+                            <li class="breadcrumb-item pointer">..</li>
+                        }
+                        <li class="breadcrumb-item active pointer" aria-current="page" @onclick="EventArgs => { SetParentNote(NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId); }">
+                            <span>@NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.Title</span>
+                        </li>
+                    </ol>
+                </nav>
+            }
+
+            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+        </div>
+    </div>
+    
     @if (NotesList.Count() > 0)
     {
-        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
-
-            <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-                <span class="material-icons">
-                    note_add
-                </span>
-            </button>
-
-            <div class="d-flex w-auto pr-1">
-                @if (CurrentParentNote != null)
-                {
-                    <nav aria-label="breadcrumb" class="w-100">
-                        <ol class="breadcrumb bg-transparent">
-                            <li class="breadcrumb-item pointer"><span @onclick="EventArgs => { SetParentNote(null); }">Root</span></li>
-                            @if (NotesList.Any(n => n.Id == NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.ParentNoteId))
-                            {
-                                <li class="breadcrumb-item pointer">..</li>
-                            }
-                            <li class="breadcrumb-item active pointer" aria-current="page" @onclick="EventArgs => { SetParentNote(NotesList.FirstOrDefault(n => n.Id == CurrentParentNote).ParentNoteId); }">
-                                <span>@NotesList.FirstOrDefault(n => n.Id == CurrentParentNote)?.Title</span>
-                            </li>
-                        </ol>
-                    </nav>
-                }
-
-                <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-            </div>
-        </div>
-
         <table class="table">
             <thead>
                 <tr>

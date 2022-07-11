@@ -15,18 +15,19 @@
 }
 else
 {
+
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+    </div>
+
     @if (CategoryList.Count() > 0)
     {
-        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
-
-            <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
-                <span class="material-icons">
-                    note_add
-                </span>
-            </button>
-
-        </div>
-
         <table class="table">
             <thead>
                 <tr>

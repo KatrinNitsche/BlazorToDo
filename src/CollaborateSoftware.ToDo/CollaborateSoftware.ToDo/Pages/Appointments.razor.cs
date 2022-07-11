@@ -3,6 +3,7 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
         public string SortingDirection { get; set; } = "Asc";
+        public string CurrentCategoryId { get; set; }
+        public bool DisplayOnlyTodaysEntries { get; set; }
+        public DateTime FilterFromDate { get; set; } 
+        public DateTime FilterToDate { get; set; } 
+
+        public IEnumerable<Category> CategoryList { get; set; }
 
 
         [Inject]
@@ -27,9 +34,16 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         [Inject]
         public IToastService toastService { get; set; }
 
+        [Inject]
+        public ICategoryService categoryService { get; set; }
+
         protected async override Task OnInitializedAsync()
         {
             AppointmentList = (await service.GetAll());
+            CategoryList = await categoryService.GetAll();
+
+            FilterFromDate = DateTime.Now;
+            FilterToDate = DateTime.Now.AddDays(7);
         }
 
         protected void AddEntry()
@@ -95,6 +109,48 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             {
                 AppointmentList = AppointmentList.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()));
             }
+
+            StateHasChanged();
+        }
+
+        public async void FilterByCategory(string selectedId)
+        {            
+            AppointmentList = (await service.GetAll());           
+            if (selectedId != "All")
+            {               
+                AppointmentList = AppointmentList.Where(t => t.Category.Id == int.Parse(selectedId));
+            }
+
+            StateHasChanged();
+        }
+
+        public async void ShowEntriesFromToday()
+        {
+            DisplayOnlyTodaysEntries = !DisplayOnlyTodaysEntries;
+
+            AppointmentList = (await service.GetAll());
+            if (DisplayOnlyTodaysEntries)
+            {
+                AppointmentList = AppointmentList.Where(t => t.Date.Date == System.DateTime.Now.Date);
+            }        
+
+            StateHasChanged();
+        }
+
+        public async void FilterListByFromDate(string FromDate)
+        {
+            FilterFromDate = DateTime.Parse(FromDate);
+            AppointmentList = (await service.GetAll());
+            AppointmentList = AppointmentList.Where(t => (FilterFromDate == DateTime.MinValue || t.Date.Date >= FilterFromDate) && (FilterToDate == DateTime.MinValue || t.Date.Date <= FilterToDate));
+
+            StateHasChanged();
+        }
+
+        public async void FilterListByTodate(string  toDate)
+        {
+            FilterToDate = DateTime.Parse(toDate);
+            AppointmentList = (await service.GetAll());
+            AppointmentList = AppointmentList.Where(t => (FilterToDate == DateTime.MinValue || t.Date.Date <= FilterToDate) && (FilterFromDate == DateTime.MinValue || t.Date.Date >= FilterFromDate));
 
             StateHasChanged();
         }

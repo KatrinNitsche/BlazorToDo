@@ -15,75 +15,76 @@
 }
 else
 {
+
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+        <div class="d-flex w-25">
+
+            <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                    <span class="material-icons">
+                        description
+                    </span>
+                </button>
+            </span>
+
+            <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
+                    <span class="material-icons">
+                        sim_card_download
+                    </span>
+                </button>
+            </span>
+
+            <span class="mr-1">
+                @if (DisplayDoneTasks)
+                {
+                    <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
+                        <span class="material-icons">
+                            done
+                        </span>
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
+                        <span class="material-icons">
+                            remove_done
+                        </span>
+                    </button>
+                }
+            </span>
+            <span class="mr-1">
+                @if (DisplayOnlyTodaysTasks)
+                {
+                    <button type="button" class="btn btn-info" title="Show all tasks" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                        <span class="material-icons">
+                            list
+                        </span>
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-info" title="Show tasks due do today" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                        <span class="material-icons">
+                            calendar_today
+                        </span>
+                    </button>
+                }
+            </span>
+
+            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+        </div>
+    </div>
+    
     @if (Tasks.Count() > 0)
     {
-        <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
-
-            <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-                <span class="material-icons">
-                    note_add
-                </span>
-            </button>
-
-            <div class="d-flex w-25">
-
-                <span class="mr-1">
-                    <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
-                        <span class="material-icons">
-                            description
-                        </span>
-                    </button>
-                </span>
-
-                <span class="mr-1">
-                    <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
-                        <span class="material-icons">
-                            sim_card_download
-                        </span>
-                    </button>
-                </span>
-
-                <span class="mr-1">
-                    @if (DisplayDoneTasks)
-                    {
-                        <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
-                            <span class="material-icons">
-                                done
-                            </span>
-                        </button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
-                            <span class="material-icons">
-                                remove_done
-                            </span>
-                        </button>
-                    }
-                </span>
-                <span class="mr-1">
-                    @if (DisplayOnlyTodaysTasks)
-                    {
-                        <button type="button" class="btn btn-info" title="Show all tasks" @onclick="eventArgs => { ShowTasksFromToday(); }">
-                            <span class="material-icons">
-                                list
-                            </span>
-                        </button>
-                    }
-                    else
-                    {
-                        <button type="button" class="btn btn-info" title="Show tasks due do today" @onclick="eventArgs => { ShowTasksFromToday(); }">
-                            <span class="material-icons">
-                                calendar_today
-                            </span>
-                        </button>
-                    }
-                </span>
-
-                <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-            </div>
-        </div>
-
         <table class="table">
             <thead>
                 <tr>
@@ -210,6 +211,7 @@ else
             No entries to display.
         </div>
     }
+
     <div class="border border-dark p-2 bg-light">
         <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
             <span class="material-icons">
