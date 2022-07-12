@@ -81,10 +81,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         private async void DayPlan()
         {
             Tasks = Tasks.Where(t => t.Date == PdfSettings.Date && t.Done == false);
-            var AppointmentList = (await appointmentService.GetAll());
-            Appointments = AppointmentList.Where(a => a.Date.Year == PdfSettings.Date.Year && 
-                                                      a.Date.Month == PdfSettings.Date.Month &&
-                                                      a.Date.Day == PdfSettings.Date.Day).OrderBy(a => a.Date).ToList();
+
+            if (PdfSettings.IncludeAppointments)
+            {
+                var AppointmentList = (await appointmentService.GetAll());
+                Appointments = AppointmentList.Where(a => a.Date.Year == PdfSettings.Date.Year &&
+                                                          a.Date.Month == PdfSettings.Date.Month &&
+                                                          a.Date.Day == PdfSettings.Date.Day).OrderBy(a => a.Date).ToList();
+            }
+            else
+            {
+                Appointments = new List<Appointment>();
+            }
 
             var priorities = new List<string>();
             if (!string.IsNullOrEmpty(PdfSettings.Priority1)) priorities.Add(PdfSettings.Priority1);
@@ -112,9 +120,16 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             int.TryParse(WeekVal.Substring(6, 2).Replace("0","").Trim(), out int monthNumber);
             var firstDayOfWeek = Tools.FirstDateOfWeekISO8601(year, monthNumber);
 
-            Tasks = Tasks.Where(t => t.Date >= firstDayOfWeek && t.Date <= firstDayOfWeek.AddDays(7) && t.Done == false).OrderBy(t => t.Date).ThenBy(t => t.Title);
-            var AppointmentList = (await appointmentService.GetAll());
-            Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
+            if (PdfSettings.IncludeAppointments)
+            {
+                Tasks = Tasks.Where(t => t.Date >= firstDayOfWeek && t.Date <= firstDayOfWeek.AddDays(7) && t.Done == false).OrderBy(t => t.Date).ThenBy(t => t.Title);
+                var AppointmentList = (await appointmentService.GetAll());
+                Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
+            }
+            else
+            {
+                Appointments = new List<Appointment>();
+            }
 
             var priorities = new List<string>();
             if (!string.IsNullOrEmpty(PdfSettings.Priority1)) priorities.Add(PdfSettings.Priority1);

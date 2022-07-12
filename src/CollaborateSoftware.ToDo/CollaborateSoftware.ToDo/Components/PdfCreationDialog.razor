@@ -26,7 +26,7 @@
                             </InputSelect>
                         </div>
 
-                        @if (PdfSettings.Type != "Year")
+                        @if (PdfSettings.Type != "Year" && PdfSettings.Type != "Month")
                         {
                             <div class="form-group">
                                 <label for="today" class="fw-bold">Include Appointments</label>

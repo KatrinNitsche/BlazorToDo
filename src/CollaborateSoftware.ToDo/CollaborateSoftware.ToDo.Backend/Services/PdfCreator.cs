@@ -283,7 +283,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
             foreach (var entry in appointmentsInSlot)
             {
-                result += entry.Title + ", ";
+                var hour = entry.Date.Hour < 10 ? $"0{entry.Date.Hour}" : entry.Date.Hour.ToString();
+                var minutes = entry.Date.Minute < 10 ? $"0{entry.Date.Minute}" : entry.Date.Minute.ToString();
+                var time = $"{hour}:{minutes}";
+                result += $"{time} {entry.Title}, ";
             }
 
             if (result.EndsWith(", "))
