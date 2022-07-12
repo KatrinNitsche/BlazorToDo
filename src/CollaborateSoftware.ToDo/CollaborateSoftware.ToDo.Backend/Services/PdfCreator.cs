@@ -11,6 +11,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public class PdfCreator : IPdfCreator
     {
+        private int currentRecoursiveLevel = 0;
+
         public async Task<bool> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle)
         {
             try
@@ -160,6 +162,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                 notesDiv += $"<p>{note.Text} </p>" + Environment.NewLine;
                 notesDiv += "</div>" + Environment.NewLine;
 
+                currentRecoursiveLevel = 1;
                 notesDiv += GetChildNoteHtml(notesEntries, note.Id);
                 notesDiv += "</div" + Environment.NewLine;
             }
@@ -174,7 +177,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             var notesDiv = string.Empty;
             foreach (var note in notesEntries.Where(n => n.ParentNoteId == parentId))
             {
-                notesDiv += "<div>" + Environment.NewLine;
+                notesDiv += "<div style='margin-left: " + (currentRecoursiveLevel * 5) + "px'>" + Environment.NewLine;
                 notesDiv += "<div class='note-child'>" + Environment.NewLine;
                 notesDiv += $"<h2>{note.Title}</h2>" + Environment.NewLine;
                 notesDiv += $"<p>{note.Text} </p>" + Environment.NewLine;
@@ -182,6 +185,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
               
                 if (notesEntries.Any(n => n.ParentNoteId == note.Id))
                 {
+                    currentRecoursiveLevel++;
                     notesDiv += GetChildNoteHtml(notesEntries, note.Id);
                 }
                 
