@@ -152,19 +152,45 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             htmlCode = Properties.Resources.Notes;
 
             var notesDiv = string.Empty;
-            foreach (var note in notesEntries)
+            foreach (var note in notesEntries.Where(n => n.ParentNoteId == null))
             {
-                notesDiv += "<div class='note'>";
-                notesDiv += $"<h2>{note.Title}</h2>";
-                notesDiv += $"<p>{note.Text} </p>";
-                notesDiv += "</div>";
-                notesDiv += Environment.NewLine;
+                notesDiv += "<div>" + Environment.NewLine;
+                notesDiv += "<div class='note'>" + Environment.NewLine;
+                notesDiv += $"<h2>{note.Title}</h2>" + Environment.NewLine;
+                notesDiv += $"<p>{note.Text} </p>" + Environment.NewLine;
+                notesDiv += "</div>" + Environment.NewLine;
+
+                notesDiv += GetChildNoteHtml(notesEntries, note.Id);
+                notesDiv += "</div" + Environment.NewLine;
             }
 
             htmlCode = htmlCode.Replace("{notes}", notesDiv);
             htmlCode = htmlCode.Replace("{notes-title}", notesTitle);
             return htmlCode;
         }
+
+        private string GetChildNoteHtml(List<NotesEntry> notesEntries, int parentId)
+        {
+            var notesDiv = string.Empty;
+            foreach (var note in notesEntries.Where(n => n.ParentNoteId == parentId))
+            {
+                notesDiv += "<div>" + Environment.NewLine;
+                notesDiv += "<div class='note-child'>" + Environment.NewLine;
+                notesDiv += $"<h2>{note.Title}</h2>" + Environment.NewLine;
+                notesDiv += $"<p>{note.Text} </p>" + Environment.NewLine;
+                notesDiv += "</div>" + Environment.NewLine;
+              
+                if (notesEntries.Any(n => n.ParentNoteId == note.Id))
+                {
+                    notesDiv += GetChildNoteHtml(notesEntries, note.Id);
+                }
+                
+                notesDiv += "</div" + Environment.NewLine;
+            }
+
+            return notesDiv;
+        }
+
 
         private string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
         {
@@ -203,17 +229,17 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             var htmlCode = string.Empty;
             htmlCode = Properties.Resources.Weekly;
             htmlCode = htmlCode.Replace("{dates}", GetAppointmentForDay(appointments));
-                       
+
             for (int i = 0; i < 7; i++)
             {
                 htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", firstDayOfWeek.AddDays(i).ToString("dddd, MMMM dd yyyy"));
             }
-                      
-            htmlCode = ReplaceToDos(todos, htmlCode, 18);           
+
+            htmlCode = ReplaceToDos(todos, htmlCode, 18);
             htmlCode = ReplacePriorities(priorities, htmlCode);
 
             return htmlCode;
-        }            
+        }
 
         private string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
         {
@@ -221,11 +247,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
             htmlCode = Properties.Resources.Daily;
             htmlCode = htmlCode.Replace("{plan-date}", DateTime.Now.Date.ToShortDateString());
-                      
+
             htmlCode = ReplaceToDos(todos, htmlCode, 9);
 
             for (int i = 0; i < 14; i++)
-            {               
+            {
                 htmlCode = htmlCode.Replace("{appointment-" + (i + 1) + "}", GetAppointmentForHour(i, appointments));
             }
 
@@ -322,7 +348,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         {
             var result = string.Empty;
 
-            var appointmentsInSlot = new List<Appointment>();           
+            var appointmentsInSlot = new List<Appointment>();
             int fromTime = index + 6;
             int toTime = index + 7;
 
@@ -338,7 +364,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
             if (result.EndsWith(", "))
             {
-               result = result.Substring(0, result.Length - 2);
+                result = result.Substring(0, result.Length - 2);
             }
 
             return result;
@@ -349,7 +375,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             var result = string.Empty;
             foreach (var entry in appointments)
             {
-                 result += $"{entry.Date} {entry.Title}" + System.Environment.NewLine;
+                result += $"{entry.Date} {entry.Title}" + System.Environment.NewLine;
             }
 
             return result;

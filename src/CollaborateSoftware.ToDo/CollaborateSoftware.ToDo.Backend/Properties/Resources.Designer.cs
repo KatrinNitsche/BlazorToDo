@@ -144,7 +144,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
         ///            background-color: #ede8da;
         ///            border-radius: 5px;
         ///            border: 1px solid black;
-        ///            padding: 5px;
         ///            margin: 5px;
         ///            text-align: center;
         ///            font-size: xx-large;
@@ -153,7 +152,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
         ///        .note {
         ///            background-color: #ebcead;
         ///            border-radius: 5px;
-        ///       [rest of string was truncated]&quot;;.
+        ///            border: 1px solid bla [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Notes {
             get {

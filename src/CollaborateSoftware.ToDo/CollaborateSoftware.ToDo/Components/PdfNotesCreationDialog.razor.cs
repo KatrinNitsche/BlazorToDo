@@ -2,7 +2,6 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,7 +55,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
             if (PdfNotesSettings.CategoryId != "All")
             {
-                NotesList = NotesList.Where(n => n.Category.Id == int.Parse(PdfNotesSettings.CategoryId)).ToList();
+                NotesList = NotesList.Where(n => n.Category.Id == int.Parse(PdfNotesSettings.CategoryId));
             }
 
             var result = pdfCreator.CreateNotesPdf(NotesList.ToList(), PdfNotesSettings.NotesTitle);
