@@ -29,7 +29,7 @@
                         @if (PdfSettings.Type != "Year")
                         {
                             <div class="form-group">
-                                <label for="today" class="fw-bold">Todays Tasks</label>
+                                <label for="today" class="fw-bold">Include Appointments</label>
                                 <InputCheckbox id="today" class="form-control" @bind-Value="@PdfSettings.IncludeAppointments"></InputCheckbox>
                             </div>
                         }

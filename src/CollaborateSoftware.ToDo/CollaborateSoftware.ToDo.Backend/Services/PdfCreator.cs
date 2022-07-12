@@ -38,12 +38,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             }
         }
 
-        public async Task<bool> CreateWeekPlan(List<ToDoListEntry> todos, List<string> priorities, DateTime firstDayOfWeek)
+        public async Task<bool> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek)
         {
             try
             {
                 var filePath = @"C:\tmp\weekly.pdf";
-                var html = GetHtmlCodeForWeekPlan(todos, priorities, firstDayOfWeek);
+                var html = GetHtmlCodeForWeekPlan(todos, appointments, priorities, firstDayOfWeek);
 
                 var pdf = Pdf
                     .From(html)
@@ -151,28 +151,22 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return (int)weekDay;
         }
 
-        private string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<string> priorities, DateTime firstDayOfWeek)
+        private string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek)
         {
             var htmlCode = string.Empty;
             htmlCode = Properties.Resources.Weekly;
-
-            // ToDo: replace dates
-            htmlCode = htmlCode.Replace("{dates}", string.Empty);
-
-            // Day names
+            htmlCode = htmlCode.Replace("{dates}", GetAppointmentForDay(appointments));
+                       
             for (int i = 0; i < 7; i++)
             {
                 htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", firstDayOfWeek.AddDays(i).ToString("dddd, MMMM dd yyyy"));
             }
-
-            // ToDo's 
-            htmlCode = ReplaceToDos(todos, htmlCode, 18);
-
-            // Priorities
+                      
+            htmlCode = ReplaceToDos(todos, htmlCode, 18);           
             htmlCode = ReplacePriorities(priorities, htmlCode);
 
             return htmlCode;
-        }
+        }            
 
         private string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
         {
@@ -180,20 +174,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
             htmlCode = Properties.Resources.Daily;
             htmlCode = htmlCode.Replace("{plan-date}", DateTime.Now.Date.ToShortDateString());
-
-            // ToDo's
+                      
             htmlCode = ReplaceToDos(todos, htmlCode, 9);
 
-            // Appointments
             for (int i = 0; i < 14; i++)
-            {
-                // ToDo: change code to display appointments
-                htmlCode = htmlCode.Replace("{appointment-" + (i + 1) + "}", GetAppointmentFor(i, appointments));
+            {               
+                htmlCode = htmlCode.Replace("{appointment-" + (i + 1) + "}", GetAppointmentForHour(i, appointments));
             }
 
-            // Priorities
             htmlCode = ReplacePriorities(priorities, htmlCode);
-
             htmlCode = htmlCode.Replace("{for-tomorrow}", forTomorrow);
             htmlCode = htmlCode.Replace("{note}", note);
 
@@ -282,7 +271,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return htmlCode;
         }
 
-        private static string GetAppointmentFor(int index, List<Appointment> appointments)
+        private static string GetAppointmentForHour(int index, List<Appointment> appointments)
         {
             var result = string.Empty;
 
@@ -300,6 +289,17 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             if (result.EndsWith(", "))
             {
                result = result.Substring(0, result.Length - 2);
+            }
+
+            return result;
+        }
+
+        private string GetAppointmentForDay(List<Appointment> appointments)
+        {
+            var result = string.Empty;
+            foreach (var entry in appointments)
+            {
+                 result += $"{entry.Date} {entry.Title}" + System.Environment.NewLine;
             }
 
             return result;

@@ -105,7 +105,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             }
         }
 
-        private void WeekPlan()
+        private async void WeekPlan()
         {
             var date = WeekVal; // "2022-W27"
             int.TryParse(WeekVal.Substring(0, 4), out int year);
@@ -113,6 +113,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var firstDayOfWeek = Tools.FirstDateOfWeekISO8601(year, monthNumber);
 
             Tasks = Tasks.Where(t => t.Date >= firstDayOfWeek && t.Date <= firstDayOfWeek.AddDays(7) && t.Done == false).OrderBy(t => t.Date).ThenBy(t => t.Title);
+            var AppointmentList = (await appointmentService.GetAll());
+            Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
 
             var priorities = new List<string>();
             if (!string.IsNullOrEmpty(PdfSettings.Priority1)) priorities.Add(PdfSettings.Priority1);
@@ -120,7 +122,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             if (!string.IsNullOrEmpty(PdfSettings.Priority3)) priorities.Add(PdfSettings.Priority3);
             if (!string.IsNullOrEmpty(PdfSettings.Priority4)) priorities.Add(PdfSettings.Priority4);
 
-            var result = pdfCreator.CreateWeekPlan(Tasks.ToList(), priorities, firstDayOfWeek);
+            var result = pdfCreator.CreateWeekPlan(Tasks.ToList(), Appointments.ToList(), priorities, firstDayOfWeek);
             if (result != null)
             {
                 toastService.ShowSuccess("Pdf document was created");
