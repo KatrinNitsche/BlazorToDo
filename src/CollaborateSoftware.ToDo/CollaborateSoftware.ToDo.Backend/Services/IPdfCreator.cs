@@ -11,5 +11,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         Task<bool> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek);
         Task<bool> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth);
         Task<bool> CreateYearPlan(DateTime firstDayofYear);
+        Task<bool> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle);
     }
 }

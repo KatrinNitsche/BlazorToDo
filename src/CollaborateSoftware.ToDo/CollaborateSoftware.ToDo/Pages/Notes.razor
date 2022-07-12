@@ -41,6 +41,14 @@ else
                 </nav>
             }
 
+            <span class="mr-1">
+                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { ShowPdfNotesCreationDialog(); }">
+                    <span class="material-icons">
+                        description
+                    </span>
+                </button>
+            </span>
+
             <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
         </div>
     </div>
@@ -135,4 +143,5 @@ else
 
     <CollaborateSoftware.MyLittleHelpers.Components.AddNoteDialog @ref="AddNoteDialog" CloseEventCallback="AddNotentryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddNoteDialog>
     <CollaborateSoftware.MyLittleHelpers.Components.EditNoteDialog @ref="EditNoteDialog" CloseEventCallback="AddNotentryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditNoteDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.PdfNotesCreationDialog @ref="PdfNotesCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfNotesCreationDialog>
 }

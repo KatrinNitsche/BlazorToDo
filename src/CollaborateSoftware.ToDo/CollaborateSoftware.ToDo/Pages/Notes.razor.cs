@@ -31,6 +31,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         protected AddNoteDialog AddNoteDialog { get; set; }
         protected EditNoteDialog EditNoteDialog { get; set; }
+        protected PdfNotesCreationDialog PdfNotesCreationDialog { get; set; }
 
         protected void AddToDoEntry()
         {
@@ -40,6 +41,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         protected void EditToDoEntry(int id)
         {
             EditNoteDialog.Show(id);
+        }
+
+        protected void ShowPdfNotesCreationDialog()
+        {
+            PdfNotesCreationDialog.Show();
         }
 
         public async void AddNotentryDialog_OnDialogClose()

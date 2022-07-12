@@ -138,6 +138,35 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Properties {
         ///&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
         ///&lt;head&gt;
         ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///    &lt;title&gt;Notes&lt;/title&gt;
+        ///    &lt;style&gt;
+        ///        .headline {
+        ///            background-color: #ede8da;
+        ///            border-radius: 5px;
+        ///            border: 1px solid black;
+        ///            padding: 5px;
+        ///            margin: 5px;
+        ///            text-align: center;
+        ///            font-size: xx-large;
+        ///        }
+        ///
+        ///        .note {
+        ///            background-color: #ebcead;
+        ///            border-radius: 5px;
+        ///       [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Notes {
+            get {
+                return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+        ///
+        ///&lt;html lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///&lt;head&gt;
+        ///    &lt;meta charset=&quot;utf-8&quot; /&gt;
         ///    &lt;title&gt;Daily Overview&lt;/title&gt;
         ///    &lt;style&gt;
         ///

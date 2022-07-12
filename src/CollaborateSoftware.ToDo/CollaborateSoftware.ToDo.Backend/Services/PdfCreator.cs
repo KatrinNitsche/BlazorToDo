@@ -11,6 +11,33 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public class PdfCreator : IPdfCreator
     {
+        public async Task<bool> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle)
+        {
+            try
+            {
+                var filePath = @"C:\tmp\notes.pdf";
+                var html = GetHtmlCodeForNotes(notesEntries, notesTitle);
+
+                var pdf = Pdf
+                    .From(html)
+                    .OfSize(PaperSize.A4)
+                    .WithTitle("Title")
+                    .WithoutOutline()
+                    .WithMargins(1.25.Centimeters())
+                    .Portrait()
+                    .Comressed()
+                    .Content();
+
+                await File.WriteAllBytesAsync(filePath, pdf);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
         {
             try
@@ -117,6 +144,26 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             {
                 return false;
             }
+        }
+
+        private string GetHtmlCodeForNotes(List<NotesEntry> notesEntries, string notesTitle)
+        {
+            string htmlCode = string.Empty;
+            htmlCode = Properties.Resources.Notes;
+
+            var notesDiv = string.Empty;
+            foreach (var note in notesEntries)
+            {
+                notesDiv += "<div class='note'>";
+                notesDiv += $"<h2>{note.Title}</h2>";
+                notesDiv += $"<p>{note.Text} </p>";
+                notesDiv += "</div>";
+                notesDiv += Environment.NewLine;
+            }
+
+            htmlCode = htmlCode.Replace("{notes}", notesDiv);
+            htmlCode = htmlCode.Replace("{notes-title}", notesTitle);
+            return htmlCode;
         }
 
         private string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)

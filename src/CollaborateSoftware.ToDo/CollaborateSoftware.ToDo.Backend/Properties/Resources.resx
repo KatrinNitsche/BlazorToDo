@@ -124,6 +124,9 @@
   <data name="Monthly" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\pdftemplates\monthly.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="Notes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\pdftemplates\notes.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="Weekly" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\pdftemplates\weekly.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
