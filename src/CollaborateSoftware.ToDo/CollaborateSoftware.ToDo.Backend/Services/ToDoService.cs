@@ -22,12 +22,60 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         }
 
         public async Task<IEnumerable<ToDoListEntry>> GetAll() => toDoListentryRepository.GetAll();
+
+        public async Task<List<ToDoListEntry>> GetAll(DateTime from, DateTime to)
+        {
+            var data = toDoListentryRepository.GetAll().ToList();
+            var repeatingTasks = toDoListentryRepository.GetAll().Where(t => t.RepetitionType != RepetitionType.None && t.Done == false).Distinct();
+
+            var result = new List<ToDoListEntry>();
+            foreach (var entry in data)
+            {
+                result.Add(new ToDoListEntry()
+                {
+                    Category = entry.Category,
+                    Date = entry.Date,
+                    Description = entry.Description,
+                    Done = entry.Done,
+                    Id = entry.Id,
+                    Priority = entry.Priority,
+                    RepetitionType = entry.RepetitionType,
+                    Title = entry.Title 
+                });
+            }          
+
+            foreach (var task in repeatingTasks)
+            {
+                if (task.Date > to) continue;
+
+                var nextDate = task.Date;
+                while (nextDate <= to)
+                {
+                    nextDate = GetNextDateFor(nextDate, task.RepetitionType);
+
+                    result.Add(new ToDoListEntry()
+                    {
+                        Category = task.Category,
+                        Date = nextDate,
+                        Description = task.Description,
+                        Done = false,
+                        Id = -1,
+                        Priority = task.Priority,
+                        RepetitionType = task.RepetitionType,
+                        Title = task.Title
+                    });
+                }
+            }
+                        
+            return result.Where(t => t.Date >= from && t.Date <= to).ToList();
+        }
+
         public async Task<ToDoListEntry> GetById(int idNumber) => toDoListentryRepository.GetById(idNumber);
         public async Task<ToDoListEntry> Update(ToDoListEntry toDoListEntry) => toDoListentryRepository.Update(toDoListEntry);
 
         public async Task<ToDoListEntry> Add(ToDoListEntry toDoListEntry)
         {
-            if (toDoListentryRepository.GetAll().Any(t => t.Title == toDoListEntry.Title)) return null;
+            if (toDoListentryRepository.GetAll().Any(t => t.Title == toDoListEntry.Title && t.Done == false)) return null;
 
             toDoListentryRepository.Add(toDoListEntry);
             toDoListentryRepository.Commit();
@@ -53,7 +101,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                         Category = entry.Category
                     };
 
-                    await Add(nextEntry);
+                    await Add(nextEntry);                   
                 }
 
                 toDoListentryRepository.Commit();

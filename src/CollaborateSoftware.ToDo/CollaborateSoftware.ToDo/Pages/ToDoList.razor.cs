@@ -15,7 +15,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public string SearchTerm { get; set; }
         public string SortingColumn { get; set; }
         public string SortingDirection { get; set; } = "Asc";
-        public bool DisplayOnlyTodaysTasks { get; set; }
+        public bool DisplayOnlyTodaysTasks { get; set; } = true;
         public bool DisplayDoneTasks { get; set; }
 
         [Inject]
@@ -57,7 +57,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void AddToDoEntryDialog_OnDialogClose()
         {
-            Tasks = (await service.GetAll());
+            FilterList(SearchTerm);
+            SortByColumn(SortingColumn);
             StateHasChanged();
         }
 
@@ -82,13 +83,26 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void FilterList(string searchTerm)
         {
-            if (string.IsNullOrEmpty(searchTerm))
+            SearchTerm = searchTerm;
+            Tasks = (await service.GetAll());
+
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                Tasks = (await service.GetAll());
+                Tasks = Tasks.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (DisplayOnlyTodaysTasks)
+            {
+                Tasks = Tasks.Where(t => t.Date.Date == System.DateTime.Now.Date);
+            }
+
+            if (DisplayDoneTasks)
+            {
+                Tasks = Tasks.Where(t => t.Done == true);
             }
             else
             {
-                Tasks = Tasks.Where(t => t.Title.ToLower().Contains(searchTerm.ToLower()));
+                Tasks = Tasks.Where(t => t.Done == false);
             }
 
             StateHasChanged();                
@@ -96,7 +110,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void SortByColumn(string columnName)
         {
-            switch(columnName)
+            SortingColumn = columnName;
+            switch(SortingColumn)
             {
                 case "Date":
                     Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Date) : Tasks.OrderByDescending(t => t.Date);
@@ -114,8 +129,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                     Tasks = SortingDirection == "Asc" ? Tasks.OrderBy(t => t.Category?.Name) : Tasks.OrderByDescending(t => t.Category?.Name);
                     break;
             }
-
-            SortingColumn = columnName;
+                       
             SortingDirection = SortingDirection == "Asc" ? "Desc" : "Asc";
             StateHasChanged();
         }
@@ -123,24 +137,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void ShowTasksFromToday()
         {
             DisplayOnlyTodaysTasks = !DisplayOnlyTodaysTasks;
-
-            if (DisplayOnlyTodaysTasks)
-            {
-                Tasks = Tasks.Where(t => t.Date.Date == System.DateTime.Now.Date);
-            }
-            else
-            {
-                Tasks = (await service.GetAll());
-            }
-
-            if (DisplayDoneTasks)
-            {
-                Tasks = Tasks.Where(t => t.Done == true);
-            }
-            else
-            {
-                Tasks = Tasks.Where(t => t.Done == false);
-            }
+            FilterList(SearchTerm);
+            SortByColumn(SortingColumn);
 
             StateHasChanged();
         }

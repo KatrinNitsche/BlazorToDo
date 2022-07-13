@@ -195,7 +195,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return notesDiv;
         }
 
-
         private string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
         {
             var htmlCode = string.Empty;

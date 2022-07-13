@@ -1,4 +1,5 @@
 ﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
     public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAll();
+        Task<IEnumerable<Appointment>> GetAll(DateTime from, DateTime to);
         Task<Appointment> Add(Appointment newTask);       
         Task<Appointment> GetById(int idNumber);
         Task<Appointment> Update(Appointment Appointment);

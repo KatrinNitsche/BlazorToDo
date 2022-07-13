@@ -24,6 +24,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
         public async Task<IEnumerable<Appointment>> GetAll() => appointmentRepository.GetAll();
 
+        public async Task<IEnumerable<Appointment>> GetAll(DateTime from, DateTime to)
+        {
+            var result = appointmentRepository.GetAll();
+
+           // var regularAppointments = result.Where(a => a.re)
+
+            return result;
+        }
+
         public async Task<Appointment> GetById(int idNumber) => appointmentRepository.GetById(idNumber);
 
         public async Task<bool> Remove(int id)
