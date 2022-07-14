@@ -6,3 +6,4 @@ toto list application with Blazor and enityframework backend
 - create PDF sheets for daily, weekly, monthly and yearly overview - including todo's, appointments, notes and priorities
 - manage appointments
 - create categories and assign todo's and appointments
+- repeating todo's
