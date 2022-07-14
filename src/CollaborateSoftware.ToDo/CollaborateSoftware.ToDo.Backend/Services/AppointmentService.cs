@@ -2,6 +2,7 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
@@ -28,9 +29,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         {
             var result = appointmentRepository.GetAll();
 
-           // var regularAppointments = result.Where(a => a.re)
+            // var regularAppointments = result.Where(a => a.re)
 
-            return result;
+            return result.Where(t => t.Date >= from && t.Date <= to).ToList();
         }
 
         public async Task<Appointment> GetById(int idNumber) => appointmentRepository.GetById(idNumber);

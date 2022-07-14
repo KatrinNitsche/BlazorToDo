@@ -31,5 +31,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Helper
             // Subtract 3 days from Thursday to get Monday, which is the first weekday in ISO8601
             return result.AddDays(-3);
         }
+
+        public static DateTime MondayBefore(DateTime date)
+        {
+            if (date.DayOfWeek == DayOfWeek.Monday) return date;
+
+            for (int i = 0; i < 7; i++)
+            {
+                date = date.AddDays(-1);
+                if (date.DayOfWeek == DayOfWeek.Monday) return date;
+            }
+
+            return date;
+        }
     }
 }
