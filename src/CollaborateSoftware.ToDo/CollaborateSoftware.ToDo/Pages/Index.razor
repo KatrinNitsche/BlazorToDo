@@ -39,7 +39,7 @@ Welcome to my collection of apps which help with organizing your life.
                             }
                             else
                             {
-                                <li class="list-group-item list-group-item-dark" @onclick="eventArgs => { ToggleToDoDone(habit.Id); }">
+                                <li class="list-group-item list-group-item-dark pointer" @onclick="eventArgs => { ToggleHabitDone(habit.Id); }">
                                     <div class="ms-2 me-auto">
                                         <div class="fw-bold">
                                             <span class="material-icons" style="color: @habit.Category?.Color">
@@ -78,13 +78,69 @@ Welcome to my collection of apps which help with organizing your life.
                         {
                             @foreach (var task in Tasks)
                             {
+                                if (task.Done)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold">
+                                                <span class="material-icons" style="color: @task.Category?.Color">
+                                                    @task.Category?.Icon
+                                                </span>
+                                                <span>@task.Title</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item bg-secondary"  @onclick="eventArgs => { ToggleToDotDone(task.Id); }">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold">
+                                                <span class="material-icons" style="color: @task.Category?.Color">
+                                                    @task.Category?.Icon
+                                                </span>
+                                                <span>@task.Title</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">
+                                        <span>No to do's to display</span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+    }
+
+    @if (AppointmentList != null)
+    {
+        <div class="card m-3" style="width: 25rem;">
+            <div class="card-body">
+                <h5 class="card-title">Todays Appointment's</h5>
+                <p class="card-text">
+                    <ul class="list-group">
+                        @if (Tasks.Count() > 0)
+                        {
+                            @foreach (var appointment in AppointmentList)
+                            {
                                 <li class="list-group-item">
                                     <div class="ms-2 me-auto">
                                         <div class="fw-bold">
-                                            <span class="material-icons" style="color: @task.Category?.Color">
-                                                @task.Category?.Icon
+                                            <span class="material-icons" style="color: @appointment.Category?.Color">
+                                                @appointment.Category?.Icon
                                             </span>
-                                            <span>@task.Title</span>
+                                            <span>@appointment.Title (@appointment.Date.ToShortTimeString())</span>
                                         </div>
                                     </div>
                                 </li>
@@ -104,6 +160,5 @@ Welcome to my collection of apps which help with organizing your life.
                 </p>
             </div>
         </div>
-
     }
 </div>

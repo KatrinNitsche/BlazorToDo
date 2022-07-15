@@ -29,15 +29,28 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public IEnumerable<ToDoListEntry> Tasks { get; set; }
 
         [Inject]
-        public IToDoService service { get; set; }
+        public IToDoService todoService { get; set; }
+
+        #endregion
+
+        #region appointments
+
+        public IEnumerable<Appointment> AppointmentList { get; set; }
+
+        [Inject]
+        public IAppointmentService service { get; set; }
 
         #endregion
 
         protected async override Task OnInitializedAsync()
         {
             await LoadHabits();
-            Tasks = (await service.GetAll());
+
+            Tasks = (await todoService.GetAll());
             Tasks = Tasks.Where(t => t.Date.Date == DateTime.Now.Date);
+
+            AppointmentList = (await service.GetAll());
+            AppointmentList = AppointmentList.Where(a => a.Date.Date == DateTime.Now.Date);
         }
 
         private async Task LoadHabits()
@@ -79,7 +92,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             return HabitStates[habitId][index];
         }
 
-        public async void ToggleToDoDone(int id)
+        public async void ToggleHabitDone(int id)
         {
             var result = habitService.DoneToday(id);
             if (result)
@@ -91,6 +104,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 toastService.ShowError("Error while trying to delete the entry.");
             }
 
+            HabitList = (await habitService.GetAll());
+            StateHasChanged();
+        }
+
+        public async void ToggleToDotDone(int id)
+        {
+            todoService.ToggleDone(id);
             HabitList = (await habitService.GetAll());
             StateHasChanged();
         }
