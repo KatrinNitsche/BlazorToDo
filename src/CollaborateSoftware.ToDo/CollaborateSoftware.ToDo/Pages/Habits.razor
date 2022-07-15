@@ -1,0 +1,121 @@
+﻿@page "/habits"
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Habits</li>
+    </ol>
+</nav>
+
+<h1>Habits</h1>
+
+@if (HabitList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+        <input id="search-term" class="form-control ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+    </div>
+
+    @if (HabitList.Count() > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th @onclick="@(() => SortByColumn("Category"))">
+                        @if (SortingColumn == "Category")
+                        {
+                            <span class="material-icons">
+                                sort
+                            </span>
+                        }
+                        <span>Category</span>
+                    </th>
+                    <th @onclick="@(() => SortByColumn("Title"))">
+                        @if (SortingColumn == "Title")
+                        {
+                            <span class="material-icons">
+                                sort
+                            </span>
+                        }
+                        <span>Title</span>
+                    </th>
+                    <th><span>Done Today</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var habit in HabitList)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex" style="background-color: @habit.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <span class="material-icons">
+                                    @habit.Category?.Icon
+                                </span>
+                                <span class="ml-5">
+                                    @habit.Category?.Name
+                                </span>
+                            </div>
+                        </td>
+                        <td>@habit.Title</td>
+                        <td>
+                            @if (habit.DoneToday())
+                            {
+                                <input class="form-check-input" type="checkbox" id="doneCheckChecked" checked readonly>
+                            }
+                            else
+                            {
+                                <input class="form-check-input" type="checkbox" id="doneCheckChecked" readonly>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="entry-actions">
+                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(habit.Id); }">
+                                    <span class="material-icons">
+                                        edit_calendar
+                                    </span>
+                                </button>
+
+                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteEntry(habit.Id); }">
+                                    <span class="material-icons">
+                                        delete
+                                    </span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No entries to display.
+        </div>
+    }
+
+    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+
+        <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+            <span class="material-icons">
+                note_add
+            </span>
+        </button>
+
+        <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+    </div>
+
+    <CollaborateSoftware.MyLittleHelpers.Components.AddHabitDialog @ref="AddHabitDialog" CloseEventCallback="AddEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddHabitDialog>
+    <CollaborateSoftware.MyLittleHelpers.Components.EditHabitDialog @ref="EditHabitDialog" CloseEventCallback="AddEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditHabitDialog>
+}

@@ -15,5 +15,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<NotesEntry> Notes { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+
+        public DbSet<Habit> Habits { get; set; }
     }
 }

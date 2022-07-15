@@ -6,23 +6,104 @@
 Welcome to my collection of apps which help with organizing your life.
 
 <hr />
-
 <div class="d-flex justify-items-start">
-    <div class="card m-3" style="width: 18rem;">
-        <img src="/images/TaskListScreenshot.jpg" class="card-img-top m-3" style="width: 15rem;" alt="to list screenshot">
-        <div class="card-body">
-            <h5 class="card-title">Task List</h5>
-            <p class="card-text">Manage your task list.</p>
-            <a href="/todolist" class="btn btn-primary">Try app</a>
-        </div>
-    </div>
+    @if (HabitStates != null && HabitStates.Count() > 0)
+    {
 
-    <div class="card m-3" style="width: 18rem;">
-        <img src="/images/CalendarScreenshot.jpg" class="card-img-top m-3" style="width: 15rem;" alt="calendar screenshot">
-        <div class="card-body">
-            <h5 class="card-title">Calendar Generator</h5>
-            <p class="card-text">Generate a calendar</p>
-            <a href="/calendar" class="btn btn-primary">Try app</a>
+        <div class="card m-3" style="width: 25rem;">
+            <div class="card-body">
+                <h5 class="card-title">Daily Habits</h5>
+                <p class="card-text">
+                    <ul class="list-group">
+                        @foreach (var habit in HabitList)
+                        {
+                            @if (habit.DoneToday())
+                            {
+                                <li class="list-group-item">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">
+                                            <span class="material-icons" style="color: @habit.Category?.Color">
+                                                @habit.Category?.Icon
+                                            </span>
+                                            <span>@habit.Title</span>
+                                        </div>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item list-group-item-dark" @onclick="eventArgs => { ToggleToDoDone(habit.Id); }">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">
+                                            <span class="material-icons" style="color: @habit.Category?.Color">
+                                                @habit.Category?.Icon
+                                            </span>
+                                            <span>@habit.Title</span>
+                                        </div>
+
+                                        <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
+                                        <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
+                                    </div>
+                                </li>
+                            }
+
+                        }
+                    </ul>
+                </p>
+            </div>
         </div>
-    </div>
+
+    }
+
+    @if (Tasks != null)
+    {
+        <div class="card m-3" style="width: 25rem;">
+            <div class="card-body">
+                <h5 class="card-title">Todays ToDo's</h5>
+                <p class="card-text">
+                    <ul class="list-group">
+                        @if (Tasks.Count() > 0)
+                        {
+                            @foreach (var task in Tasks)
+                            {
+                                <li class="list-group-item">
+                                    <div class="ms-2 me-auto">
+                                        <div class="fw-bold">
+                                            <span class="material-icons" style="color: @task.Category?.Color">
+                                                @task.Category?.Icon
+                                            </span>
+                                            <span>@task.Title</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">
+                                        <span>No to do's to display</span>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </p>
+            </div>
+        </div>
+
+    }
 </div>
