@@ -2,6 +2,7 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
