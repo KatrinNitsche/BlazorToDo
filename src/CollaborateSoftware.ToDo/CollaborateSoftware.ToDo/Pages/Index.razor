@@ -6,159 +6,167 @@
 Welcome to my collection of apps which help with organizing your life.
 
 <hr />
-<div class="d-flex justify-items-start">
-    @if (HabitStates != null && HabitStates.Count() > 0)
-    {
 
-        <div class="card m-3" style="width: 25rem;">
-            <div class="card-body">
-                <h5 class="card-title">Daily Habits</h5>
-                <p class="card-text">
-                    <ul class="list-group">
-                        @foreach (var habit in HabitList)
-                        {
-                            @if (habit.DoneToday())
-                            {
-                                <li class="list-group-item">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">
-                                            <span class="material-icons" style="color: @habit.Category?.Color">
-                                                @habit.Category?.Icon
-                                            </span>
-                                            <span>@habit.Title</span>
-                                        </div>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
-                                    </div>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item list-group-item-dark pointer" @onclick="eventArgs => { ToggleHabitDone(habit.Id); }">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">
-                                            <span class="material-icons" style="color: @habit.Category?.Color">
-                                                @habit.Category?.Icon
-                                            </span>
-                                            <span>@habit.Title</span>
-                                        </div>
+<AuthorizeView>
+    <Authorized>
+        <div class="d-flex justify-items-start">
+            @if (HabitStates != null && HabitStates.Count() > 0)
+            {
 
-                                        <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
-                                        <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
-                                    </div>
-                                </li>
-                            }
+                <div class="card m-3" style="width: 25rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Daily Habits</h5>
+                        <p class="card-text">
+                            <ul class="list-group">
+                                @foreach (var habit in HabitList)
+                                {
+                                    @if (habit.DoneToday())
+                                    {
+                                        <li class="list-group-item">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    <span class="material-icons" style="color: @habit.Category?.Color">
+                                                        @habit.Category?.Icon
+                                                    </span>
+                                                    <span>@habit.Title</span>
+                                                </div>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="list-group-item list-group-item-dark pointer" @onclick="eventArgs => { ToggleHabitDone(habit.Id); }">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    <span class="material-icons" style="color: @habit.Category?.Color">
+                                                        @habit.Category?.Icon
+                                                    </span>
+                                                    <span>@habit.Title</span>
+                                                </div>
 
-                        }
-                    </ul>
-                </p>
-            </div>
-        </div>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 0) rounded-pill">Mo</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 1) rounded-pill">Tu</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 2) rounded-pill">We</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 3) rounded-pill">Th</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 4) rounded-pill">Fr</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 5) rounded-pill">Sa</span>
+                                                <span class="badge bg-@ColourForDay(habit.Id, 6) rounded-pill">Su</span>
+                                            </div>
+                                        </li>
+                                    }
 
-    }
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
 
-    @if (Tasks != null)
-    {
-        <div class="card m-3" style="width: 25rem;">
-            <div class="card-body">
-                <h5 class="card-title">Todays ToDo's</h5>
-                <p class="card-text">
-                    <ul class="list-group">
-                        @if (Tasks.Count() > 0)
-                        {
-                            @foreach (var task in Tasks)
-                            {
-                                if (task.Done)
+            }
+
+            @if (Tasks != null)
+            {
+                <div class="card m-3" style="width: 25rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Todays ToDo's</h5>
+                        <p class="card-text">
+                            <ul class="list-group">
+                                @if (Tasks.Count() > 0)
+                                {
+                                    @foreach (var task in Tasks)
+                                    {
+                                        if (task.Done)
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">
+                                                        <span class="material-icons" style="color: @task.Category?.Color">
+                                                            @task.Category?.Icon
+                                                        </span>
+                                                        <span>@task.Title</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="list-group-item bg-secondary" @onclick="eventArgs => { ToggleToDotDone(task.Id); }">
+                                                <div class="ms-2 me-auto">
+                                                    <div class="fw-bold">
+                                                        <span class="material-icons" style="color: @task.Category?.Color">
+                                                            @task.Category?.Icon
+                                                        </span>
+                                                        <span>@task.Title</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                else
                                 {
                                     <li class="list-group-item">
                                         <div class="ms-2 me-auto">
                                             <div class="fw-bold">
-                                                <span class="material-icons" style="color: @task.Category?.Color">
-                                                    @task.Category?.Icon
-                                                </span>
-                                                <span>@task.Title</span>
+                                                <span>No to do's to display</span>
                                             </div>
                                         </div>
                                     </li>
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+            }
+
+            @if (AppointmentList != null)
+            {
+                <div class="card m-3" style="width: 25rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Todays Appointment's</h5>
+                        <p class="card-text">
+                            <ul class="list-group">
+                                @if (Tasks.Count() > 0)
+                                {
+                                    @foreach (var appointment in AppointmentList)
+                                    {
+                                        <li class="list-group-item">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    <span class="material-icons" style="color: @appointment.Category?.Color">
+                                                        @appointment.Category?.Icon
+                                                    </span>
+                                                    <span>@appointment.Title (@appointment.Date.ToShortTimeString())</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
                                 }
                                 else
                                 {
-                                    <li class="list-group-item bg-secondary"  @onclick="eventArgs => { ToggleToDotDone(task.Id); }">
+                                    <li class="list-group-item">
                                         <div class="ms-2 me-auto">
                                             <div class="fw-bold">
-                                                <span class="material-icons" style="color: @task.Category?.Color">
-                                                    @task.Category?.Icon
-                                                </span>
-                                                <span>@task.Title</span>
+                                                <span>No to do's to display</span>
                                             </div>
                                         </div>
                                     </li>
                                 }
-                            }
-                        }
-                        else
-                        {
-                            <li class="list-group-item">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold">
-                                        <span>No to do's to display</span>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </p>
-            </div>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            }
         </div>
-
-    }
-
-    @if (AppointmentList != null)
-    {
-        <div class="card m-3" style="width: 25rem;">
-            <div class="card-body">
-                <h5 class="card-title">Todays Appointment's</h5>
-                <p class="card-text">
-                    <ul class="list-group">
-                        @if (Tasks.Count() > 0)
-                        {
-                            @foreach (var appointment in AppointmentList)
-                            {
-                                <li class="list-group-item">
-                                    <div class="ms-2 me-auto">
-                                        <div class="fw-bold">
-                                            <span class="material-icons" style="color: @appointment.Category?.Color">
-                                                @appointment.Category?.Icon
-                                            </span>
-                                            <span>@appointment.Title (@appointment.Date.ToShortTimeString())</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="list-group-item">
-                                <div class="ms-2 me-auto">
-                                    <div class="fw-bold">
-                                        <span>No to do's to display</span>
-                                    </div>
-                                </div>
-                            </li>
-                        }
-                    </ul>
-                </p>
-            </div>
-        </div>
-    }
-</div>
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">Register or Log In to use the application.</p>
+    </NotAuthorized>
+</AuthorizeView>

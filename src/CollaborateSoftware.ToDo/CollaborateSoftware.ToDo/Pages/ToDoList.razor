@@ -1,227 +1,235 @@
 ﻿@page "/todolist"
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">ToDo List</li>
-    </ol>
-</nav>
+<AuthorizeView>
+    <Authorized>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">ToDo List</li>
+            </ol>
+        </nav>
 
-<h1>ToDo List</h1>
+        <h1>ToDo List</h1>
 
-@if (Tasks == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
+        @if (Tasks == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
 
-    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+            <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
 
-        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
-
-        <div class="d-flex w-25">
-
-            <span class="mr-1">
-                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
                     <span class="material-icons">
-                        description
+                        note_add
                     </span>
                 </button>
-            </span>
 
-            <span class="mr-1">
-                <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
-                    <span class="material-icons">
-                        sim_card_download
+                <div class="d-flex w-25">
+
+                    <span class="mr-1">
+                        <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                            <span class="material-icons">
+                                description
+                            </span>
+                        </button>
                     </span>
-                </button>
-            </span>
 
-            <span class="mr-1">
-                @if (DisplayDoneTasks)
-                {
-                    <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
-                        <span class="material-icons">
-                            done
-                        </span>
-                    </button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
-                        <span class="material-icons">
-                            remove_done
-                        </span>
-                    </button>
-                }
-            </span>
-            <span class="mr-1">
-                @if (DisplayOnlyTodaysTasks)
-                {
-                    <button type="button" class="btn btn-info" title="Show all tasks" @onclick="eventArgs => { ShowTasksFromToday(); }">
-                        <span class="material-icons">
-                            list
-                        </span>
-                    </button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-info" title="Show tasks due do today" @onclick="eventArgs => { ShowTasksFromToday(); }">
-                        <span class="material-icons">
-                            calendar_today
-                        </span>
-                    </button>
-                }
-            </span>
+                    <span class="mr-1">
+                        <button type="button" class="btn btn-primary" title="Export tasks" @onclick="eventArgs => { ShowExportDialog(); }">
+                            <span class="material-icons">
+                                sim_card_download
+                            </span>
+                        </button>
+                    </span>
 
-            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-        </div>
-    </div>
-    
-    @if (Tasks.Count() > 0)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th @onclick="@(() => SortByColumn("Category"))">
-                        @if (SortingColumn == "Category")
+                    <span class="mr-1">
+                        @if (DisplayDoneTasks)
                         {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Category</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Date"))">
-                        @if (SortingColumn == "Date")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Date</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Priority"))">
-                        @if (SortingColumn == "Priority")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Priority</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Title"))">
-                        @if (SortingColumn == "Title")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Title</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Done"))">
-                        @if (SortingColumn == "Done")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Done</span>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var task in Tasks)
-                {
-                    <tr>
-                        <td>
-                            <div class="d-flex" style="background-color: @task.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                            <button type="button" class="btn btn-info" title="Show not done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
                                 <span class="material-icons">
-                                    @task.Category?.Icon
+                                    done
                                 </span>
-                                <span class="ml-5">
-                                    @task.Category?.Name
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-info" title="Show done tasks" @onclick="eventArgs => { ShowTasksDone(); }">
+                                <span class="material-icons">
+                                    remove_done
                                 </span>
-                            </div>
-                        </td>
-                        <td>@task.Date.ToShortDateString()</td>
-                        <td>
-                            @switch (task.Priority)
-                            {
-                                case Backend.Data.Priority.Low:
-                                    <span class="material-icons">
-                                        low_priority
-                                    </span>
-                                    break;
-                                case Backend.Data.Priority.Middle:
-                                    <span class="material-icons">
-                                        list
-                                    </span>
-                                    break;
-                                case Backend.Data.Priority.High:
-                                    <span class="material-icons">
-                                        priority_high
-                                    </span>
-                                    break;
-                            }
+                            </button>
+                        }
+                    </span>
+                    <span class="mr-1">
+                        @if (DisplayOnlyTodaysTasks)
+                        {
+                            <button type="button" class="btn btn-info" title="Show all tasks" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                                <span class="material-icons">
+                                    list
+                                </span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-info" title="Show tasks due do today" @onclick="eventArgs => { ShowTasksFromToday(); }">
+                                <span class="material-icons">
+                                    calendar_today
+                                </span>
+                            </button>
+                        }
+                    </span>
 
-                        </td>
-                        <td>@task.Title</td>
-                        <td>
-                            <div class="form-check form-switch">
-                                @if (task.Done)
+                    <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                </div>
+            </div>
+
+            @if (Tasks.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th @onclick="@(() => SortByColumn("Category"))">
+                                @if (SortingColumn == "Category")
                                 {
-                                    <input class="form-check-input" type="checkbox" id="doneCheckChecked" checked @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
                                 }
-                                else
+                                <span>Category</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Date"))">
+                                @if (SortingColumn == "Date")
                                 {
-                                    <input class="form-check-input" type="checkbox" id="doneCheckChecked" @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
                                 }
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="entry-actions">
-                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(task.Id); }">
+                                <span>Date</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Priority"))">
+                                @if (SortingColumn == "Priority")
+                                {
                                     <span class="material-icons">
-                                        edit_calendar
+                                        sort
                                     </span>
-                                </button>
-
-                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteToDoEntry(task.Id); }">
+                                }
+                                <span>Priority</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Title"))">
+                                @if (SortingColumn == "Title")
+                                {
                                     <span class="material-icons">
-                                        delete
+                                        sort
                                     </span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-info" role="alert">
-            No entries to display.
-        </div>
-    }
+                                }
+                                <span>Title</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Done"))">
+                                @if (SortingColumn == "Done")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Done</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in Tasks)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex" style="background-color: @task.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                                        <span class="material-icons">
+                                            @task.Category?.Icon
+                                        </span>
+                                        <span class="ml-5">
+                                            @task.Category?.Name
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>@task.Date.ToShortDateString()</td>
+                                <td>
+                                    @switch (task.Priority)
+                                    {
+                                        case Backend.Data.Priority.Low:
+                                            <span class="material-icons">
+                                                low_priority
+                                            </span>
+                                            break;
+                                        case Backend.Data.Priority.Middle:
+                                            <span class="material-icons">
+                                                list
+                                            </span>
+                                            break;
+                                        case Backend.Data.Priority.High:
+                                            <span class="material-icons">
+                                                priority_high
+                                            </span>
+                                            break;
+                                    }
 
-    <div class="border border-dark p-2 bg-light">
-        <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
-    </div>
+                                </td>
+                                <td>@task.Title</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        @if (task.Done)
+                                        {
+                                            <input class="form-check-input" type="checkbox" id="doneCheckChecked" checked @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" type="checkbox" id="doneCheckChecked" @onchange="eventArgs => { ToggleToDoDone(task.Id, eventArgs.Value); }">
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="entry-actions">
+                                        <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditToDoEntry(task.Id); }">
+                                            <span class="material-icons">
+                                                edit_calendar
+                                            </span>
+                                        </button>
 
-    <CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog>
-    <CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog>
-    <CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog @ref="ExportToDosDialog"></CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog>
-    <CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog @ref="PdfCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog>
-}
+                                        <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteToDoEntry(task.Id); }">
+                                            <span class="material-icons">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    No entries to display.
+                </div>
+            }
+
+            <div class="border border-dark p-2 bg-light">
+                <button @onclick="AddToDoEntry" class="btn btn-primary quick-add-btn">
+                    <span class="material-icons">
+                        note_add
+                    </span>
+                </button>
+            </div>
+
+            <CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog @ref="@AddToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddToDoEntryDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog @ref="@EditToDoEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditToDoEntryDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog @ref="ExportToDosDialog"></CollaborateSoftware.MyLittleHelpers.Components.ExportToDosDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog @ref="PdfCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">You are not authorixed to see this page.</p>
+    </NotAuthorized>
+</AuthorizeView>

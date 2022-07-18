@@ -4,13 +4,30 @@
     <NavMenu />
 </div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+<AuthorizeView>
+    <Authorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="\identity\account\logout" target="_blank">LogOut</a>
+            </div>
 
-    <div class="content px-4">
-        <BlazoredToasts />
-        @Body
-    </div>
-</div>
+            <div class="content px-4">
+                <BlazoredToasts />
+                @Body
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="\identity\account\login" target="_blank">Login</a>
+                <a href="\identity\account\register" target="_blank">Register</a>
+            </div>
+
+            <div class="content px-4">
+                <BlazoredToasts />
+                @Body
+            </div>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>

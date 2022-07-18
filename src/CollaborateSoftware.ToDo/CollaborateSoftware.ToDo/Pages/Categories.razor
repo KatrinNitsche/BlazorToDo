@@ -1,97 +1,105 @@
 ﻿@page "/categories"
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Categories</li>
-    </ol>
-</nav>
+    <AuthorizeView>
+        <Authorized>
 
-<h1>Categories</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                </ol>
+            </nav>
 
-@if (CategoryList == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
+            <h1>Categories</h1>
 
-    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+            @if (CategoryList == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
 
-        <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
+                <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
 
-    </div>
+                    <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
+                        <span class="material-icons">
+                            note_add
+                        </span>
+                    </button>
 
-    @if (CategoryList.Count() > 0)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th @onclick="@(() => SortByColumn("Name"))">
-                        @if (SortingColumn == "Name")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Name</span>
-                    </th>
-                    <th>Colour</th>
-                    <th>Icon</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var category in CategoryList)
+                </div>
+
+                @if (CategoryList.Count() > 0)
                 {
-                    <tr>
-                        <td>@category.Name</td>
-                        <td><div style="background-color: @category.Color; height: 35px; width: 35px; border: 1px solid black"></div></td>
-                        <td>
-                            <span class="material-icons">
-                                @category.Icon
-                            </span>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="entry-actions">
-                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditCategory(category.Id); }">
-                                    <span class="material-icons">
-                                        edit_calendar
-                                    </span>
-                                </button>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th @onclick="@(() => SortByColumn("Name"))">
+                                    @if (SortingColumn == "Name")
+                                    {
+                                        <span class="material-icons">
+                                            sort
+                                        </span>
+                                    }
+                                    <span>Name</span>
+                                </th>
+                                <th>Colour</th>
+                                <th>Icon</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in CategoryList)
+                            {
+                                <tr>
+                                    <td>@category.Name</td>
+                                    <td><div style="background-color: @category.Color; height: 35px; width: 35px; border: 1px solid black"></div></td>
+                                    <td>
+                                        <span class="material-icons">
+                                            @category.Icon
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="entry-actions">
+                                            <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditCategory(category.Id); }">
+                                                <span class="material-icons">
+                                                    edit_calendar
+                                                </span>
+                                            </button>
 
-                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteCategory(category.Id); }">
-                                    <span class="material-icons">
-                                        delete
-                                    </span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                                            <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteCategory(category.Id); }">
+                                                <span class="material-icons">
+                                                    delete
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-info" role="alert">
-            No entries to display.
-        </div>
-    }
+                else
+                {
+                    <div class="alert alert-info" role="alert">
+                        No entries to display.
+                    </div>
+                }
 
-    <div class="border border-dark p-2 bg-light">
-        <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
-    </div>
-}
+                <div class="border border-dark p-2 bg-light">
+                    <button @onclick="AddCategory" class="btn btn-primary quick-add-btn">
+                        <span class="material-icons">
+                            note_add
+                        </span>
+                    </button>
+                </div>
+            }
 
 
-<CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog @ref="@AddCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog>
-<CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog @ref="@EditCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog @ref="@AddCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddCategoryDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog @ref="@EditCategoryDialog" CloseEventCallback="@AddCategoryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditCategoryDialog>
+        </Authorized>
+        <NotAuthorized>
+            <p role="status">Register or Log In to use the application.</p>
+        </NotAuthorized>
+    </AuthorizeView>
