@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 {
-    public class ToDoListEntry
+    public class ToDoListEntry : BaseEntry
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public DateTime Date { get; set; }
         

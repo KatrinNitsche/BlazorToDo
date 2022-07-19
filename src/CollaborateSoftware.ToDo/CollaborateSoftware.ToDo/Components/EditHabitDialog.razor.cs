@@ -2,6 +2,9 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,11 +29,25 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         [Parameter]
         public EventCallback<bool> CloseEventCallback { get; set; }
 
+        #region user
+
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
+        #endregion
+
         public string CurrentCategoryId { get; set; }
 
         public async void Show()
         {
-            CategoryList = await categoryService.GetAll();
+            var userId = await GetCurrentUserId();
+            CategoryList = await categoryService.GetAll(userId);
             CurrentCategoryId = CategoryList.FirstOrDefault(c => c.Name == "None")?.Id.ToString();
             ResetDialog();
             ShowDialog = true;
@@ -39,7 +56,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         public async void Show(int id)
         {
-            CategoryList = (await categoryService.GetAll());
+            var userId = await GetCurrentUserId();
+            CategoryList = (await categoryService.GetAll(userId));
             Habit = await service.GetById(id);
             if (Habit.Category == null)
             {
@@ -65,6 +83,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         protected async Task HandleValidSubmit()
         {
             Habit.Category = CategoryList.FirstOrDefault(c => c.Id == int.Parse(CurrentCategoryId));
+            Habit.Updated = DateTime.Now;
             var result = await service.Update(Habit);
             if (result != null)
             {
@@ -78,6 +97,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             {
                 toastService.ShowError("Unable to add entry.");
             }
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

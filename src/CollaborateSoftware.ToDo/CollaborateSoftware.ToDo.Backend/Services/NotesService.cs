@@ -23,7 +23,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return newNote;
         }
 
-        public async Task<IEnumerable<NotesEntry>> GetAll() => notesRepository.GetAll();
+        public async Task<IEnumerable<NotesEntry>> GetAll(Guid userId) => notesRepository.GetAll().Where(x => x.UserId == userId);
 
         public async Task<NotesEntry> GetById(int idNumber) => notesRepository.GetById(idNumber);
 

@@ -2,9 +2,10 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
-using CollaborateSoftware.MyLittleHelpers.Components;
 using CollaborateSoftware.MyLittleHelpers.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using PublicHoliday;
 using System;
 using System.Collections.Generic;
@@ -32,20 +33,31 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         [Inject]
         public IToastService toastService { get; set; }
 
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
         protected DateTime CurrentDate { get; set; } = DateTime.Now.Date;
 
         public async void SelectCurrentDate(DateTime newDate)
         {
             CurrentDate = newDate;
-            Tasks = (await totoService.GetAll(CurrentDate, CurrentDate));
-            AppointmentList = (await service.GetAll(CurrentDate, CurrentDate));
+            var userId = await GetCurrentUserId();
+            Tasks = (await totoService.GetAll(userId, CurrentDate, CurrentDate));
+            AppointmentList = (await service.GetAll(userId, CurrentDate, CurrentDate));
         }
 
         public async void CreateCalendar()
         {
             LoadHolidaysForDateRange();
             CalendarData = new List<CalendarEntry>();
-            Tasks = (await totoService.GetAll(CurrentDate, CurrentDate));
+            var userId = await GetCurrentUserId();
+            Tasks = (await totoService.GetAll(userId, CurrentDate, CurrentDate));
             if (TimeSpanIsValid())
             {               
 
@@ -97,6 +109,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         private void LoadHolidaysForDateRange()
         {
             Holidays = new UKBankHoliday().PublicHolidays(FromDate.Year);
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

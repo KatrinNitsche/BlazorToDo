@@ -1,0 +1,10 @@
+﻿Drop table AspNetUserLogins
+Drop table AspNetUserRoles
+Drop table AspNetUsers
+Drop table AspNetUserTokens
+Drop table BudgetEntries
+Drop table Category
+Drop table HabitDone
+Drop table Habits
+Drop table Notes
+Drop table ToDoList

@@ -1,193 +1,201 @@
 ﻿@page "/appointments"
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Appointments</li>
-    </ol>
-</nav>
+<AuthorizeView>
+    <Authorized>
 
-<h1>Appointments</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Appointments</li>
+            </ol>
+        </nav>
 
-@if (AppointmentList == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
+        <h1>Appointments</h1>
 
-    <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+        @if (AppointmentList == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
 
-        <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
+            <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
 
-        <div class="d-flex w-75">
-            <span class="mr-1">
-                <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
                     <span class="material-icons">
-                        description
+                        note_add
                     </span>
                 </button>
-            </span>
 
-            <span class="mr-1">
-                @if (DisplayOnlyTodaysEntries)
-                {
-                    <button type="button" class="btn btn-info" title="Show all" @onclick="eventArgs => { ShowEntriesFromToday(); }">
-                        <span class="material-icons">
-                            list
-                        </span>
-                    </button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-info" title="Show today" @onclick="eventArgs => { ShowEntriesFromToday(); }">
-                        <span class="material-icons">
-                            calendar_today
-                        </span>
-                    </button>
-                }
-            </span>
+                <div class="d-flex w-75">
+                    <span class="mr-1">
+                        <button type="button" class="btn btn-primary" title="Create Pdf document" @onclick="eventArgs => { PdfExport(); }">
+                            <span class="material-icons">
+                                description
+                            </span>
+                        </button>
+                    </span>
 
-            @if (CategoryList != null && CategoryList.Count() > 1)
-            {
-                <span class="w-50 mr-1">
-                    <select id="Category" class="form-control" value="@CurrentCategoryId" @onchange="eventArgs => { FilterByCategory(eventArgs.Value.ToString()); }">
-                        <option value="">All</option>
-                        @foreach (var category in CategoryList)
+                    <span class="mr-1">
+                        @if (DisplayOnlyTodaysEntries)
                         {
-                            <option value="@category.Id">@category.Name</option>
-                        }
-                    </select>
-                </span>
-            }
-            <input type="date" id="from-date" class="form-control w-100 ml-2" value="@FilterFromDate" placeholder="Search..." @onchange="eventArgs => { FilterListByFromDate(eventArgs.Value.ToString()); }" />
-            <input type="date" id="to-date" class="form-control w-100 ml-2" value="@FilterToDate" placeholder="Search..." @onchange="eventArgs => { FilterListByTodate(eventArgs.Value.ToString()); }" />
-
-            <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
-        </div>
-    </div>
-
-    if (AppointmentList.Count() > 0)
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th @onclick="@(() => SortByColumn("Category"))">
-                        @if (SortingColumn == "Category")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Category</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Date"))">
-                        @if (SortingColumn == "Date")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Date</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Priority"))">
-                        @if (SortingColumn == "Priority")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Priority</span>
-                    </th>
-                    <th @onclick="@(() => SortByColumn("Title"))">
-                        @if (SortingColumn == "Title")
-                        {
-                            <span class="material-icons">
-                                sort
-                            </span>
-                        }
-                        <span>Title</span>
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var task in AppointmentList)
-                {
-                    <tr>
-                        <td>
-                            <div class="d-flex" style="background-color: @task.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                            <button type="button" class="btn btn-info" title="Show all" @onclick="eventArgs => { ShowEntriesFromToday(); }">
                                 <span class="material-icons">
-                                    @task.Category?.Icon
+                                    list
                                 </span>
-                                <span class="ml-5">
-                                    @task.Category?.Name
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-info" title="Show today" @onclick="eventArgs => { ShowEntriesFromToday(); }">
+                                <span class="material-icons">
+                                    calendar_today
                                 </span>
-                            </div>
-                        </td>
-                        <td>@task.Date</td>
-                        <td>
-                            @switch (task.Priority)
-                            {
-                                case Backend.Data.Priority.Low:
-                                    <span class="material-icons">
-                                        low_priority
-                                    </span>
-                                    break;
-                                case Backend.Data.Priority.Middle:
-                                    <span class="material-icons">
-                                        list
-                                    </span>
-                                    break;
-                                case Backend.Data.Priority.High:
-                                    <span class="material-icons">
-                                        priority_high
-                                    </span>
-                                    break;
-                            }
+                            </button>
+                        }
+                    </span>
 
-                        </td>
-                        <td>@task.Title</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="entry-actions">
-                                <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(task.Id); }">
+                    @if (CategoryList != null && CategoryList.Count() > 1)
+                    {
+                        <span class="w-50 mr-1">
+                            <select id="Category" class="form-control" value="@CurrentCategoryId" @onchange="eventArgs => { FilterByCategory(eventArgs.Value.ToString()); }">
+                                <option value="">All</option>
+                                @foreach (var category in CategoryList)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </span>
+                    }
+                    <input type="date" id="from-date" class="form-control w-100 ml-2" value="@FilterFromDate" placeholder="Search..." @onchange="eventArgs => { FilterListByFromDate(eventArgs.Value.ToString()); }" />
+                    <input type="date" id="to-date" class="form-control w-100 ml-2" value="@FilterToDate" placeholder="Search..." @onchange="eventArgs => { FilterListByTodate(eventArgs.Value.ToString()); }" />
+
+                    <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                </div>
+            </div>
+
+            if (AppointmentList.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th @onclick="@(() => SortByColumn("Category"))">
+                                @if (SortingColumn == "Category")
+                                {
                                     <span class="material-icons">
-                                        edit_calendar
+                                        sort
                                     </span>
-                                </button>
-
-                                <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteEntry(task.Id); }">
+                                }
+                                <span>Category</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Date"))">
+                                @if (SortingColumn == "Date")
+                                {
                                     <span class="material-icons">
-                                        delete
+                                        sort
                                     </span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-info" role="alert">
-            No entries to display.
-        </div>
-    }
+                                }
+                                <span>Date</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Priority"))">
+                                @if (SortingColumn == "Priority")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Priority</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Title"))">
+                                @if (SortingColumn == "Title")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Title</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in AppointmentList)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex" style="background-color: @task.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                                        <span class="material-icons">
+                                            @task.Category?.Icon
+                                        </span>
+                                        <span class="ml-5">
+                                            @task.Category?.Name
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>@task.Date</td>
+                                <td>
+                                    @switch (task.Priority)
+                                    {
+                                        case Backend.Data.Priority.Low:
+                                            <span class="material-icons">
+                                                low_priority
+                                            </span>
+                                            break;
+                                        case Backend.Data.Priority.Middle:
+                                            <span class="material-icons">
+                                                list
+                                            </span>
+                                            break;
+                                        case Backend.Data.Priority.High:
+                                            <span class="material-icons">
+                                                priority_high
+                                            </span>
+                                            break;
+                                    }
 
-    <div class="border border-dark p-2 bg-light">
-        <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
-            <span class="material-icons">
-                note_add
-            </span>
-        </button>
-    </div>
+                                </td>
+                                <td>@task.Title</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="entry-actions">
+                                        <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(task.Id); }">
+                                            <span class="material-icons">
+                                                edit_calendar
+                                            </span>
+                                        </button>
 
-    <CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog @ref="AddAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog>
-    <CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog @ref="EditAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog>
-    <CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog @ref="PdfCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog>
-}
+                                        <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteEntry(task.Id); }">
+                                            <span class="material-icons">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    No entries to display.
+                </div>
+            }
+
+            <div class="border border-dark p-2 bg-light">
+                <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+                    <span class="material-icons">
+                        note_add
+                    </span>
+                </button>
+            </div>
+
+            <CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog @ref="AddAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddAppointmentDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog @ref="EditAppointmentDialog" CloseEventCallback="AddAppointmentDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditAppointmentDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog @ref="PdfCreationDialog"></CollaborateSoftware.MyLittleHelpers.Components.PdfCreationDialog>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">Register or Log In to use the application.</p>
+    </NotAuthorized>
+</AuthorizeView>

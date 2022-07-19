@@ -7,8 +7,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface IAppointmentService
     {
-        Task<IEnumerable<Appointment>> GetAll();
-        Task<IEnumerable<Appointment>> GetAll(DateTime from, DateTime to);
+        Task<IEnumerable<Appointment>> GetAll(Guid userId);
+        Task<IEnumerable<Appointment>> GetAll(Guid userId, DateTime from, DateTime to);
         Task<Appointment> Add(Appointment newTask);       
         Task<Appointment> GetById(int idNumber);
         Task<Appointment> Update(Appointment Appointment);

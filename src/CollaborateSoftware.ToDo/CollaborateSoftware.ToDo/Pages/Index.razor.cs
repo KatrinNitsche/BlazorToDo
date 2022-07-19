@@ -2,6 +2,8 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,20 +44,34 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         #endregion
 
+        #region user
+
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
+        #endregion
+
         protected async override Task OnInitializedAsync()
         {
             await LoadHabits();
-
-            Tasks = (await todoService.GetAll());
+            var userId = await GetCurrentUserId();
+            Tasks = (await todoService.GetAll(userId));
             Tasks = Tasks.Where(t => t.Date.Date == DateTime.Now.Date);
 
-            AppointmentList = (await service.GetAll());
+            AppointmentList = (await service.GetAll(userId));
             AppointmentList = AppointmentList.Where(a => a.Date.Date == DateTime.Now.Date);
         }
 
         private async Task LoadHabits()
         {
-            HabitList = (await habitService.GetAll());
+            var userId = await GetCurrentUserId();
+            HabitList = (await habitService.GetAll(userId));
             FirstDayOfCurrentWeek = Tools.MondayBefore(DateTime.Now);
 
             HabitStates = new Dictionary<int, List<string>>();
@@ -104,15 +120,31 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 toastService.ShowError("Error while trying to delete the entry.");
             }
 
-            HabitList = (await habitService.GetAll());
+            var userId = await GetCurrentUserId();
+            HabitList = (await habitService.GetAll(userId));
             StateHasChanged();
         }
 
         public async void ToggleToDotDone(int id)
         {
             todoService.ToggleDone(id);
-            HabitList = (await habitService.GetAll());
+            var userId = await GetCurrentUserId();
+            HabitList = (await habitService.GetAll(userId));
             StateHasChanged();
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

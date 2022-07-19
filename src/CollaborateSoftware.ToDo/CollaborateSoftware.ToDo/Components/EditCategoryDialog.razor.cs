@@ -2,6 +2,7 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 
 namespace CollaborateSoftware.MyLittleHelpers.Components
@@ -48,6 +49,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         protected async Task HandleValidSubmit()
         {
+            Category.Updated = DateTime.Now;
             var result = await service.Update(Category);
             if (result != null)
             {
@@ -61,8 +63,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             {
                 toastService.ShowError("Unable to save entry.");
             }
-        }
-
-     
+        }     
     }
 }

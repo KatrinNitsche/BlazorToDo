@@ -3,6 +3,8 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +40,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         [Inject]
         public ICategoryService categoryService { get; set; }
 
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
         public void PdfExport()
         {
             PdfCreationDialog.Show();
@@ -45,8 +56,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            AppointmentList = (await service.GetAll());
-            CategoryList = await categoryService.GetAll();
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));
+            CategoryList = await categoryService.GetAll(userId);
 
             FilterFromDate = DateTime.Now;
             FilterToDate = DateTime.Now.AddDays(7);
@@ -60,7 +72,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void AddAppointmentDialog_OnDialogClose()
         {
-            AppointmentList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));
             StateHasChanged();
         }
 
@@ -110,7 +123,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
-                AppointmentList = (await service.GetAll());
+                var userId = await GetCurrentUserId();
+                AppointmentList = (await service.GetAll(userId));
             }
             else
             {
@@ -121,8 +135,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         }
 
         public async void FilterByCategory(string selectedId)
-        {            
-            AppointmentList = (await service.GetAll());           
+        {
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));           
             if (selectedId != "All")
             {               
                 AppointmentList = AppointmentList.Where(t => t.Category.Id == int.Parse(selectedId));
@@ -134,8 +149,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void ShowEntriesFromToday()
         {
             DisplayOnlyTodaysEntries = !DisplayOnlyTodaysEntries;
-
-            AppointmentList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));
             if (DisplayOnlyTodaysEntries)
             {
                 AppointmentList = AppointmentList.Where(t => t.Date.Date == System.DateTime.Now.Date);
@@ -147,7 +162,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void FilterListByFromDate(string FromDate)
         {
             FilterFromDate = DateTime.Parse(FromDate);
-            AppointmentList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));
             AppointmentList = AppointmentList.Where(t => (FilterFromDate == DateTime.MinValue || t.Date.Date >= FilterFromDate) && (FilterToDate == DateTime.MinValue || t.Date.Date <= FilterToDate));
 
             StateHasChanged();
@@ -156,10 +172,25 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void FilterListByTodate(string  toDate)
         {
             FilterToDate = DateTime.Parse(toDate);
-            AppointmentList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            AppointmentList = (await service.GetAll(userId));
             AppointmentList = AppointmentList.Where(t => (FilterToDate == DateTime.MinValue || t.Date.Date <= FilterToDate) && (FilterFromDate == DateTime.MinValue || t.Date.Date >= FilterFromDate));
 
             StateHasChanged();
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }
