@@ -21,7 +21,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Repositories
         public abstract TEntity ToggleActive(int id);
 
         public TEntity Add(TEntity entry)
-        {
+        {            
             Context.Set<TEntity>().Add(entry);
             return entry;
         }

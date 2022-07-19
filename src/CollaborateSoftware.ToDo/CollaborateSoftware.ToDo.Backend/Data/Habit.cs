@@ -5,11 +5,8 @@ using System.Linq;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 {
-    public class Habit
-    {
-        [Key]
-        public int Id { get; set; }
-
+    public class Habit : BaseEntry
+    {   
         [Required]
         public string Title { get; set; }
 
@@ -35,11 +32,5 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 
             return false;
         }
-    }
-
-    public class HabitDone
-    {
-        public int Id { get; set; }
-        public DateTime Date { get; set; }
     }
 }

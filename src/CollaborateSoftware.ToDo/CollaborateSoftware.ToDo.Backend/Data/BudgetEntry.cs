@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
 {
-    public class BudgetEntry
+    public class BudgetEntry : BaseEntry
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         public string Description { get; set; }
 

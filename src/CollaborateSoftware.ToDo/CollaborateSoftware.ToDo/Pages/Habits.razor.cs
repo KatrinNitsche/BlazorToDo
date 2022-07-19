@@ -3,6 +3,9 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,12 +25,22 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         [Inject]
         public IToastService toastService { get; set; }
 
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
         protected AddHabitDialog AddHabitDialog { get; set; }
         protected EditHabitDialog EditHabitDialog { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            HabitList = (await service.GetAll());          
+            var userId = await GetCurrentUserId();
+            HabitList = (await service.GetAll(userId));          
         }
 
         protected void AddEntry()
@@ -37,8 +50,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void FilterList(string searchTerm)
         {
+            var userId = await GetCurrentUserId();
             SearchTerm = searchTerm;
-            HabitList = (await service.GetAll());
+            HabitList = (await service.GetAll(userId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -89,6 +103,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             {
                 toastService.ShowError("Error while trying to delete the entry.");
             }
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

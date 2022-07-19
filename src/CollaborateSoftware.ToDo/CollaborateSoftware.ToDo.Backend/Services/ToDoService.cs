@@ -21,11 +21,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             categoryRepository = new CategoryRepository(context);
         }
 
-        public async Task<IEnumerable<ToDoListEntry>> GetAll() => toDoListentryRepository.GetAll();
+        public async Task<IEnumerable<ToDoListEntry>> GetAll(Guid userId) => toDoListentryRepository.GetAll().Where(x => x.UserId == userId);
 
-        public async Task<List<ToDoListEntry>> GetAll(DateTime from, DateTime to)
+        public async Task<List<ToDoListEntry>> GetAll(Guid userId, DateTime from, DateTime to)
         {
-            var data = toDoListentryRepository.GetAll().ToList();
+            var data = toDoListentryRepository.GetAll().Where(x => x.UserId == userId).ToList();
             var repeatingTasks = toDoListentryRepository.GetAll().Where(t => t.RepetitionType != RepetitionType.None && t.Done == false).Distinct();
 
             var result = new List<ToDoListEntry>();

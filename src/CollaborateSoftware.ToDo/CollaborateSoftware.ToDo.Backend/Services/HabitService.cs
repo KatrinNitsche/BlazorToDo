@@ -16,7 +16,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             habitRepository = new HabitRepository(context);
         }
 
-        public async Task<IEnumerable<Habit>> GetAll() => habitRepository.GetAll();
+        public async Task<IEnumerable<Habit>> GetAll(Guid userId) => habitRepository.GetAll().Where(x => x.UserId == userId);
 
         public async Task<Habit> Add(Habit newTask)
         {

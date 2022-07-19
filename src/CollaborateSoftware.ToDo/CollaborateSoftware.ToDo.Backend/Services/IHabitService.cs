@@ -7,7 +7,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface IHabitService
     {
-        Task<IEnumerable<Habit>> GetAll();
+        Task<IEnumerable<Habit>> GetAll(Guid userId);
         Task<Habit> Add(Habit habit);
         Task<Habit> GetById(int idNumber);
         Task<Habit> Update(Habit habit);

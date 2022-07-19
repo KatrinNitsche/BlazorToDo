@@ -3,6 +3,8 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Helper;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +33,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         [Inject]
         public IToDoService toDoService { get; set; }
 
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
         Dictionary<string, object> typeInput = new Dictionary<string, object> { { "type", "week" } };
 
         private string WeekVal { get; set; }
@@ -57,8 +68,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         protected async Task HandleValidSubmit()
         {
-            Tasks = (await toDoService.GetAll());
-            Appointments = (await appointmentService.GetAll());
+            var userId = await GetCurrentUserId();
+            Tasks = (await toDoService.GetAll(userId));
+            Appointments = (await appointmentService.GetAll(userId));
 
             if (PdfSettings.Type == "Day")
             {
@@ -80,11 +92,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private async void DayPlan()
         {
-            var taskList = await toDoService.GetAll(PdfSettings.Date, PdfSettings.Date);
+            var userId = await GetCurrentUserId();
+            var taskList = await toDoService.GetAll(userId, PdfSettings.Date, PdfSettings.Date);
 
             if (PdfSettings.IncludeAppointments)
             {
-                var AppointmentList = await appointmentService.GetAll(PdfSettings.Date, PdfSettings.Date);
+                var AppointmentList = await appointmentService.GetAll(userId, PdfSettings.Date, PdfSettings.Date);
             }
             else
             {
@@ -115,12 +128,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var date = WeekVal; // "2022-W27"
             int.TryParse(WeekVal.Substring(0, 4), out int year);
             int.TryParse(WeekVal.Substring(6, 2).Replace("0", "").Trim(), out int monthNumber);
-            var firstDayOfWeek = Tools.FirstDateOfWeekISO8601(year, monthNumber);           
-            var taskList = await toDoService.GetAll(firstDayOfWeek, firstDayOfWeek.AddDays(6));
+            var firstDayOfWeek = Tools.FirstDateOfWeekISO8601(year, monthNumber);
+            var userId = await GetCurrentUserId();
+            var taskList = await toDoService.GetAll(userId, firstDayOfWeek, firstDayOfWeek.AddDays(6));
 
             if (PdfSettings.IncludeAppointments)
             {
-                var AppointmentList = (await appointmentService.GetAll());
+                var AppointmentList = (await appointmentService.GetAll(userId));
                 Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
             }
             else
@@ -189,6 +203,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
                 toastService.ShowError("Unable to create pdf document.");
             }
 
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

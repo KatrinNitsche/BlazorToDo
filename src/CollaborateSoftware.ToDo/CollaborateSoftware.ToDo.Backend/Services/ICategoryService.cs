@@ -1,4 +1,5 @@
 ﻿using CollaborateSoftware.MyLittleHelpers.Backend.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> GetAll();
+        Task<IEnumerable<Category>> GetAll(Guid userId);
         Task<Category> Add(Category newTask);
         Task<Category> GetById(int idNumber);
         Task<Category> Update(Category toDoListEntry);

@@ -2,6 +2,9 @@
 using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,6 +31,19 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         [Parameter]
         public EventCallback<bool> CloseEventCallback { get; set; }
 
+        #region user
+
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
+        #endregion
+
         public bool ShowDialog { get; set; }
 
         public string CurrentCategoryId { get; set; }
@@ -36,8 +52,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         public async void Show()
         {
-            CategoryList = await categoryService.GetAll();
-            NotesList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            CategoryList = await categoryService.GetAll(userId);
+            NotesList = (await service.GetAll(userId));
             CurrentCategoryId = CategoryList.FirstOrDefault(c => c.Name == "None")?.Id.ToString();
             CurrentParentId = "";
             ResetDialog();
@@ -47,8 +64,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         public async void Show(int id)
         {
-            CategoryList = await categoryService.GetAll();
-            NotesList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            CategoryList = await categoryService.GetAll(userId);
+            NotesList = (await service.GetAll(userId));
             CurrentCategoryId = CategoryList.FirstOrDefault(c => c.Name == "None")?.Id.ToString();           
             Note = await service.GetById(id);
             CurrentParentId = Note.ParentNoteId.ToString();
@@ -70,6 +88,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         protected async Task HandleValidSubmit()
         {
             Note.Category = CategoryList.FirstOrDefault(c => c.Id == int.Parse(CurrentCategoryId));
+            Note.Updated = DateTime.Now;
             if (string.IsNullOrEmpty(CurrentParentId))
             {
                 Note.ParentNoteId = null;
@@ -93,7 +112,19 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
                 toastService.ShowError("Unable to save entry.");
             }
         }
+        
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
 
-     
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
+        }
     }
 }

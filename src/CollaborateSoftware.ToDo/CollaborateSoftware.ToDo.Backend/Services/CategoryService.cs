@@ -18,7 +18,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             toDoListentryRepository = new ToDoListEntryRepository(context);
         }
 
-        public async Task<IEnumerable<Category>> GetAll() => categoryRepository.GetAll();
+        public async Task<IEnumerable<Category>> GetAll(Guid userId) => categoryRepository.GetAll().Where(x => x.UserId == userId);
 
         public async Task<Category> GetById(int idNumber) => categoryRepository.GetById(idNumber);
 

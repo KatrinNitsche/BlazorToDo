@@ -4,6 +4,9 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +28,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         [Inject]
         public IToastService toastService { get; set; }
 
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
         protected AddToDoEntryDialog AddToDoEntryDialog { get; set; }
         protected EditToDoEntryDialog EditToDoEntryDialog { get; set; }
         protected ExportToDosDialog ExportToDosDialog { get; set; }
@@ -32,7 +44,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            Tasks = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            Tasks = (await service.GetAll(userId));
             Tasks = Tasks.Where(t => t.Done == false);
         }
 
@@ -85,7 +98,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void FilterList(string searchTerm)
         {
             SearchTerm = searchTerm;
-            Tasks = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            Tasks = (await service.GetAll(userId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -147,7 +161,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void ShowTasksDone()
         {
             DisplayDoneTasks = !DisplayDoneTasks;
-            Tasks = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            Tasks = (await service.GetAll(userId));
 
             if (DisplayDoneTasks)
             {
@@ -157,6 +172,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             {
                 Tasks = Tasks.Where(t => t.Done == false);
             }
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

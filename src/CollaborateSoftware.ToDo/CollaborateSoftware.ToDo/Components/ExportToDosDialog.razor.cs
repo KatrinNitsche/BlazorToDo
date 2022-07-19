@@ -3,6 +3,9 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,10 +28,24 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         [Inject]
         public IToastService toastService { get; set; }
 
+        #region user
+
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
+
+        #endregion
+
 
         public async void Show()
         {
-            CategoryList = await categoryService.GetAll();
+            var userId = await GetCurrentUserId();
+            CategoryList = await categoryService.GetAll(userId);
             ResetDialog();
             ShowDialog = true;
             StateHasChanged();
@@ -58,6 +75,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             {
                 toastService.ShowError("Unable to export.");
             }
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

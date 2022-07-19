@@ -23,11 +23,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return appointment;
         }
 
-        public async Task<IEnumerable<Appointment>> GetAll() => appointmentRepository.GetAll();
+        public async Task<IEnumerable<Appointment>> GetAll(Guid userId) => appointmentRepository.GetAll().Where(x => x.UserId == userId);
 
-        public async Task<IEnumerable<Appointment>> GetAll(DateTime from, DateTime to)
+        public async Task<IEnumerable<Appointment>> GetAll(Guid userId, DateTime from, DateTime to)
         {
-            var result = appointmentRepository.GetAll();
+            var result = appointmentRepository.GetAll().Where(x => x.UserId == userId);
 
             // var regularAppointments = result.Where(a => a.re)
 

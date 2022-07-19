@@ -7,8 +7,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface IToDoService
     {
-        Task<IEnumerable<ToDoListEntry>> GetAll();
-        Task<List<ToDoListEntry>> GetAll(DateTime from, DateTime to);
+        Task<IEnumerable<ToDoListEntry>> GetAll(Guid userId);
+        Task<List<ToDoListEntry>> GetAll(Guid userId, DateTime from, DateTime to);
         Task<ToDoListEntry> Add(ToDoListEntry newTask);
         void ToggleDone(int id);
         Task<ToDoListEntry> GetById(int idNumber);

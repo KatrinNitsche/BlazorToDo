@@ -3,6 +3,8 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Data;
 using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using CollaborateSoftware.MyLittleHelpers.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         [Inject]
         public IToastService toastService { get; set; }
+      
+        [Inject]
+        public SignInManager<IdentityUser> SignInManager { get; set; }
+
+        [CascadingParameter]
+        public Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public UserManager<IdentityUser> userManager { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            NotesList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            NotesList = (await service.GetAll(userId));
         }
 
         protected AddNoteDialog AddNoteDialog { get; set; }
@@ -50,7 +62,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         public async void AddNotentryDialog_OnDialogClose()
         {
-            NotesList = (await service.GetAll());
+            var userId = await GetCurrentUserId();
+            NotesList = (await service.GetAll(userId));
             StateHasChanged();
         }
 
@@ -87,7 +100,8 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
-                NotesList = (await service.GetAll());
+                var userId = await GetCurrentUserId();
+                NotesList = (await service.GetAll(userId));
             }
             else
             {
@@ -101,6 +115,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         public async void SetParentNote(int? newParentNote)
         {
             CurrentParentNote = newParentNote;
+        }
+
+        public async Task<Guid> GetCurrentUserId()
+        {
+            var user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                var currentUser = await userManager.GetUserAsync(user);
+                var currentUserId = currentUser.Id;
+
+                return Guid.Parse(currentUserId);
+            }
+
+            return Guid.Empty;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Areas.Identity.Pages.Account
             ReturnUrl = Url.Content("~/");
         }
 
-        public async Task<IActionResult> OnPostAync()
+        public async Task<IActionResult> OnPostAsync()
         {
             ReturnUrl = Url.Content("~/");
 
