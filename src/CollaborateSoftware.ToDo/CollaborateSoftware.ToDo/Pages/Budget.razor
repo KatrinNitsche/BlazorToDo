@@ -1,0 +1,141 @@
+﻿@page "/budget"
+
+<AuthorizeView>
+    <Authorized>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Budget</li>
+            </ol>
+        </nav>
+
+        <h1>Budget</h1>
+
+        @if (BudgetEntries == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+                <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+                    <span class="material-icons">
+                        note_add
+                    </span>
+                </button>
+
+                <div class="d-flex w-25">
+                    <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                </div>
+            </div>
+
+            @if (BudgetEntries.Count() > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th @onclick="@(() => SortByColumn("Category"))">
+                                @if (SortingColumn == "Category")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Category</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Date"))">
+                                @if (SortingColumn == "Date")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Date</span>
+                            </th>
+
+                            <th @onclick="@(() => SortByColumn("Description"))">
+                                @if (SortingColumn == "Description")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Description</span>
+                            </th>
+                            <th @onclick="@(() => SortByColumn("Amount"))">
+                                @if (SortingColumn == "Amount")
+                                {
+                                    <span class="material-icons">
+                                        sort
+                                    </span>
+                                }
+                                <span>Amount</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entry in BudgetEntries)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex" style="background-color: @entry.Category?.Color; height: 35px; width: 35px; border: 1px solid black; text-align: center; vertical-align: middle;">
+                                        <span class="material-icons">
+                                            @entry.Category?.Icon
+                                        </span>
+                                        <span class="ml-5">
+                                            @entry.Category?.Name
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>@entry.BudgetDate.ToShortDateString()</td>
+                                <td>@entry.Description</td>
+                                <td>@entry.Amount</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="entry-actions">
+                                        <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(entry.Id); }">
+                                            <span class="material-icons">
+                                                edit_calendar
+                                            </span>
+                                        </button>
+
+                                        <button type="button" class="btn btn-danger btn-sm mr-1" title="Delete this entry" @onclick="eventArgs => { DeleteEntry(entry.Id); }">
+                                            <span class="material-icons">
+                                                delete
+                                            </span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info" role="alert">
+                    No entries to display.
+                </div>
+            }
+
+            <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+                <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
+                    <span class="material-icons">
+                        note_add
+                    </span>
+                </button>
+
+                <div class="d-flex w-25">
+                    <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                </div>
+            </div>
+
+            <CollaborateSoftware.MyLittleHelpers.Components.AddBudgetEntryDialog @ref="@AddBudgetEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.AddBudgetEntryDialog>
+            <CollaborateSoftware.MyLittleHelpers.Components.EditBudgetEntryDialog @ref="@EditBudgetEntryDialog" CloseEventCallback="@AddToDoEntryDialog_OnDialogClose"></CollaborateSoftware.MyLittleHelpers.Components.EditBudgetEntryDialog>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p role="status">You are not authorixed to see this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
