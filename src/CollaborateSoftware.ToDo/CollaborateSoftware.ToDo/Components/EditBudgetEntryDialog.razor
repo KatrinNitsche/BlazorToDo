@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <label for="amount">Amount: </label>
-                            <InputDate id="amount" class="form-control" @bind-Value="@BudgetEntry.Amount"></InputDate>
+                            <InputNumber id="amount" class="form-control" @bind-Value="@BudgetEntry.Amount"></InputNumber>
                             <ValidationMessage For="@(() => BudgetEntry.Amount)" />
                         </div>
 

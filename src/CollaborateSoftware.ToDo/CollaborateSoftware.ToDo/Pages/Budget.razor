@@ -18,14 +18,19 @@
         else
         {
             <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
+               
+                
                 <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
                     <span class="material-icons">
                         note_add
                     </span>
                 </button>
 
-                <div class="d-flex w-25">
-                    <input id="search-term" class="form-control w-100 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
+                <div class="d-flex w-50">
+                    <div class="w-50">
+                        <span>Balance: @Balance() </span>
+                    </div>
+                    <input id="search-term" class="form-control w-50 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
                 </div>
             </div>
 
@@ -90,7 +95,7 @@
                                 </td>
                                 <td>@entry.BudgetDate.ToShortDateString()</td>
                                 <td>@entry.Description</td>
-                                <td>@entry.Amount</td>
+                                <td>@string.Format("{0:C}", entry.Amount)</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="entry-actions">
                                         <button type="button" class="btn btn-primary btn-sm mr-1" title="Edit this entry" @onclick="eventArgs => { EditEntry(entry.Id); }">

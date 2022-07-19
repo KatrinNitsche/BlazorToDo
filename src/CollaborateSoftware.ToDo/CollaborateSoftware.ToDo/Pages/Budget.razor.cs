@@ -131,5 +131,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
                 toastService.ShowError("Error while trying to delete the entry.");
             }
         }
+
+        public string Balance()
+        {
+            var balance = BudgetEntries.Sum(b => b.Amount);
+            return string.Format("{0:C}", balance);
+        }
     }
 }
