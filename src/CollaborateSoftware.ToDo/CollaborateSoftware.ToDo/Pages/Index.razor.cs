@@ -44,6 +44,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         #endregion
 
+        #region Budget
+
+        public IEnumerable<BudgetEntry> BudgetEntries { get; set; }
+
+        [Inject]
+        public IBudgetService budgetService { get; set; }
+
+        #endregion
+
         #region user
 
         [Inject]
@@ -66,6 +75,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             AppointmentList = (await service.GetAll(userId));
             AppointmentList = AppointmentList.Where(a => a.Date.Date == DateTime.Now.Date);
+
+            var fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var todate = fromDate.AddMonths(1).AddDays(-1);
+
+            BudgetEntries = (await budgetService.GetAll(userId));
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
+        }
+
+        public string Balance()
+        {
+            var balance = BudgetEntries.Sum(b => b.Amount);
+            return string.Format("{0:C}", balance);
         }
 
         private async Task LoadHabits()

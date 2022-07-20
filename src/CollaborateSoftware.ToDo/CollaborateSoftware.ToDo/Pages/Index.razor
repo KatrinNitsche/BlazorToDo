@@ -9,7 +9,7 @@ Welcome to my collection of apps which help with organizing your life.
 
 <AuthorizeView>
     <Authorized>
-        <div class="d-flex justify-items-start">
+        <div class="d-flex justify-items-start w-75">
             @if (HabitStates != null && HabitStates.Count() > 0)
             {
 
@@ -155,6 +155,47 @@ Welcome to my collection of apps which help with organizing your life.
                                         <div class="ms-2 me-auto">
                                             <div class="fw-bold">
                                                 <span>No to do's to display</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+            }
+
+            @if (BudgetEntries != null)
+            {
+                <div class="card m-3" style="width: 25rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">This Month's Finances</h5>
+                        <p class="card-text">
+                            <span>Balance: @Balance()</span>
+                            <hr />
+                            <ul class="list-group">
+                                @if (BudgetEntries.Count() > 0)
+                                {
+                                    @foreach (var entry in BudgetEntries)
+                                    {
+                                        <li class="list-group-item">
+                                            <div class="ms-2 me-auto">
+                                                <div class="fw-bold">
+                                                    <span class="material-icons" style="color: @entry.Category?.Color">
+                                                        @entry.Category?.Icon
+                                                    </span>
+                                                    <span>@entry.Description @string.Format("{0:C}", entry.Amount)</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="list-group-item">
+                                        <div class="ms-2 me-auto">
+                                            <div class="fw-bold">
+                                                <span>No information to display</span>
                                             </div>
                                         </div>
                                     </li>
