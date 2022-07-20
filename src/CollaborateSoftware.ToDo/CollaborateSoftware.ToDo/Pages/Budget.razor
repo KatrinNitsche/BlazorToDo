@@ -9,7 +9,7 @@
             </ol>
         </nav>
 
-        <h1>Budget</h1>
+        <h1>Budget @BudgetName()</h1>
 
         @if (BudgetEntries == null)
         {
@@ -18,18 +18,38 @@
         else
         {
             <div class="border border-dark bg-light p-2 mb-5 d-flex justify-content-between">
-               
-                
+
                 <button @onclick="AddEntry" class="btn btn-primary quick-add-btn">
                     <span class="material-icons">
                         note_add
                     </span>
                 </button>
 
-                <div class="d-flex w-50">
-                    <div class="w-50">
+                <div class="d-flex w-25">
+
+                    <span class="mr-1">
                         <span>Balance: @Balance() </span>
-                    </div>
+                    </span>
+
+                    <span class="mr-1">
+                        @if (DisplayOnlyThisMonthsEntries)
+                        {
+                            <button type="button" class="btn btn-info" title="Show all entries" @onclick="eventArgs => { ShowThisMonth(); }">
+                                <span class="material-icons">
+                                    list
+                                </span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-info" title="Show current month" @onclick="eventArgs => { ShowThisMonth(); }">
+                                <span class="material-icons">
+                                    calendar_today
+                                </span>
+                            </button>
+                        }
+                    </span>
+
                     <input id="search-term" class="form-control w-50 ml-2" value="@SearchTerm" placeholder="Search..." @onchange="eventArgs => { FilterList(eventArgs.Value.ToString()); }" />
                 </div>
             </div>

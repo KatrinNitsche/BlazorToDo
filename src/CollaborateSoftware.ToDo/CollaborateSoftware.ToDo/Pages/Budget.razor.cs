@@ -42,6 +42,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         {
             var userId = await GetCurrentUserId();
             BudgetEntries = (await service.GetAll(userId));
+            FilterList(SearchTerm);
         }
 
         public async void FilterList(string searchTerm)
@@ -57,8 +58,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             if (DisplayOnlyThisMonthsEntries)
             {
-                // ToDo: get this months date range
-                BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date == System.DateTime.Now.Date);
+                var fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var todate = fromDate.AddMonths(1).AddDays(-1);
+
+                BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
             }
 
             StateHasChanged();
@@ -136,6 +139,20 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
         {
             var balance = BudgetEntries.Sum(b => b.Amount);
             return string.Format("{0:C}", balance);
+        }
+
+        public string BudgetName()
+        {
+            return DisplayOnlyThisMonthsEntries ? $" - {DateTime.Now.ToString("Y")}" : string.Empty;
+        }
+
+        public async void ShowThisMonth()
+        {
+            DisplayOnlyThisMonthsEntries = !DisplayOnlyThisMonthsEntries;
+            FilterList(SearchTerm);
+            SortByColumn(SortingColumn);
+
+            StateHasChanged();
         }
     }
 }

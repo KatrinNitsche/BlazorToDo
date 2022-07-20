@@ -13,7 +13,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 {
     public partial class EditBudgetEntryDialog
     {
-        public BudgetEntry BudgetEntry { get; set; } = new BudgetEntry();
+        public BudgetEntry BudgetEntry { get; set; } = new BudgetEntry { BudgetDate = DateTime.Now };
         public IEnumerable<Category> CategoryList { get; set; }
 
         [Inject]
@@ -67,7 +67,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            BudgetEntry = new BudgetEntry();
+            BudgetEntry = new BudgetEntry { BudgetDate = DateTime.Now };
         }
 
         protected async Task HandleValidSubmit()

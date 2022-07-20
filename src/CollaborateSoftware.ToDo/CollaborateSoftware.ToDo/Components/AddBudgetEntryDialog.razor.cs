@@ -42,7 +42,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         #endregion
 
-        public BudgetEntry BudgetEntry { get; set; }
+        public BudgetEntry BudgetEntry { get; set; } = new BudgetEntry { BudgetDate = DateTime.Now };
 
         public async void Show()
         {
@@ -62,7 +62,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         private void ResetDialog()
         {
-            BudgetEntry = new BudgetEntry();
+            BudgetEntry = new BudgetEntry { BudgetDate = DateTime.Now };
         }
 
         protected async Task HandleValidSubmit()
