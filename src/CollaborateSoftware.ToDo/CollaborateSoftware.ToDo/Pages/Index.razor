@@ -11,8 +11,7 @@ Welcome to my collection of apps which help with organizing your life.
     <Authorized>
         <div class="d-flex justify-items-start w-75">
             @if (HabitStates != null && HabitStates.Count() > 0)
-            {
-
+            { 
                 <div class="card m-3" style="width: 25rem;">
                     <div class="card-body">
                         <h5 class="card-title">Daily Habits</h5>
@@ -61,13 +60,11 @@ Welcome to my collection of apps which help with organizing your life.
                                             </div>
                                         </li>
                                     }
-
                                 }
                             </ul>
                         </p>
                     </div>
                 </div>
-
             }
 
             @if (Tasks != null)
@@ -123,7 +120,6 @@ Welcome to my collection of apps which help with organizing your life.
                         </p>
                     </div>
                 </div>
-
             }
 
             @if (AppointmentList != null)
@@ -205,6 +201,27 @@ Welcome to my collection of apps which help with organizing your life.
                     </div>
                 </div>
             }
+
+            <div class="card m-3" style="width: 25rem;">
+                <div class="card-body">
+                    <h5 class="card-title">PDF Export</h5>
+                    <p class="card-text">                      
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="ms-2 me-auto">
+                                    <button class="btn btn-primary" @onclick="DayPLan">Day Plan</button>
+                                </div>
+                                <div class="ms-2 me-auto">
+                                    <button class="btn btn-primary" @onclick="WeekPLan">Week Plan</button>
+                                </div>
+                                <div class="ms-2 me-auto">
+                                    <button class="btn btn-primary" @onclick="MonthPlan">Month Plan</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
         </div>
     </Authorized>
     <NotAuthorized>

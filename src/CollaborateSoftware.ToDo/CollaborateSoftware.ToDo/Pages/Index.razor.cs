@@ -66,6 +66,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         #endregion
 
+        [Inject]
+        public IPdfCreator pdfCreator { get; set; }
+
         protected async override Task OnInitializedAsync()
         {
             await LoadHabits();
@@ -167,5 +170,82 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             return Guid.Empty;
         }
+
+        #region PDF creation
+
+        public async Task DayPLan()
+        {
+            var userId = await GetCurrentUserId();
+            var taskList = await todoService.GetAll(userId);
+            taskList = taskList.Where(t => t.Date.Date == DateTime.Now.Date);
+
+            var AppointmentList = await service.GetAll(userId);
+            AppointmentList = AppointmentList.Where(a => a.Date == DateTime.Now.Date);
+
+            var priorities = new List<string>();
+
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date == DateTime.Now.Date);
+
+            var result = pdfCreator.CreateDailySheet(taskList.ToList(), AppointmentList.ToList(), priorities, string.Empty, string.Empty, true, BudgetEntries.ToList());
+            if (result != null)
+            {
+                toastService.ShowSuccess("Pdf document was created");
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
+        }
+
+        public async Task WeekPLan()
+        {         
+            var firstDayOfWeek = Tools.MondayBefore(DateTime.Now.Date);
+            var userId = await GetCurrentUserId();
+            var taskList = await todoService.GetAll(userId, firstDayOfWeek, firstDayOfWeek.AddDays(6));
+
+            var AppointmentList = (await service.GetAll(userId));
+            var Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
+
+            var priorities = new List<string>();          
+
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            var fromDate = Tools.MondayBefore(DateTime.Now);
+            var todate = fromDate.AddDays(7);
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date < todate);
+
+            var result = pdfCreator.CreateWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, true, BudgetEntries.ToList());
+            if (result != null)
+            {
+                toastService.ShowSuccess("Pdf document was created");               
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
+        }
+
+        public async Task MonthPlan()
+        {
+            var importantSteps = new List<string>();           
+
+            var userId = await GetCurrentUserId();
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            var fromDate = new DateTime(DateTime.Now.Date.Year, DateTime.Now.Date.Month, 1);
+            var todate = fromDate.AddMonths(1).AddDays(-1);
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
+
+            var result = pdfCreator.CreateMonthPlan(string.Empty, importantSteps, fromDate, true, BudgetEntries.ToList());
+            if (result != null)
+            {
+                toastService.ShowSuccess("Pdf document was created");              
+            }
+            else
+            {
+                toastService.ShowError("Unable to create pdf document.");
+            }
+        }
+
+        #endregion 
     }
 }
