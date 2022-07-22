@@ -7,10 +7,16 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 {
     public interface IPdfCreator
     {
-        Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation);
-        Task<bool> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation);
-        Task<bool> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation);
-        Task<bool> CreateYearPlan(DateTime firstDayofYear);
-        Task<bool> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle);
+        Task<byte[]> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation);
+        Task<byte[]> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation);
+        Task<byte[]> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation);
+        Task<byte[]> CreateYearPlan(DateTime firstDayofYear);
+        Task<byte[]> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle);
+
+        string GetHtmlCodeForNotes(List<NotesEntry> notesEntries, string notesTitle);
+        string GetChildNoteHtml(List<NotesEntry> notesEntries, int parentId);
+        string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation);
+        string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation);
+        string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation);
     }
 }

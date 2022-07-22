@@ -5,8 +5,10 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +46,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         [Inject]
         public UserManager<IdentityUser> userManager { get; set; }
+
+        [Inject]
+        public IJSRuntime JS { get; set; }
 
         Dictionary<string, object> typeInput = new Dictionary<string, object> { { "type", "week" } };
 
@@ -121,6 +126,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var result = pdfCreator.CreateDailySheet(taskList, Appointments.ToList(), priorities, PdfSettings.ForTomorrow, PdfSettings.Note, PdfSettings.IncludeFincance, BudgetEntries.ToList());
             if (result != null)
             {
+                await DownloadFileFromStream(result.Result);
                 toastService.ShowSuccess("Pdf document was created");
                 ShowDialog = false;
                 StateHasChanged();
@@ -141,7 +147,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var taskList = await toDoService.GetAll(userId, firstDayOfWeek, firstDayOfWeek.AddDays(6));
 
             if (PdfSettings.IncludeAppointments)
-            {
+            {               
                 var AppointmentList = (await appointmentService.GetAll(userId));
                 Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
             }
@@ -164,6 +170,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var result = pdfCreator.CreateWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, PdfSettings.IncludeFincance, BudgetEntries.ToList());
             if (result != null)
             {
+                await DownloadFileFromStream(result.Result);
                 toastService.ShowSuccess("Pdf document was created");
                 ShowDialog = false;
                 StateHasChanged();
@@ -197,6 +204,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var result = pdfCreator.CreateMonthPlan(PdfSettings.Note, importantSteps, MonthVal, PdfSettings.IncludeFincance, BudgetEntries.ToList());
             if (result != null)
             {
+                await DownloadFileFromStream(result.Result);
                 toastService.ShowSuccess("Pdf document was created");
                 ShowDialog = false;
                 StateHasChanged();
@@ -207,12 +215,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             }
         }
 
-        private void YearPlan()
+        private async void YearPlan()
         {
             var firstDayofYear = new DateTime(int.Parse(PdfSettings.Year), 1, 1);
             var result = pdfCreator.CreateYearPlan(firstDayofYear);
             if (result != null)
             {
+                await DownloadFileFromStream(result.Result);
                 toastService.ShowSuccess("Pdf document was created");
                 ShowDialog = false;
                 StateHasChanged();
@@ -236,6 +245,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             }
 
             return Guid.Empty;
+        }
+
+        private async Task DownloadFileFromStream(byte[] fileStream)
+        {
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileStream);
         }
     }
 }
