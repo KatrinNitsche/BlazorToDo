@@ -49,6 +49,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
         [Inject]
         public UserManager<IdentityUser> userManager { get; set; }
 
+        [Inject]
+        private IJSRuntime JS { get; set; }
+
         Dictionary<string, object> typeInput = new Dictionary<string, object> { { "type", "week" } };
 
         private string WeekVal { get; set; }
@@ -133,7 +136,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
                .Comressed()
                .Content();
 
-            await DownloadFileFromStream(pdf, $"Day Plan {PdfSettings.Date.ToShortDateString()}");
+            await DownloadFileFromStream(pdf, $"Day Plan {PdfSettings.Date.ToShortDateString()}.pdf");
         }
 
         private async void WeekPlan()
@@ -177,7 +180,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
               .Comressed()
               .Content();
 
-            await DownloadFileFromStream(pdf, $"Week Plan");
+            await DownloadFileFromStream(pdf, $"Week Plan.pdf");
         }
 
         private async void MonthPlan()
@@ -211,7 +214,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
                 .Comressed()
                 .Content();
 
-            await DownloadFileFromStream(pdf, $"Month Plan {PdfSettings.Date.Month} {PdfSettings.Date.Year}");
+            await DownloadFileFromStream(pdf, $"Month Plan {PdfSettings.Date.Month} {PdfSettings.Date.Year}.pdf");
         }
 
         private async void YearPlan()
@@ -228,7 +231,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
                 .Comressed()
                 .Content();
 
-            await DownloadFileFromStream(pdf, $"Year Plan {PdfSettings.Year}");
+            await DownloadFileFromStream(pdf, $"Year Plan {PdfSettings.Year}.pdf");
         }
 
         public async Task<Guid> GetCurrentUserId()
@@ -245,10 +248,17 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             return Guid.Empty;
         }
 
-        private async Task<FileStreamResult> DownloadFileFromStream(byte[] file, string fileName)
+        private Stream GetFileStream(byte[] file)
         {
-            MemoryStream fileStream = new MemoryStream(file);
-            return new FileStreamResult(fileStream, "application/pdf");
+            var fileStream = new MemoryStream(file);
+            return fileStream;
+        }
+
+        private async Task DownloadFileFromStream(byte[] file, string fileName)
+        {
+            var fileStream = GetFileStream(file);
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
     }
 }

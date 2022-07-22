@@ -4,7 +4,6 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
 using OpenHtmlToPdf;
 using System;
@@ -72,6 +71,9 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         [Inject]
         public IPdfCreator pdfCreator { get; set; }
+
+        [Inject]
+        private IJSRuntime JS { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -192,17 +194,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date == DateTime.Now.Date);
                   
             var html = pdfCreator.GetHtmlCodeForDayPlan(taskList.ToList(), AppointmentList.ToList(), priorities, string.Empty, string.Empty, true, BudgetEntries.ToList());
+            var fileName = $"Day Plan for {DateTime.Now.ToLongDateString()}";
             var pdf = Pdf
                 .From(html)
                 .OfSize(PaperSize.A4)
-                .WithTitle($"Day Plan for {DateTime.Now.ToLongDateString()}")
+                .WithTitle(fileName)
                 .WithoutOutline()
                 .WithMargins(1.25.Centimeters())
                 .Portrait()
                 .Comressed()
                 .Content();
 
-            await DownloadFileFromStream(pdf, $"Day Plan for {DateTime.Now.ToLongDateString()}");
+            await DownloadFileFromStream(pdf, $"{fileName}.pdf");
         }
 
         public async Task WeekPLan()
@@ -222,17 +225,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date < todate);
 
             var html = pdfCreator.GetHtmlCodeForWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, true, BudgetEntries.ToList());
+            var fileName = $"Week Plan";
             var pdf = Pdf
-                 .From(html)
-                 .OfSize(PaperSize.A4)
-                 .WithTitle($"Week Plan")
-                 .WithoutOutline()
-                 .WithMargins(1.25.Centimeters())
-                 .Portrait()
-                 .Comressed()
-                 .Content();
+               .From(html)
+               .OfSize(PaperSize.A4)
+               .WithTitle(fileName)
+               .WithoutOutline()
+               .WithMargins(1.25.Centimeters())
+               .Portrait()
+               .Comressed()
+               .Content();
 
-            await DownloadFileFromStream(pdf, $"Day Plan");
+            await DownloadFileFromStream(pdf, $"{fileName}.pdf");
         }
 
         public async Task MonthPlan()
@@ -246,25 +250,31 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
 
             var html = pdfCreator.GetHtmlCodeForMonthPlan(string.Empty, importantSteps, fromDate, true, BudgetEntries.ToList());
+            var fileName = $"Month Plan";
             var pdf = Pdf
                 .From(html)
                 .OfSize(PaperSize.A4)
-                .WithTitle($"Month Plan")
+                .WithTitle(fileName)
                 .WithoutOutline()
                 .WithMargins(1.25.Centimeters())
                 .Portrait()
                 .Comressed()
                 .Content();
 
-            await DownloadFileFromStream(pdf, $"Month Plan");
+            await DownloadFileFromStream(pdf,$"{fileName}.pdf");
         }
 
-        private async Task<FileStreamResult> DownloadFileFromStream(byte[] file, string fileName)
+        private Stream GetFileStream(byte[] file)
         {
-            var stream = new MemoryStream(file);
-            var result = new FileStreamResult(stream, "application/pdf");
-            result.FileDownloadName = fileName;
-            return result;
+            var fileStream = new MemoryStream(file);
+            return fileStream;
+        }
+
+        private async Task DownloadFileFromStream(byte[] file, string fileName)
+        {
+            var fileStream = GetFileStream(file);            
+            using var streamRef = new DotNetStreamReference(stream: fileStream);
+            await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
         }
 
         #endregion 
