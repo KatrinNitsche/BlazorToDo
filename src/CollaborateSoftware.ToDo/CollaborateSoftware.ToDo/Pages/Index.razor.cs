@@ -4,8 +4,11 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
+using OpenHtmlToPdf;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,6 +47,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         #endregion
 
+        #region Budget
+
+        public IEnumerable<BudgetEntry> BudgetEntries { get; set; }
+
+        [Inject]
+        public IBudgetService budgetService { get; set; }
+
+        #endregion
+
         #region user
 
         [Inject]
@@ -57,6 +69,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         #endregion
 
+        [Inject]
+        public IPdfCreator pdfCreator { get; set; }
+
+        [Inject]
+        public IJSRuntime JS { get; set; }
+
         protected async override Task OnInitializedAsync()
         {
             await LoadHabits();
@@ -66,6 +84,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             AppointmentList = (await service.GetAll(userId));
             AppointmentList = AppointmentList.Where(a => a.Date.Date == DateTime.Now.Date);
+
+            var fromDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var todate = fromDate.AddMonths(1).AddDays(-1);
+
+            BudgetEntries = (await budgetService.GetAll(userId));
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
+        }
+
+        public string Balance()
+        {
+            var balance = BudgetEntries.Sum(b => b.Amount);
+            return string.Format("{0:C}", balance);
         }
 
         private async Task LoadHabits()
@@ -146,5 +176,103 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
             return Guid.Empty;
         }
+
+        #region PDF creation
+
+        public async Task DayPLan()
+        {
+            var userId = await GetCurrentUserId();
+            var taskList = await todoService.GetAll(userId);
+            taskList = taskList.Where(t => t.Date.Date == DateTime.Now.Date);
+
+            var AppointmentList = await service.GetAll(userId);
+            AppointmentList = AppointmentList.Where(a => a.Date == DateTime.Now.Date);
+
+            var priorities = new List<string>();
+
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date == DateTime.Now.Date);
+                  
+            var html = pdfCreator.GetHtmlCodeForDayPlan(taskList.ToList(), AppointmentList.ToList(), priorities, string.Empty, string.Empty, true, BudgetEntries.ToList());
+            var pdf = Pdf
+                .From(html)
+                .OfSize(PaperSize.A4)
+                .WithTitle($"Day Plan for {DateTime.Now.ToLongDateString()}")
+                .WithoutOutline()
+                .WithMargins(1.25.Centimeters())
+                .Portrait()
+                .Comressed()
+                .Content();
+
+            await DownloadFileFromStream(pdf, $"Day Plan for {DateTime.Now.ToLongDateString()}");
+        }
+
+        public async Task WeekPLan()
+        {         
+            var firstDayOfWeek = Tools.MondayBefore(DateTime.Now.Date);
+            var userId = await GetCurrentUserId();
+            var taskList = await todoService.GetAll(userId, firstDayOfWeek, firstDayOfWeek.AddDays(6));
+
+            var AppointmentList = (await service.GetAll(userId));
+            var Appointments = AppointmentList.Where(a => a.Date >= firstDayOfWeek && a.Date <= firstDayOfWeek.AddDays(7));
+
+            var priorities = new List<string>();          
+
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            var fromDate = Tools.MondayBefore(DateTime.Now);
+            var todate = fromDate.AddDays(7);
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date < todate);
+
+            var html = pdfCreator.GetHtmlCodeForWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, true, BudgetEntries.ToList());
+            var pdf = Pdf
+                 .From(html)
+                 .OfSize(PaperSize.A4)
+                 .WithTitle($"Week Plan")
+                 .WithoutOutline()
+                 .WithMargins(1.25.Centimeters())
+                 .Portrait()
+                 .Comressed()
+                 .Content();
+
+            await DownloadFileFromStream(pdf, $"Day Plan");
+        }
+
+        public async Task MonthPlan()
+        {
+            var importantSteps = new List<string>();           
+
+            var userId = await GetCurrentUserId();
+            var BudgetEntries = (await budgetService.GetAll(userId));
+            var fromDate = new DateTime(DateTime.Now.Date.Year, DateTime.Now.Date.Month, 1);
+            var todate = fromDate.AddMonths(1).AddDays(-1);
+            BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
+
+            var html = pdfCreator.GetHtmlCodeForMonthPlan(string.Empty, importantSteps, fromDate, true, BudgetEntries.ToList());
+            var pdf = Pdf
+                .From(html)
+                .OfSize(PaperSize.A4)
+                .WithTitle($"Month Plan")
+                .WithoutOutline()
+                .WithMargins(1.25.Centimeters())
+                .Portrait()
+                .Comressed()
+                .Content();
+
+            await DownloadFileFromStream(pdf, $"Month Plan");
+        }
+
+        private async Task DownloadFileFromStream(byte[] file, string fileName)
+        { 
+            await JS.InvokeVoidAsync(
+              "downloadFromByteArray",
+              new
+              {
+                  ByteArray = file,
+                  FileName = fileName,
+                  ContentType = "application/pdf"
+              });
+        }
+
+        #endregion 
     }
 }

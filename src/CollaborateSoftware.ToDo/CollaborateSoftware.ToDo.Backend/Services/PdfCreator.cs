@@ -13,11 +13,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
     {
         private int currentRecoursiveLevel = 0;
 
-        public async Task<bool> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle)
+        public async Task<byte[]> CreateNotesPdf(List<NotesEntry> notesEntries, string notesTitle)
         {
             try
             {
-                var filePath = @"C:\tmp\notes.pdf";
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                var filePath = Path.Combine(path, "notes.pdf");
                 var html = GetHtmlCodeForNotes(notesEntries, notesTitle);
 
                 var pdf = Pdf
@@ -32,20 +33,21 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                 await File.WriteAllBytesAsync(filePath, pdf);
 
-                return true;
+                return pdf;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
+        public async Task<byte[]> CreateDailySheet(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             try
             {
-                var filePath = @"C:\tmp\daily.pdf";
-                var html = GetHtmlCodeForDayPlan(todos, appointments, priorities, forTomorrow, note);
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                var filePath = Path.Combine(path, "daily.pdf");
+                var html = GetHtmlCodeForDayPlan(todos, appointments, priorities, forTomorrow, note, includeFinance, financeInformation);
 
                 var pdf = Pdf
                     .From(html)
@@ -59,20 +61,21 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                 await File.WriteAllBytesAsync(filePath, pdf);
 
-                return true;
+                return pdf;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek)
+        public async Task<byte[]> CreateWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             try
             {
-                var filePath = @"C:\tmp\weekly.pdf";
-                var html = GetHtmlCodeForWeekPlan(todos, appointments, priorities, firstDayOfWeek);
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                var filePath = Path.Combine(path, "weekly.pdf");
+                var html = GetHtmlCodeForWeekPlan(todos, appointments, priorities, firstDayOfWeek, includeFinance, financeInformation);
 
                 var pdf = Pdf
                     .From(html)
@@ -86,20 +89,21 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                 await File.WriteAllBytesAsync(filePath, pdf);
 
-                return true;
+                return pdf;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
+        public async Task<byte[]> CreateMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             try
             {
-                var filePath = @"C:\tmp\monthly.pdf";
-                var html = GetHtmlCodeForMonthPlan(focusText, actionSteps, firstDayOfMonth);
+                string path = AppDomain.CurrentDomain.BaseDirectory;
+                var filePath = Path.Combine(path, "monthly.pdf");
+                var html = GetHtmlCodeForMonthPlan(focusText, actionSteps, firstDayOfMonth, includeFinance, financeInformation);
 
                 var pdf = Pdf
                     .From(html)
@@ -113,15 +117,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                 await File.WriteAllBytesAsync(filePath, pdf);
 
-                return true;
+                return pdf;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> CreateYearPlan(DateTime firstDayofYear)
+        public async Task<byte[]> CreateYearPlan(DateTime firstDayofYear)
         {
             try
             {
@@ -140,15 +144,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
                 await File.WriteAllBytesAsync(filePath, pdf);
 
-                return true;
+                return pdf;
             }
             catch (Exception ex)
             {
-                return false;
+                return null;
             }
         }
 
-        private string GetHtmlCodeForNotes(List<NotesEntry> notesEntries, string notesTitle)
+        public string GetHtmlCodeForNotes(List<NotesEntry> notesEntries, string notesTitle)
         {
             string htmlCode = string.Empty;
             htmlCode = Properties.Resources.Notes;
@@ -172,7 +176,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return htmlCode;
         }
 
-        private string GetChildNoteHtml(List<NotesEntry> notesEntries, int parentId)
+        public string GetChildNoteHtml(List<NotesEntry> notesEntries, int parentId)
         {
             var notesDiv = string.Empty;
             foreach (var note in notesEntries.Where(n => n.ParentNoteId == parentId))
@@ -195,7 +199,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return notesDiv;
         }
 
-        private string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth)
+        public string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             var htmlCode = string.Empty;
             htmlCode = Properties.Resources.Monthly;
@@ -203,6 +207,11 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             htmlCode = htmlCode.Replace("{Month}", $"{firstDayOfMonth.ToMonthName()} {firstDayOfMonth.Year}");
             htmlCode = htmlCode.Replace("{notes}", focusText);
             htmlCode = ReplaceActionSteps(actionSteps, htmlCode, 10);
+
+            if (includeFinance)
+            {
+                htmlCode = ReplaceFinance(financeInformation, htmlCode);
+            }
 
             var firstDayIndex = GetFirstDayIndex(firstDayOfMonth);
             var numberOfDays = firstDayOfMonth.AddMonths(1).AddDays(-1).Day;
@@ -221,13 +230,13 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             return htmlCode;
         }
 
-        private int GetFirstDayIndex(DateTime firstDayOfMonth)
+        public int GetFirstDayIndex(DateTime firstDayOfMonth)
         {
             var weekDay = firstDayOfMonth.Date.DayOfWeek;
             return (int)weekDay;
         }
 
-        private string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek)
+        public string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             var htmlCode = string.Empty;
             htmlCode = Properties.Resources.Weekly;
@@ -238,13 +247,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                 htmlCode = htmlCode.Replace("{day-" + (i + 1) + "}", firstDayOfWeek.AddDays(i).ToString("dddd, MMMM dd yyyy"));
             }
 
+            if (includeFinance)
+            {
+                htmlCode = ReplaceFinance(financeInformation, htmlCode);
+            }
+
             htmlCode = ReplaceToDos(todos, htmlCode, 18);
             htmlCode = ReplacePriorities(priorities, htmlCode);
 
             return htmlCode;
         }
 
-        private string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note)
+        public string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation)
         {
             var htmlCode = string.Empty;
 
@@ -262,10 +276,15 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
             htmlCode = htmlCode.Replace("{for-tomorrow}", forTomorrow);
             htmlCode = htmlCode.Replace("{note}", note);
 
+            if (includeFinance)
+            {
+                htmlCode = ReplaceFinance(financeInformation, htmlCode);
+            }
+
             return htmlCode;
         }
 
-        private string GetHtmlCodeForYearPlan(DateTime firstDayOfYear)
+        public string GetHtmlCodeForYearPlan(DateTime firstDayOfYear)
         {
             var htmlCode = string.Empty;
             htmlCode = Properties.Resources.Year;
@@ -343,6 +362,31 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
                     htmlCode = htmlCode.Replace("{priority-" + (i + 1) + "}", string.Empty);
                 }
             }
+
+            return htmlCode;
+        }
+
+        private string ReplaceFinance(List<BudgetEntry> financeInformation, string htmlCode)
+        {
+            var income = "<div class='finance-list'>" + System.Environment.NewLine;
+            income += "<h2>Income</h2>" + System.Environment.NewLine;
+            foreach (var entry in financeInformation.Where(f => f.Amount > 0))
+            {
+                income += $"<div class='finance-entry income'>{entry.Amount} {entry.Description}</div>" + System.Environment.NewLine;
+            }
+
+            income += "</div>" + System.Environment.NewLine;
+            htmlCode = htmlCode.Replace("{fincance-incoming}", income);
+
+            var expenses = "<div class='finance-list'>" + System.Environment.NewLine;
+            expenses += "<h2>Expenses</h2>" + System.Environment.NewLine;
+            foreach (var entry in financeInformation.Where(f => f.Amount < 0))
+            {
+                expenses += $"<div class='finance-entry expense'>{entry.Amount} {entry.Description}</div>" + System.Environment.NewLine;
+            }
+
+            expenses += "</div>" + System.Environment.NewLine;
+            htmlCode = htmlCode.Replace("{fincance-expenses}", expenses);
 
             return htmlCode;
         }

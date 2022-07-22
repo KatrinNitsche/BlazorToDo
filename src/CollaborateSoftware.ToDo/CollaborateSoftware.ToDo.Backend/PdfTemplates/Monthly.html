@@ -53,7 +53,7 @@
             background-color: #bab8b3;
             border-radius: 5px;
             height: 200px;
-            padding: 5px;            
+            padding: 5px;
         }
 
         .focus {
@@ -75,15 +75,30 @@
             margin: 5px;
         }
 
-        .month-table td {
-            border: 1px solid black;
-            height: 50px;
+            .month-table td {
+                border: 1px solid black;
+                height: 50px;
+            }
+
+                .month-table td:last-child,
+                .month-table td:first-child {
+                    background-color: #ebe4df;
+                }
+
+        #finance-table {
+            width: 100%;
         }
 
-            .month-table td:last-child,
-            .month-table td:first-child {
-                background-color: #ebe4df;
+            #finance-table tr td {
+                width: 50%;
             }
+
+        .finance-list {
+            border-radius: 5px;
+            height: 200px;
+            border: 1px solid black;
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -183,13 +198,23 @@
                 <td>{day-40}</td>
                 <td>{day-41}</td>
                 <td>{day-42}</td>
-            </tr>         
+            </tr>
         </table>
     </div>
 
     <div class="notes">
         <h2>Notes</h2>
-
     </div>
+
+    <table id="finance-table">
+        <tr>
+            <td>
+                {fincance-incoming}
+            </td>
+            <td>
+                {fincance-expenses}
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

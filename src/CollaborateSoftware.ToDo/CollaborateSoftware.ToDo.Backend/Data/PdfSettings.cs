@@ -7,6 +7,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Data
     {
         public string Type { get; set; }
         public bool IncludeAppointments { get; set; }
+        public bool IncludeFincance { get; set; }
         public string Year { get; set; }
         public DateTime Date { get; set; }
         public string Note { get; set; }
