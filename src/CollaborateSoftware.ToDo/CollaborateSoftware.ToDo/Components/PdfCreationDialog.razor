@@ -26,6 +26,14 @@
                             </InputSelect>
                         </div>
 
+                        @if (PdfSettings.Type != "Year")
+                        {
+                            <div class="form-group">
+                                <label for="today" class="fw-bold">Include Finance</label>
+                                <InputCheckbox id="today" class="form-control" @bind-Value="@PdfSettings.IncludeFincance"></InputCheckbox>
+                            </div>
+                        }
+
                         @if (PdfSettings.Type != "Year" && PdfSettings.Type != "Month")
                         {
                             <div class="form-group">

@@ -75,7 +75,7 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
 
         public async Task<ToDoListEntry> Add(ToDoListEntry toDoListEntry)
         {
-            if (toDoListentryRepository.GetAll().Any(t => t.Title == toDoListEntry.Title && t.Done == false)) return null;
+            if (toDoListentryRepository.GetAll().Any(t => t.Title == toDoListEntry.Title && t.Done == false && t.UserId == toDoListEntry.UserId)) return null;
 
             toDoListentryRepository.Add(toDoListEntry);
             toDoListentryRepository.Commit();
