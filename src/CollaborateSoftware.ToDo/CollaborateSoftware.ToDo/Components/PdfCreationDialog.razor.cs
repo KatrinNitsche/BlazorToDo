@@ -5,7 +5,9 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
+using OpenHtmlToPdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,9 +48,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
 
         [Inject]
         public UserManager<IdentityUser> userManager { get; set; }
-
-        [Inject]
-        public IJSRuntime JS { get; set; }
 
         Dictionary<string, object> typeInput = new Dictionary<string, object> { { "type", "week" } };
 
@@ -123,18 +122,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var todate = fromDate.AddMonths(1).AddDays(-1);
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
 
-            var result = pdfCreator.CreateDailySheet(taskList, Appointments.ToList(), priorities, PdfSettings.ForTomorrow, PdfSettings.Note, PdfSettings.IncludeFincance, BudgetEntries.ToList());
-            if (result != null)
-            {
-                await DownloadFileFromStream(result.Result);
-                toastService.ShowSuccess("Pdf document was created");
-                ShowDialog = false;
-                StateHasChanged();
-            }
-            else
-            {
-                toastService.ShowError("Unable to create pdf document.");
-            }
+            var html = pdfCreator.GetHtmlCodeForDayPlan(taskList, Appointments.ToList(), priorities, PdfSettings.ForTomorrow, PdfSettings.Note, PdfSettings.IncludeFincance, BudgetEntries.ToList());
+            var pdf = Pdf
+               .From(html)
+               .OfSize(PaperSize.A4)
+               .WithTitle($"Day Plan {PdfSettings.Date.ToShortDateString()}")
+               .WithoutOutline()
+               .WithMargins(1.25.Centimeters())
+               .Portrait()
+               .Comressed()
+               .Content();
+
+            await DownloadFileFromStream(pdf, $"Day Plan {PdfSettings.Date.ToShortDateString()}");
         }
 
         private async void WeekPlan()
@@ -167,18 +166,18 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var todate = fromDate.AddMonths(1).AddDays(-1);
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
 
-            var result = pdfCreator.CreateWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, PdfSettings.IncludeFincance, BudgetEntries.ToList());
-            if (result != null)
-            {
-                await DownloadFileFromStream(result.Result);
-                toastService.ShowSuccess("Pdf document was created");
-                ShowDialog = false;
-                StateHasChanged();
-            }
-            else
-            {
-                toastService.ShowError("Unable to create pdf document.");
-            }
+            var html = pdfCreator.GetHtmlCodeForWeekPlan(taskList, Appointments.ToList(), priorities, firstDayOfWeek, PdfSettings.IncludeFincance, BudgetEntries.ToList());
+            var pdf = Pdf
+              .From(html)
+              .OfSize(PaperSize.A4)
+              .WithTitle($"Week Plan")
+              .WithoutOutline()
+              .WithMargins(1.25.Centimeters())
+              .Portrait()
+              .Comressed()
+              .Content();
+
+            await DownloadFileFromStream(pdf, $"Week Plan");
         }
 
         private async void MonthPlan()
@@ -201,36 +200,35 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             var todate = fromDate.AddMonths(1).AddDays(-1);
             BudgetEntries = BudgetEntries.Where(t => t.BudgetDate.Date >= fromDate && t.BudgetDate.Date <= todate);
 
-            var result = pdfCreator.CreateMonthPlan(PdfSettings.Note, importantSteps, MonthVal, PdfSettings.IncludeFincance, BudgetEntries.ToList());
-            if (result != null)
-            {
-                await DownloadFileFromStream(result.Result);
-                toastService.ShowSuccess("Pdf document was created");
-                ShowDialog = false;
-                StateHasChanged();
-            }
-            else
-            {
-                toastService.ShowError("Unable to create pdf document.");
-            }
+            var html = pdfCreator.GetHtmlCodeForMonthPlan(PdfSettings.Note, importantSteps, MonthVal, PdfSettings.IncludeFincance, BudgetEntries.ToList());
+            var pdf = Pdf
+                .From(html)
+                .OfSize(PaperSize.A4)
+                .WithTitle($"Month Plan {PdfSettings.Date.Month} {PdfSettings.Date.Year}")
+                .WithoutOutline()
+                .WithMargins(1.25.Centimeters())
+                .Portrait()
+                .Comressed()
+                .Content();
+
+            await DownloadFileFromStream(pdf, $"Month Plan {PdfSettings.Date.Month} {PdfSettings.Date.Year}");
         }
 
         private async void YearPlan()
         {
-            var firstDayofYear = new DateTime(int.Parse(PdfSettings.Year), 1, 1);
-            var result = pdfCreator.CreateYearPlan(firstDayofYear);
-            if (result != null)
-            {
-                await DownloadFileFromStream(result.Result);
-                toastService.ShowSuccess("Pdf document was created");
-                ShowDialog = false;
-                StateHasChanged();
-            }
-            else
-            {
-                toastService.ShowError("Unable to create pdf document.");
-            }
+            var firstDayofYear = new DateTime(int.Parse(PdfSettings.Year), 1, 1);          
+            var html = pdfCreator.GetHtmlCodeForYearPlan(firstDayofYear);
+            var pdf = Pdf
+                .From(html)
+                .OfSize(PaperSize.A4)
+                .WithTitle($"Year Plan {PdfSettings.Year}")
+                .WithoutOutline()
+                .WithMargins(1.25.Centimeters())
+                .Portrait()
+                .Comressed()
+                .Content();
 
+            await DownloadFileFromStream(pdf, $"Year Plan {PdfSettings.Year}");
         }
 
         public async Task<Guid> GetCurrentUserId()
@@ -247,9 +245,10 @@ namespace CollaborateSoftware.MyLittleHelpers.Components
             return Guid.Empty;
         }
 
-        private async Task DownloadFileFromStream(byte[] fileStream)
+        private async Task<FileStreamResult> DownloadFileFromStream(byte[] file, string fileName)
         {
-            await JS.InvokeVoidAsync("downloadFileFromStream", fileStream);
+            MemoryStream fileStream = new MemoryStream(file);
+            return new FileStreamResult(fileStream, "application/pdf");
         }
     }
 }

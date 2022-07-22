@@ -18,5 +18,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Backend.Services
         string GetHtmlCodeForMonthPlan(string focusText, List<string> actionSteps, DateTime firstDayOfMonth, bool includeFinance, List<BudgetEntry> financeInformation);
         string GetHtmlCodeForWeekPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, DateTime firstDayOfWeek, bool includeFinance, List<BudgetEntry> financeInformation);
         string GetHtmlCodeForDayPlan(List<ToDoListEntry> todos, List<Appointment> appointments, List<string> priorities, string forTomorrow, string note, bool includeFinance, List<BudgetEntry> financeInformation);
+        string GetHtmlCodeForYearPlan(DateTime firstDayOfYear);
     }
 }

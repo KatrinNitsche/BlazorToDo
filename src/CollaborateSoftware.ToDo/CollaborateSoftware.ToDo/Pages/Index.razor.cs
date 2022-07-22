@@ -4,6 +4,7 @@ using CollaborateSoftware.MyLittleHelpers.Backend.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.JSInterop;
 using OpenHtmlToPdf;
 using System;
@@ -71,9 +72,6 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
 
         [Inject]
         public IPdfCreator pdfCreator { get; set; }
-
-        [Inject]
-        public IJSRuntime JS { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
@@ -261,16 +259,12 @@ namespace CollaborateSoftware.MyLittleHelpers.Pages
             await DownloadFileFromStream(pdf, $"Month Plan");
         }
 
-        private async Task DownloadFileFromStream(byte[] file, string fileName)
-        { 
-            await JS.InvokeVoidAsync(
-              "downloadFromByteArray",
-              new
-              {
-                  ByteArray = file,
-                  FileName = fileName,
-                  ContentType = "application/pdf"
-              });
+        private async Task<FileStreamResult> DownloadFileFromStream(byte[] file, string fileName)
+        {
+            var stream = new MemoryStream(file);
+            var result = new FileStreamResult(stream, "application/pdf");
+            result.FileDownloadName = fileName;
+            return result;
         }
 
         #endregion 
