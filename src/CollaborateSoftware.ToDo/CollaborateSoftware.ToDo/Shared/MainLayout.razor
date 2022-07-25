@@ -1,15 +1,31 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+
 
 <AuthorizeView>
     <Authorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
         <div class="main">
-            <div class="top-row px-4">
-                <a href="\identity\account\logout">LogOut</a>
-            </div>
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a href="\identity\account\logout">
+                                    <span class="material-icons">
+                                        logout
+                                    </span> LogOut
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
             <div class="content px-4">
                 <BlazoredToasts />
@@ -19,10 +35,32 @@
     </Authorized>
     <NotAuthorized>
         <div class="main">
-            <div class="top-row px-4">
-                <a href="\identity\account\login" target="_blank">Login</a>
-                <a href="\identity\account\register">Register</a>
-            </div>
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                        <a class="navbar-brand" href="#">My Little Helpers App</a>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="\identity\account\login">
+                                    <span class="material-icons">
+                                        login
+                                    </span> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="\identity\account\register">
+                                    <span class="material-icons">
+                                        app_registration
+                                    </span> Register
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
             <div class="content px-4">
                 <BlazoredToasts />

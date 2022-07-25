@@ -11,7 +11,7 @@ Welcome to my collection of apps which help with organizing your life.
     <Authorized>
         <div class="d-flex justify-items-start w-75">
             @if (HabitStates != null && HabitStates.Count() > 0)
-            { 
+            {
                 <div class="card m-3" style="width: 25rem;">
                     <div class="card-body">
                         <h5 class="card-title">Daily Habits</h5>
@@ -205,7 +205,7 @@ Welcome to my collection of apps which help with organizing your life.
             <div class="card m-3" style="width: 25rem;">
                 <div class="card-body">
                     <h5 class="card-title">PDF Export</h5>
-                    <p class="card-text">                      
+                    <p class="card-text">
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="ms-2 me-auto">
@@ -225,6 +225,12 @@ Welcome to my collection of apps which help with organizing your life.
         </div>
     </Authorized>
     <NotAuthorized>
-        <p role="status">Register or Log In to use the application.</p>
+        <p role="status" class="fs-1">
+            <a href="\identity\account\register">
+               Register
+            </a> or <a href="\identity\account\login">
+               Login
+            </a> to use the application.
+        </p>
     </NotAuthorized>
 </AuthorizeView>
